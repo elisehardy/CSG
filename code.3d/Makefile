@@ -10,8 +10,14 @@ ifeq ($(CC),g++) #en mode debug
   CCEXT=++
 endif
 
-CFLAGS = -g -Wpointer-arith -Wall -ansi -O2
+#compil en mode 'debug' ou optmisée (-O2)
+DBG = no
 
+ifeq ($(DBG),yes) #en mode debug
+  CFLAGS = -g -Wpointer-arith -Wall -ansi
+else               #en mode normal
+  CFLAGS = -O2 -ansi
+endif
 
 # assemblage des infos de lib. et inc.
 lib =   $(libG3X)$(CCEXT)
@@ -20,18 +26,22 @@ src = src/
 # fichiers *.h locaux et lib.
 inc = -I./include $(incG3X) 
 
-exec = sphere
+exec = g3x_example demo_scene3D modelisation sphere
 
 all : $(exec) clean
 
 # règle générique de création de xxx.o à partir de src/xxx.c
 %.o : $(src)%.c
-	$(CC) $(CFLAGS) $(inc) -c $< -o $@
+	@echo "module $@"
+	@$(CC) $(CFLAGS) $(inc) -c $< -o $@
+	@echo "------------------------"
 
 # règle générique de création de l'executable xxx à partir de src/xxx.c (1 seul module)
 % : %.o
-	$(CC) $^ $(lib) -o $@
-
+	@echo "assemblage [$^]->$@"
+	@$(CC) $^ $(lib) -o $@
+	@echo "------------------------"
+	
 .PHONY : clean cleanall ?
 
 # informations sur les paramètres de compilation       
