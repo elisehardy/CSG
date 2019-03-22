@@ -10,7 +10,7 @@ ifeq ($(CC),g++) #en mode debug
   CCEXT=++
 endif
 
-#compil en mode 'debug' ou optmisée (-O2)
+#compil en mode 'debug' ou optmisï¿½e (-O2)
 DBG = no
 
 ifeq ($(DBG),yes) #en mode debug
@@ -26,17 +26,17 @@ src = src/
 # fichiers *.h locaux et lib.
 inc = -I./include $(incG3X) 
 
-exec = g3x_example demo_scene3D modelisation sphere
+exec = sphere matrix.o
 
 all : $(exec) clean
 
-# règle générique de création de xxx.o à partir de src/xxx.c
+# rï¿½gle gï¿½nï¿½rique de crï¿½ation de xxx.o ï¿½ partir de src/xxx.c
 %.o : $(src)%.c
 	@echo "module $@"
 	@$(CC) $(CFLAGS) $(inc) -c $< -o $@
 	@echo "------------------------"
 
-# règle générique de création de l'executable xxx à partir de src/xxx.c (1 seul module)
+# rï¿½gle gï¿½nï¿½rique de crï¿½ation de l'executable xxx ï¿½ partir de src/xxx.c (1 seul module)
 % : %.o
 	@echo "assemblage [$^]->$@"
 	@$(CC) $^ $(lib) -o $@
@@ -44,7 +44,7 @@ all : $(exec) clean
 	
 .PHONY : clean cleanall ?
 
-# informations sur les paramètres de compilation       
+# informations sur les paramï¿½tres de compilation       
 ? :
 	@echo "---------compilation informations----------"
 	@echo "  processor      : $(PROCBIT)"
