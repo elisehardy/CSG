@@ -79,13 +79,15 @@ bool BuildSphere_Reg(object *obj){
     
     }
    
-bool BuildSphere_random2(object *obj){
+   /*quart de sphere vide*/
+/*bool BuildSphere_random2(object *obj){
     
     obj->vertex = (G3Xpoint*)calloc(obj->size,sizeof(G3Xpoint));
     obj->normal=(G3Xvector*)calloc(obj->size,sizeof(G3Xvector));
     G3Xpoint * v = obj->vertex;
     
     double d;
+    int i;
     double cosa,sina;
     for (i=0; i<obj->size; i++)
 	{
@@ -100,13 +102,57 @@ bool BuildSphere_random2(object *obj){
         d= (*v)[0]*(*v)[0]+(*v)[1]*(*v)[1]+(*v)[2]*(*v)[2];  
             }while(d>1);
             d=sqrt(d);
+            (*v)[0]=(*v)[0]/d;
+            (*v)[1]=(*v)[1]/d;
+            (*v)[2]=(*v)[2]/d;
+            v++;
             
 	}
 	memcpy(obj->normal,obj->vertex,obj->n*obj->p*sizeof(G3Xcoord));
     return true;
     
     
-    } 
+    } */
+    
+  bool BuildSphere_random2(object *obj){
+    
+    obj->vertex = (G3Xpoint*)calloc(obj->size,sizeof(G3Xpoint));
+    obj->normal=(G3Xvector*)calloc(obj->size,sizeof(G3Xvector));
+    G3Xpoint * v = obj->vertex;
+    G3Xvector *n = obj->normal;
+    double d;
+    int i;
+  
+    for (i=0; i<obj->size; i++)
+	{
+		
+		do{
+            
+            
+            (*v)[0]= g3x_Rand_Delta(0,+1);
+			(*v)[1]= g3x_Rand_Delta(0,+1);
+			(*v)[2]= g3x_Rand_Delta(0,+1);
+          
+            d= (*v)[0]*(*v)[0]+(*v)[1]*(*v)[1]+(*v)[2]*(*v)[2];  
+        }while(d>1);
+            
+            d=sqrt(d);
+            (*v)[0]=(*v)[0]/d;
+            (*v)[1]=(*v)[1]/d;
+            (*v)[2]=(*v)[2]/d;
+            v++;
+            
+            (*n)[0]=(*v)[0];
+            (*n)[1]=(*v)[1];
+            (*n)[2]=(*v)[2];
+            n++;
+            
+	}
+	/*memcpy(obj->normal,obj->vertex,obj->n*obj->p*sizeof(G3Xcoord));*/
+    return true;
+    
+    
+    }  
  
 bool BuildTorus_Reg(object *obj){
     
@@ -145,31 +191,14 @@ bool BuildTorus_Reg(object *obj){
   bool BuildCone_Reg(object *obj){
     
     obj->vertex = (G3Xpoint*)calloc(obj->size,sizeof(G3Xpoint));
-    obj->normal=(G3Xvector*)calloc(2+obj->n,sizeof(G3Xvector));
+    obj->normal=(G3Xvector*)calloc(obj->size,sizeof(G3Xvector));
     
     int i,j;
     double objN = (double)obj->n;
     double objP = (double)obj->p;
     
     
-    obj->vertex[0][X] = 0.;
-	obj->vertex[0][Y] = 0.;
-	obj->vertex[0][Z] = 1.;
-
-	obj->vertex[1][X] = 0.;
-	obj->vertex[1][Y] = 0.;
-	obj->vertex[1][Z] = 0.;
-    
-    
-    
-    
-    obj->normal[0][X] = 0.;
-	obj->normal[0][Y] = 0.;
-	obj->normal[0][Z] = 1.;
-
-	obj->normal[1][X] = 0.;
-	obj->normal[1][Y] = 0.;
-	obj->normal[1][Z] = -1.;
+   
     
     
     
@@ -179,10 +208,13 @@ bool BuildTorus_Reg(object *obj){
         double idouble = (double) i;
         for(j=0;j<obj->n;j++){
             double jdouble = (double)j;
-            obj->vertex[i*(obj->n)+j][0] = cos(PI*2*jdouble/objN)*((idouble+1.)/objP);
-            obj->vertex[i*(obj->n)+j][1] = sin(PI*2*jdouble/objN)*((idouble+1.)/objP);
+            obj->vertex[i*(obj->n)+j][0] = cos(PI*2*idouble/objN)*((idouble+1.)/objP);
+            obj->vertex[i*(obj->n)+j][1] = sin(PI*2*idouble/objN)*((idouble+1.)/objP);
             obj->vertex[i*(obj->n)+j][2] = -1;
             
+            obj->normal[i*(obj->n)+j][0] = obj->vertex[i*(obj->n)+j][0];
+            obj->normal[i*(obj->n)+j][1] = obj->vertex[i*(obj->n)+j][1];
+            obj->normal[i*(obj->n)+j][2] = 1;
             
             }
         
@@ -491,7 +523,7 @@ void Init(void)
     Sphere.p = 1000;/*4000*/
     Sphere.size = Sphere.n*Sphere.p;
     /*BuildSphere_Reg(&Sphere);*/
-    BuildSphere_random(&Sphere);
+    BuildSphere_random2(&Sphere);
     cube.n = 400;
 	cube.p = 400;
 	cube.size = 6*cube.n*cube.p;
@@ -510,7 +542,7 @@ void Init(void)
 static void Draw(void)
 {
   g3x_Material(G3Xr,0.25,0.5,0.5,0.5,1.);
-  Draw_Object(&Sphere,1);
+  Draw_Object(&cone,1);
   /*Draw_Sphere(&Sphere,1);*/
   /*Draw_Cube(&cube, 4);*/
   /*Draw_Cube(&cube,1);*/
