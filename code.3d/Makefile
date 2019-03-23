@@ -1,25 +1,22 @@
-#
-# Les variables d'environnement libG3X, incG3X
-# sont definies dans le fichier ~/.bashrc par le script ../install.sh
-#
-#compilateur
-CC = gcc
+# Ce makefile n'utilise pas de variable d'environnement.
 
-CCEXT=
-ifeq ($(CC),g++) #en mode debug
-  CCEXT=++
-endif
+# compilateur
+CC = gcc
 
 FLAGS = -g -Wpointer-arith -Wall -Wextra -Werror -ansi -O2
 IGNORED = -Wno-unused-parameter -Wno-aggressive-loop-optimizations
-
 CFLAGS = $(FLAGS) $(IGNORED)
 
 # assemblage des infos de lib. et inc.
-lib =   $(libG3X)$(CCEXT)
+libGL = $(dir $(dir $(shell find /usr/lib/ -name libGL.so)))
+libg3x = ../libg3x/
+lib = -L$(libGL) -L$(libg3x) -lm -lGL -lGLU -lglut -lg3x.64b
+inc = -I$(libg3x)include/ -I$(libGL)include/
 
-# lib.
-inc = $(incG3X)
+
+
+####################################################################################################
+# Ne modifier que ces lignes :
 
 # fichiers *.c locaux
 src = src/
@@ -28,22 +25,19 @@ src = src/
 bin = bin/
 
 
-
-####################################################################################################
-# Ne modifier que ces deux lignes :
-
 objet = sphere cube cone cylinder torus matrix object
 exec = main
 ####################################################################################################
 
 
 
-# Creer bin si besoin
+# Cree bin si besoin
 $(shell mkdir -p $(bin))
 
 object = $(addprefix $(bin),$(addsuffix .o,$(objet)))
 
 all : $(object) $(exec)
+
 
 # règle générique de création de xxx.o à partir de src/xxx.c
 $(bin)%.o : $(src)%.c
@@ -60,7 +54,6 @@ $(bin)%.o : $(src)%.c
 
 .PHONY : clean cleanall ?
 
-# informations sur les paramètres de compilation
 ? :
 	@echo "---------compilation informations----------"
 	@echo "  processor      : $(PROCBIT)"
@@ -68,7 +61,9 @@ $(bin)%.o : $(src)%.c
 	@echo "  options        : $(CFLAGS)"
 	@echo "  lib g3x/OpenGl : $(lib)"
 	@echo "  headers        : $(inc)"
+
 clean :
 	@rm -f $(bin)*.o
+
 cleanall :
 	@rm -f $(bin)*.o $(exec) *~ */*~
