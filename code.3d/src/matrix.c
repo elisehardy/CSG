@@ -36,7 +36,7 @@ static double *translationMatrix(double x, double y, double z) {
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
-static double *homothetyMatrix(double x, double y, double z) {
+/*static double *homothetyMatrix(double x, double y, double z) {
     double *matrix = (double *) calloc(16, sizeof(double));
     if (!matrix) {
         perror("Could not allocate matrix.");
@@ -49,7 +49,7 @@ static double *homothetyMatrix(double x, double y, double z) {
     matrix[10] = z;
     
     return matrix;
-}
+}*/
 
 
 /**
@@ -151,7 +151,7 @@ void matrixMatrixMult(double *m, double *factor) {
 
 void matrixPointMult(double *factor, G3Xpoint *p) {
     G3Xpoint res;
-    int i, j, k;
+    int i, j;
     double sum;
     
     for (i = 0; i < 4; i++) {
@@ -168,7 +168,7 @@ void matrixPointMult(double *factor, G3Xpoint *p) {
 
 void matrixVectorMult(double *factor, G3Xvector *v) {
     G3Xvector res;
-    int i, j, k;
+    int i, j;
     double sum;
     
     for (i = 0; i < 4; i++) {

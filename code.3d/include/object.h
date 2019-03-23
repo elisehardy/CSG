@@ -9,7 +9,7 @@
  * Canonical shapes.
  */
 typedef enum {
-    SPHERE, CUBE, CYLINDER, CONE, TORE
+    SHP_SPHERE, SHP_CUBE, SHP_CYLINDER, SHP_CONE, SHP_TORUS
 } Shape;
 
 
@@ -26,5 +26,11 @@ typedef struct _obj {
     
 } Object;
 
+
+void init(void);
+
+void draw(void);
+
+void drawObject(Object *s, int c);
 
 #endif
