@@ -8,7 +8,7 @@ IGNORED = -Wno-unused-parameter -Wno-aggressive-loop-optimizations
 CFLAGS = $(FLAGS) $(IGNORED)
 
 # assemblage des infos de lib. et inc.
-libGL = $(dir $(dir $(shell find /usr/lib/ -name libGL.so)))
+libGL = $(dir $(dir $(shell find /usr/lib/ -name libGL.so | head -n 1)))
 libg3x = ../libg3x/
 lib = -L$(libGL) -L$(libg3x) -lm -lGL -lGLU -lglut -lg3x.64b
 inc = -I$(libg3x)include/ -I$(libGL)include/
