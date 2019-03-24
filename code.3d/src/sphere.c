@@ -2,6 +2,12 @@
 
 
 void buildRegularSphere(Object *obj) {
+    if (!obj) {
+        errno = EFAULT;
+        perror("Error - buildRegularSphere ");
+        exit(1);
+    }
+    
     double a = 2 * PI / obj->n;
     double b = 2 * PI / obj->n;
     double cosa, sina;
@@ -11,7 +17,8 @@ void buildRegularSphere(Object *obj) {
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
     if (!(obj->vertex && obj->normal)) {
-        perror("Could not allocate object");
+        errno = ENOMEM;
+        perror("Error - buildRegularSphere ");
         exit(1);
     }
     
@@ -30,6 +37,12 @@ void buildRegularSphere(Object *obj) {
 
 
 void buildRandomSphere(Object *obj) {
+    if (!obj) {
+        errno = EFAULT;
+        perror("Error - buildRandomSphere ");
+        exit(1);
+    }
+    
     G3Xvector *n;
     G3Xpoint *v;
     double d;
@@ -38,7 +51,8 @@ void buildRandomSphere(Object *obj) {
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
     if (!(obj->vertex && obj->normal)) {
-        perror("Could not allocate object");
+        errno = ENOMEM;
+        perror("Error - buildRandomSphere ");
         exit(1);
     }
     
@@ -71,6 +85,12 @@ void buildRandomSphere(Object *obj) {
 
 
 void drawSphere(Object *obj, int c) {
+    if (!obj) {
+        errno = EFAULT;
+        perror("Error - drawSphere ");
+        exit(1);
+    }
+    
     G3Xvector *n;
     G3Xpoint *v;
     

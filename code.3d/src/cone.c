@@ -2,6 +2,12 @@
 
 
 void buildRegularCone(Object *obj) {
+    if (!obj) {
+        errno = EFAULT;
+        perror("Error - buildRegularCone ");
+        exit(1);
+    }
+    
     double objN = (double) obj->n;
     double objP = (double) obj->p;
     double idouble;
@@ -11,7 +17,8 @@ void buildRegularCone(Object *obj) {
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
     if (!(obj->vertex && obj->normal)) {
-        perror("Could not allocate object");
+        errno = ENOMEM;
+        perror("Error - buildRegularCone ");
         exit(1);
     }
     
@@ -33,6 +40,12 @@ void buildRegularCone(Object *obj) {
 
 
 void drawCone(Object *obj, int c) {
+    if (!obj) {
+        errno = EFAULT;
+        perror("Error - drawCone ");
+        exit(1);
+    }
+    
     G3Xpoint *v = obj->vertex;
     int i, j;
     

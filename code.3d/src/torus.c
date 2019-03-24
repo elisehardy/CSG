@@ -2,6 +2,12 @@
 
 
 void buildRegularTorus(Object *obj) {
+    if (!obj) {
+        errno = EFAULT;
+        perror("Error - buildRegularTorus ");
+        exit(1);
+    }
+    
     double idouble, jdouble, cosa, sina;
     double objN = (double) obj->n;
     double objP = (double) obj->p;
@@ -11,7 +17,8 @@ void buildRegularTorus(Object *obj) {
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
     if (!(obj->vertex && obj->normal)) {
-        perror("Could not allocate object");
+        errno = ENOMEM;
+        perror("Error - buildRegularTorus ");
         exit(1);
     }
     
@@ -35,6 +42,12 @@ void buildRegularTorus(Object *obj) {
 
 
 void drawTorus(Object *obj, int cam) {
+    if (!obj) {
+        errno = EFAULT;
+        perror("Error - drawTorus ");
+        exit(1);
+    }
+    
     G3Xvector *n = obj->normal;
     G3Xpoint *v = obj->vertex;
     int i, j;

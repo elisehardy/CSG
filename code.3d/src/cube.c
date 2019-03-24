@@ -2,6 +2,12 @@
 
 
 void buildRegularCube(Object *obj) { /*a changer car faire une normal pour chaque point*/
+    if (!obj) {
+        errno = EFAULT;
+        perror("Error - buildRegularCube ");
+        exit(1);
+    }
+    
     double objN = (double) obj->n;
     double objP = (double) obj->p;
     double idouble, jdouble;
@@ -11,7 +17,8 @@ void buildRegularCube(Object *obj) { /*a changer car faire une normal pour chaqu
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
     if (!(obj->vertex && obj->normal)) {
-        perror("Could not allocate object");
+        errno = ENOMEM;
+        perror("Error - buildRegularCube ");
         exit(1);
     }
     
@@ -72,6 +79,12 @@ void buildRegularCube(Object *obj) { /*a changer car faire une normal pour chaqu
 
 
 void buildRandomCube(Object *obj) {
+    if (!obj) {
+        errno = EFAULT;
+        perror("Error - buildRandomCube ");
+        exit(1);
+    }
+    
     G3Xvector *n;
     G3Xpoint *v;
     int i;
@@ -80,7 +93,8 @@ void buildRandomCube(Object *obj) {
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
     if (!(obj->vertex && obj->normal)) {
-        perror("Could not allocate object");
+        errno = ENOMEM;
+        perror("Error - buildRandomCube ");
         exit(1);
     }
     
@@ -152,9 +166,20 @@ void buildRandomCube(Object *obj) {
 
 
 void drawCube(Object *obj, int c) {
+    if (!obj) {
+        errno = EFAULT;
+        perror("Error - drawCube ");
+        exit(1);
+    }
+    
     G3Xvector *n = obj->normal;
     G3Xpoint *v = obj->vertex;
     int cote, face, i, j;
+    if (!(obj->vertex && obj->normal)) {
+        errno = ENOMEM;
+        perror("Error - drawCube ");
+        exit(1);
+    }
     
     glPointSize(1);
     glBegin(GL_POINTS);

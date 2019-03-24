@@ -150,6 +150,12 @@ void matrixMatrixMult(double *m, double *factor) {
 
 
 void matrixPointMult(double *factor, G3Xpoint *p) {
+    if (!p) {
+        errno = EFAULT;
+        perror("Error - matrixPointMult ");
+        exit(1);
+    }
+    
     G3Xpoint res;
     int i, j;
     double sum;
@@ -167,6 +173,12 @@ void matrixPointMult(double *factor, G3Xpoint *p) {
 
 
 void matrixVectorMult(double *factor, G3Xvector *v) {
+    if (!v) {
+        errno = EFAULT;
+        perror("Error - matrixVectorMult ");
+        exit(1);
+    }
+    
     G3Xvector res;
     int i, j;
     double sum;
@@ -184,6 +196,12 @@ void matrixVectorMult(double *factor, G3Xvector *v) {
 
 
 void rotate(Object *obj, double x, double y, double z) {
+    if (!obj) {
+        errno = EFAULT;
+        perror("Error - rotate ");
+        exit(1);
+    }
+    
     double *xMat = xRotationMatrix(x);
     double *yMat = yRotationMatrix(y);
     double *zMat = zRotationMatrix(z);
@@ -207,6 +225,12 @@ void rotate(Object *obj, double x, double y, double z) {
 
 
 void translate(Object *obj, double x, double y, double z) {
+    if (!obj) {
+        errno = EFAULT;
+        perror("Error - translate ");
+        exit(1);
+    }
+    
     double *mat = translationMatrix(x, y, z);
     int i;
     
