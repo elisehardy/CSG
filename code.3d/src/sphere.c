@@ -2,7 +2,7 @@
 
 
 void buildRegularSphere(Object *obj) {
-    if (!obj) {
+    if (obj == NULL) {
         errno = EFAULT;
         perror("Error - buildRegularSphere ");
         exit(1);
@@ -37,7 +37,7 @@ void buildRegularSphere(Object *obj) {
 
 
 void buildRandomSphere(Object *obj) {
-    if (!obj) {
+    if (obj == NULL) {
         errno = EFAULT;
         perror("Error - buildRandomSphere ");
         exit(1);
@@ -85,19 +85,18 @@ void buildRandomSphere(Object *obj) {
 
 
 void drawSphere(Object *obj, int c) {
-    if (!obj) {
+    if (obj == NULL) {
         errno = EFAULT;
         perror("Error - drawSphere ");
         exit(1);
     }
     
-    G3Xvector *n;
-    G3Xpoint *v;
+    G3Xvector *n = obj->normal;
+    G3Xpoint *v = obj->vertex;
     
     glPointSize(1);
     glBegin(GL_POINTS);
-    v = obj->vertex;
-    n = obj->normal;
+    
     while (v < obj->vertex + obj->size) {
         glNormal3dv(*n);
         n += c;

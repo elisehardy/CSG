@@ -2,7 +2,7 @@
 
 
 void buildRegularTorus(Object *obj) {
-    if (!obj) {
+    if (obj == NULL) {
         errno = EFAULT;
         perror("Error - buildRegularTorus ");
         exit(1);
@@ -42,7 +42,7 @@ void buildRegularTorus(Object *obj) {
 
 
 void drawTorus(Object *obj, int cam) {
-    if (!obj) {
+    if (obj == NULL) {
         errno = EFAULT;
         perror("Error - drawTorus ");
         exit(1);

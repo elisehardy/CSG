@@ -2,7 +2,7 @@
 
 
 void buildRegularCube(Object *obj) { /*a changer car faire une normal pour chaque point*/
-    if (!obj) {
+    if (obj == NULL) {
         errno = EFAULT;
         perror("Error - buildRegularCube ");
         exit(1);
@@ -79,7 +79,7 @@ void buildRegularCube(Object *obj) { /*a changer car faire une normal pour chaqu
 
 
 void buildRandomCube(Object *obj) {
-    if (!obj) {
+    if (obj == NULL) {
         errno = EFAULT;
         perror("Error - buildRandomCube ");
         exit(1);
@@ -166,7 +166,7 @@ void buildRandomCube(Object *obj) {
 
 
 void drawCube(Object *obj, int c) {
-    if (!obj) {
+    if (obj == NULL) {
         errno = EFAULT;
         perror("Error - drawCube ");
         exit(1);
@@ -175,11 +175,6 @@ void drawCube(Object *obj, int c) {
     G3Xvector *n = obj->normal;
     G3Xpoint *v = obj->vertex;
     int cote, face, i, j;
-    if (!(obj->vertex && obj->normal)) {
-        errno = ENOMEM;
-        perror("Error - drawCube ");
-        exit(1);
-    }
     
     glPointSize(1);
     glBegin(GL_POINTS);

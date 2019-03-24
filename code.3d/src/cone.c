@@ -2,7 +2,7 @@
 
 
 void buildRegularCone(Object *obj) {
-    if (!obj) {
+    if (obj == NULL) {
         errno = EFAULT;
         perror("Error - buildRegularCone ");
         exit(1);
@@ -40,7 +40,7 @@ void buildRegularCone(Object *obj) {
 
 
 void drawCone(Object *obj, int c) {
-    if (!obj) {
+    if (obj == NULL) {
         errno = EFAULT;
         perror("Error - drawCone ");
         exit(1);

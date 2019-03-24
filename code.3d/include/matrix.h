@@ -21,16 +21,7 @@ void matrixMatrixMult(double *m, double *factor);
  * @param factor The matrix by which p will be multiplied. Must be 4x4 and represented as an array
  * of 16 doubles.
  */
-void matrixPointMult(double *factor, G3Xpoint *p);
-
-/**
- * Compute the multiplication v = factor * v.
- *
- * @param v The vector being multiplied.
- * @param factor The matrix by which v will be multiplied. Must be 4x4 and represented as an array
- * of 16 doubles.
- */
-void matrixVectorMult(double *factor, G3Xvector *v);
+void matrixCoordMult(double *factor, G3Xpoint p);
 
 /**
  * Rotate the given object around each axis by the angles given.

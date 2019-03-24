@@ -13,8 +13,9 @@
 static double *translationMatrix(double x, double y, double z) {
     double *matrix = (double *) calloc(16, sizeof(double));
     
-    if (!matrix) {
-        perror("Could not allocate matrix.");
+    if (matrix == NULL) {
+        errno = ENOMEM;
+        perror("Error - translationMatrix ");
         exit(1);
     }
     
@@ -38,8 +39,10 @@ static double *translationMatrix(double x, double y, double z) {
  */
 /*static double *homothetyMatrix(double x, double y, double z) {
     double *matrix = (double *) calloc(16, sizeof(double));
-    if (!matrix) {
-        perror("Could not allocate matrix.");
+    
+    if (matrix == NULL) {
+        errno = ENOMEM;
+        perror("Error - translationMatrix ");
         exit(1);
     }
     
@@ -61,16 +64,18 @@ static double *translationMatrix(double x, double y, double z) {
  */
 static double *xRotationMatrix(double angle) {
     double *matrix = (double *) calloc(16, sizeof(double));
-    if (!matrix) {
-        perror("Could not allocate matrix.");
+    
+    if (matrix == NULL) {
+        errno = ENOMEM;
+        perror("Error - xRotationMatrix ");
         exit(1);
     }
     
     matrix[0] = matrix[15] = 1.;
     matrix[5] = cos(angle);
     matrix[6] = -sin(angle);
-    matrix[10] = sin(angle);
-    matrix[11] = cos(angle);
+    matrix[9] = sin(angle);
+    matrix[10] = cos(angle);
     
     return matrix;
 }
@@ -85,8 +90,10 @@ static double *xRotationMatrix(double angle) {
  */
 static double *yRotationMatrix(double angle) {
     double *matrix = (double *) calloc(16, sizeof(double));
-    if (!matrix) {
-        perror("Could not allocate matrix.");
+    
+    if (matrix == NULL) {
+        errno = ENOMEM;
+        perror("Error - yRotationMatrix ");
         exit(1);
     }
     
@@ -109,8 +116,10 @@ static double *yRotationMatrix(double angle) {
  */
 static double *zRotationMatrix(double angle) {
     double *matrix = (double *) calloc(16, sizeof(double));
-    if (!matrix) {
-        perror("Could not allocate matrix.");
+    
+    if (matrix == NULL) {
+        errno = ENOMEM;
+        perror("Error - zRotationMatrix ");
         exit(1);
     }
     
@@ -124,14 +133,31 @@ static double *zRotationMatrix(double angle) {
 }
 
 
+void printMatrix(double *m) {
+    int i, j;
+    
+    for (i = 0; i < 16; i += 4) {
+        for (j = 0; j < 4; j++) {
+            printf("%.3f ", m[i + j]);
+        }
+        printf("\n");
+    }
+}
+
+
+void printCoord(G3Xcoord coord) {
+    printf("%.3f %.3f %.3f\n", coord[0], coord[1], coord[2]);
+}
+
+
 void matrixMatrixMult(double *m, double *factor) {
-    double *res;
+    double *res = (double *) calloc(16, sizeof(double));
     int i, j, k;
     double sum;
     
-    res = (double *) calloc(16, sizeof(double));
-    if (!res) {
-        perror("Could not allocate matrix.");
+    if (res == NULL) {
+        errno = ENOMEM;
+        perror("Error - matrixMatrixMult ");
         exit(1);
     }
     
@@ -149,54 +175,31 @@ void matrixMatrixMult(double *m, double *factor) {
 }
 
 
-void matrixPointMult(double *factor, G3Xpoint *p) {
+void matrixCoordMult(double *factor, G3Xcoord p) {
     if (!p) {
         errno = EFAULT;
-        perror("Error - matrixPointMult ");
+        perror("Error - matrixCoordMult ");
         exit(1);
     }
     
-    G3Xpoint res;
-    int i, j;
+    G3Xcoord res;
     double sum;
+    int i, j;
     
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 3; i++) {
         sum = 0;
         for (j = 0; j < 3; j++) {
-            sum += factor[i * 4 + j] * *p[j];
+            sum += factor[i * 4 + j] * p[j];
         }
         res[i] = sum + factor[i * 4 + 3];
     }
     
-    memcpy(*p, res, sizeof(G3Xpoint));
-}
-
-
-void matrixVectorMult(double *factor, G3Xvector *v) {
-    if (!v) {
-        errno = EFAULT;
-        perror("Error - matrixVectorMult ");
-        exit(1);
-    }
-    
-    G3Xvector res;
-    int i, j;
-    double sum;
-    
-    for (i = 0; i < 4; i++) {
-        sum = 0;
-        for (j = 0; j < 3; j++) {
-            sum += factor[i * 4 + j] * *v[j];
-        }
-        res[i] = sum;
-    }
-    
-    memcpy(*v, res, sizeof(G3Xvector));
+    memcpy(p, res, sizeof(G3Xcoord));
 }
 
 
 void rotate(Object *obj, double x, double y, double z) {
-    if (!obj) {
+    if (obj == NULL) {
         errno = EFAULT;
         perror("Error - rotate ");
         exit(1);
@@ -209,23 +212,23 @@ void rotate(Object *obj, double x, double y, double z) {
     
     for (i = 0; i < obj->size; i++) {
         if (x) {
-            matrixPointMult(xMat, &obj->vertex[i]);
-            matrixVectorMult(xMat, &obj->normal[i]);
+            matrixCoordMult(xMat, obj->vertex[i]);
+            matrixCoordMult(xMat, obj->normal[i]);
         }
         if (y) {
-            matrixPointMult(yMat, &obj->vertex[i]);
-            matrixVectorMult(yMat, &obj->normal[i]);
+            matrixCoordMult(yMat, obj->vertex[i]);
+            matrixCoordMult(yMat, obj->normal[i]);
         }
         if (z) {
-            matrixPointMult(zMat, &obj->vertex[i]);
-            matrixVectorMult(yMat, &obj->normal[i]);
+            matrixCoordMult(zMat, obj->vertex[i]);
+            matrixCoordMult(yMat, obj->normal[i]);
         }
     }
 }
 
 
 void translate(Object *obj, double x, double y, double z) {
-    if (!obj) {
+    if (obj == NULL) {
         errno = EFAULT;
         perror("Error - translate ");
         exit(1);
@@ -235,8 +238,14 @@ void translate(Object *obj, double x, double y, double z) {
     int i;
     
     for (i = 0; i < obj->size; i++) {
-        matrixPointMult(mat, &obj->vertex[i]);
-        matrixVectorMult(mat, &obj->normal[i]);
+        if (i == 0) {
+            printCoord(obj->vertex[i]);
+            printMatrix(mat);
+        }
+        matrixCoordMult(mat, obj->vertex[i]);
+        if (i == 0) {
+            printCoord(obj->vertex[i]);
+        }
     }
 }
 
