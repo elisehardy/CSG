@@ -3,5 +3,5 @@
 
 #include "object.h"
 
-
+Object* buildRandomCylinder(int n, int p);
 #endif
