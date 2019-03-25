@@ -64,28 +64,50 @@ Object *buildRandomCone(int n, int p) {
     }
     
     double theta, z;
-    int i, j;
+    int i;
     
+    obj->size = n*p;
+    obj->n = n;
+    obj->p=p;
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
-    obj->normal = (G3Xvector *) calloc(2 + obj->n, sizeof(G3Xvector));
+    obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
     if (!(obj->vertex && obj->normal)) {
         errno = ENOMEM;
-        perror("Error - buildRegularCone ");
+        perror("Error - buildRandomCone vertex normal");
         exit(1);
     }
-    
-    for (i = 0; i < obj->p; i++) {
-        for (j = 0; j < obj->n; j++) {
+    G3Xpoint *vertices = obj->vertex;
+    G3Xvector *normals = obj->normal;
+    double d;
+    for (i = 0; i < obj->size/2; i++) {
+        
             z = -sqrt(g3x_Rand_Delta(0, 1));
             theta = g3x_Rand_Delta(0, 2 * PI);
-            obj->vertex[i * (obj->n) + j][0] = z * cos(theta);
-            obj->vertex[i * (obj->n) + j][1] = z * sin(theta);
-            obj->vertex[i * (obj->n) + j][2] = z;
+            (*vertices)[0] = z * cos(theta);
+            (*vertices)[1] = z * sin(theta);
+            (*vertices)[2] = z;
             
-            obj->normal[i * (obj->n) + j][0] = cos(theta);
-            obj->normal[i * (obj->n) + j][1] = sin(theta);
-            obj->normal[i * (obj->n) + j][2] = 1;
-        }
+            (*normals)[0] = cos(theta);
+            (*normals)[1] = sin(theta);
+            (*normals)[2] = 1;
+            vertices++;
+            normals++;
+        
+             do{
+            (*vertices)[0] = g3x_Rand_Delta(0, +1);
+            (*vertices)[1] = g3x_Rand_Delta(0, +1);
+           
+            d = (*vertices)[0] * (*vertices)[0] + (*vertices)[1] * (*vertices)[1];
+        }while(d>1); 
+            
+            (*normals)[0] = 0;
+            (*normals)[1]=0;
+            (*normals)[2]=-1;
+            
+             (*vertices)[2] = -1;
+            vertices++;
+            normals++;
+            
     }
     
     return obj;

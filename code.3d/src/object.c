@@ -11,6 +11,11 @@
 Object *sphere, *cube, *torus, *cone, *cylinder;
 
 
+
+
+
+
+
 void drawObject(Object *obj, int c) {
     if (obj == NULL) {
         errno = EFAULT;
@@ -49,4 +54,5 @@ void draw(void) {
     drawObject(cube, 1);
     /*drawTorus(torus, 1);*/
     /*drawObject(cone, 1);*/
+    /*drawObject(cylinder,1);*/
 }
