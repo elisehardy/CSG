@@ -14,6 +14,8 @@ Object *buildRegularCone(int n, int p);
 
 Object *buildRandomCone(int n, int p);
 
+bool insideCone(Object *obj, G3Xcoord);
+
 void drawCone(Object *obj, int c);
 
 #endif

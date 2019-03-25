@@ -4,4 +4,6 @@
 #include "object.h"
 
 
+bool insideCylinder(Object *obj, G3Xcoord);
+
 #endif

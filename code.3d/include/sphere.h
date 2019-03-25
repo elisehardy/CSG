@@ -20,4 +20,6 @@ Object *buildRegularSphere(int n, int p);
  */
 Object *buildRandomSphere(int n, int p);
 
+bool insideSphere(Object *obj, G3Xcoord);
+
 #endif

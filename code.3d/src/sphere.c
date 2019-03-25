@@ -15,7 +15,7 @@ Object *buildRegularSphere(int n, int p) {
     
     obj->n = n;
     obj->p = p;
-    obj->size = p * p;
+    obj->size = p * n;
     obj->shape = SHP_SPHERE;
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
@@ -55,7 +55,7 @@ Object *buildRandomSphere(int n, int p) {
     
     obj->n = n;
     obj->p = p;
-    obj->size = p * p;
+    obj->size = p * n;
     obj->shape = SHP_SPHERE;
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
@@ -76,8 +76,7 @@ Object *buildRandomSphere(int n, int p) {
             d = (*vertices)[0] * (*vertices)[0] + (*vertices)[1] * (*vertices)[1]
                 + (*vertices)[2] * (*vertices)[2];
         } while (d > 1);
-    
-    
+        
         d = sqrt(d);
         (*vertices)[0] = (*vertices)[0] / d;
         (*vertices)[1] = (*vertices)[1] / d;
