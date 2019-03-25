@@ -78,23 +78,11 @@ Object *buildRandomSphere(int n, int p) {
             d = (*vertices)[0] * (*vertices)[0] + (*vertices)[1] * (*vertices)[1]
                 + (*vertices)[2] * (*vertices)[2];
         } while (d > 1);
-        
-        d = sqrt(d);
-        (*vertices)[0] = (*vertices)[0] / d;
-        (*vertices)[1] = (*vertices)[1] / d;
-        (*vertices)[2] = (*vertices)[2] / d;
-        vertices++;
-        
-        (*normals)[0] = (*vertices)[0];
-        (*normals)[1] = (*vertices)[1];
-        (*normals)[2] = (*vertices)[2];
-        normals++;
     }
     
-    memcpy(obj->normal, obj->vertex, obj->n * obj->p * sizeof(G3Xvector));
-    
-    return obj;
-}
+    return true;
+} 
+
 
 
 void drawSphere(Object *obj, int c) {
@@ -119,11 +107,6 @@ void drawSphere(Object *obj, int c) {
     
     glEnd();
 }
-
-
-
-
-
 
 
 
