@@ -191,6 +191,55 @@ bool BuildTorus_Reg(object *obj){
   bool BuildCone_Reg(object *obj){
     
     obj->vertex = (G3Xpoint*)calloc(obj->size,sizeof(G3Xpoint));
+    obj->normal=(G3Xvector*)calloc(2+obj->n,sizeof(G3Xvector));
+    
+    int i,j;
+    double objN = (double)obj->n;
+    double objP = (double)obj->p;
+    
+    
+    obj->vertex[0][X] = 0.;
+	obj->vertex[0][Y] = 0.;
+	obj->vertex[0][Z] = 1.;
+
+	obj->vertex[1][X] = 0.;
+	obj->vertex[1][Y] = 0.;
+	obj->vertex[1][Z] = 0.;
+    
+    
+    
+    
+    obj->normal[0][X] = 0.;
+	obj->normal[0][Y] = 0.;
+	obj->normal[0][Z] = 1.;
+
+	obj->normal[1][X] = 0.;
+	obj->normal[1][Y] = 0.;
+	obj->normal[1][Z] = -1.;
+    
+    
+    
+    
+    
+    for(i=2;i<obj->p;i++){
+        double idouble = (double) i;
+        for(j=0;j<obj->n;j++){
+            double jdouble = (double)j;
+            obj->vertex[i*(obj->n)+j][0] = cos(PI*2*jdouble/objN)*((idouble+1.)/objP);
+            obj->vertex[i*(obj->n)+j][1] = sin(PI*2*jdouble/objN)*((idouble+1.)/objP);
+            obj->vertex[i*(obj->n)+j][2] = -1;
+            
+            
+            }
+        
+        }
+    
+    
+    return true;
+    }   
+    bool BuildCone_Reg2(object *obj){ /*marche pas*/
+    
+    obj->vertex = (G3Xpoint*)calloc(obj->size,sizeof(G3Xpoint));
     obj->normal=(G3Xvector*)calloc(obj->size,sizeof(G3Xvector));
     
     int i,j;
@@ -204,13 +253,13 @@ bool BuildTorus_Reg(object *obj){
     
     
     
-    for(i=2;i<obj->p;i++){
+    for(i=0;i<obj->p;i++){
         double idouble = (double) i;
         for(j=0;j<obj->n;j++){
             double jdouble = (double)j;
-            obj->vertex[i*(obj->n)+j][0] = cos(PI*2*idouble/objN)*((idouble+1.)/objP);
-            obj->vertex[i*(obj->n)+j][1] = sin(PI*2*idouble/objN)*((idouble+1.)/objP);
-            obj->vertex[i*(obj->n)+j][2] = -1;
+            obj->vertex[i*(obj->n)+j][0] = cos(PI*2*jdouble/objN)*((idouble)/objP);
+            obj->vertex[i*(obj->n)+j][1] = sin(PI*2*jdouble/objN)*((idouble)/objP);
+            obj->vertex[i*(obj->n)+j][2] = (2*jdouble)/objN;
             
             obj->normal[i*(obj->n)+j][0] = obj->vertex[i*(obj->n)+j][0];
             obj->normal[i*(obj->n)+j][1] = obj->vertex[i*(obj->n)+j][1];
@@ -222,8 +271,94 @@ bool BuildTorus_Reg(object *obj){
     
     
     return true;
-    }   
-  
+    } 
+    
+    
+    
+      bool BuildCone_random(object *obj){
+    
+    obj->vertex = (G3Xpoint*)calloc(obj->size,sizeof(G3Xpoint));
+    obj->normal=(G3Xvector*)calloc(obj->size,sizeof(G3Xvector));
+    
+    int i,j;
+    double objN = (double)obj->n;
+    double objP = (double)obj->p;
+    
+    
+   double theta,z;
+    
+    
+    
+    
+    
+    for(i=0;i<obj->p;i++){
+        double idouble = (double) i;
+        for(j=0;j<obj->n;j++){
+            double jdouble = (double)j;
+             z= -sqrt(g3x_Rand_Delta(0,1));
+            theta = g3x_Rand_Delta(0,2*PI);
+            obj->vertex[i*(obj->n)+j][0] = (z)*cos(theta);
+            obj->vertex[i*(obj->n)+j][1] = (z)*sin(theta);
+            obj->vertex[i*(obj->n)+j][2] =z;
+            
+            
+            obj->normal[i*(obj->n)+j][0] = cos(theta);
+            obj->normal[i*(obj->n)+j][1] = sin(theta);
+            obj->normal[i*(obj->n)+j][2] = 1;
+            
+            }
+        
+        }
+    
+    
+    return true;
+    } 
+    
+   
+ 
+    bool BuildCylindre_random(object *obj){
+    
+    obj->vertex = (G3Xpoint*)calloc(obj->size,sizeof(G3Xpoint));
+    obj->normal=(G3Xvector*)calloc(obj->size,sizeof(G3Xvector));
+    
+    int i,j;
+    double objN = (double)obj->n;
+    double objP = (double)obj->p;
+    
+    
+   double theta,z;
+    
+    
+    
+    
+    
+    for(i=0;i<obj->p;i++){
+        double idouble = (double) i;
+        for(j=0;j<obj->n;j++){
+            double jdouble = (double)j;
+             z= sqrt(g3x_Rand_Delta(0,1));
+            theta = g3x_Rand_Delta(0,2*PI);
+            obj->vertex[i*(obj->n)+j][0] = z*cos(theta);
+            obj->vertex[i*(obj->n)+j][1] = z*sin(theta);
+            obj->vertex[i*(obj->n)+j][2] =z;
+            
+            
+            obj->normal[i*(obj->n)+j][0] = cos(theta);
+            obj->normal[i*(obj->n)+j][1] = sin(theta);
+            obj->normal[i*(obj->n)+j][2] = 1;
+            
+            }
+        
+        }
+    
+    
+    return true;
+    } 
+    
+ 
+ 
+    
+    
 bool BuildCube_Reg(object *obj){ /*a changer car faire une normal pour chaque point*/
     
     obj->vertex = (G3Xpoint*)calloc(obj->size,sizeof(G3Xpoint));
@@ -532,10 +667,10 @@ void Init(void)
 	torus.p = 400;
 	torus.size = torus.n*torus.p;
 	BuildTorus_Reg(&torus);
-     cone.n = 1000;
+     cone.n = 400;
 	cone.p = 400;
 	cone.size = cone.n*cone.p;
-	BuildCone_Reg(&cone);
+	BuildCone_random(&cone);
 }
 
 /*= FONCTION DE DESSIN PRINCIPALE =*/
