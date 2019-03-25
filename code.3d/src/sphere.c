@@ -49,7 +49,6 @@ Object *buildRandomSphere(int n, int p) {
         exit(1);
     }
     
-    G3Xvector *normals;
     G3Xpoint *vertices;
     double d;
     int i;
@@ -67,7 +66,6 @@ Object *buildRandomSphere(int n, int p) {
     }
     
     vertices = obj->vertex;
-    normals = obj->normal;
     
     for (i = 0; i < obj->size; i++) {
         do {
@@ -78,35 +76,17 @@ Object *buildRandomSphere(int n, int p) {
             d = (*vertices)[0] * (*vertices)[0] + (*vertices)[1] * (*vertices)[1]
                 + (*vertices)[2] * (*vertices)[2];
         } while (d > 1);
+    
+    
+        d = sqrt(d);
+        (*vertices)[0] = (*vertices)[0] / d;
+        (*vertices)[1] = (*vertices)[1] / d;
+        (*vertices)[2] = (*vertices)[2] / d;
+        vertices++;
     }
     
-    return true;
-} 
-
-
-
-void drawSphere(Object *obj, int c) {
-    if (obj == NULL) {
-        errno = EFAULT;
-        perror("Error - drawSphere ");
-        exit(1);
-    }
+    memcpy(obj->normal, obj->vertex, obj->n * obj->p * sizeof(G3Xvector));
     
-    G3Xvector *n = obj->normal;
-    G3Xpoint *v = obj->vertex;
-    
-    glPointSize(1);
-    glBegin(GL_POINTS);
-    
-    while (v < obj->vertex + obj->size) {
-        glNormal3dv(*n);
-        n += c;
-        glVertex3dv(*v);
-        v += c;
-    }
-    
-    glEnd();
+    return obj;
 }
-
-
 

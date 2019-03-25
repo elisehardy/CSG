@@ -20,12 +20,4 @@ Object *buildRegularSphere(int n, int p);
  */
 Object *buildRandomSphere(int n, int p);
 
-/**
- * Draw a sphere.
- *
- * @param obj The sphere which will be drawn.
- * @param c ?
- */
-void drawSphere(Object *obj, int c);
-
 #endif

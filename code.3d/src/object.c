@@ -11,6 +11,7 @@
 Object *sphere, *cube, *torus, *cone, *cylinder;
 
 
+<<<<<<< HEAD
 void init(void) {
     sphere = buildRandomSphere(1000, 1000);
     /*homothate(sphere, 0.5, 0.5, 0.5);*/
@@ -36,6 +37,8 @@ void draw(void) {
 }
 
 
+=======
+>>>>>>> 0688c6d997a15cd7107bc489517b96bf6dfee62d
 void drawObject(Object *obj, int c) {
     if (obj == NULL) {
         errno = EFAULT;
@@ -57,4 +60,21 @@ void drawObject(Object *obj, int c) {
     }
     
     glEnd();
+}
+
+
+void init(void) {
+    sphere = buildRandomSphere(1000, 1000);
+    cube = buildRandomCube(1000, 1000);
+    torus = buildRegularTorus(1000, 400);
+    cone = buildRandomCone(1000, 400);
+}
+
+
+void draw(void) {
+    g3x_Material(G3Xr, 0.25, 0.5, 0.5, 0.5, 1.);
+    /*drawObject(sphere, 1);*/
+    drawCube(cube, 1);
+    /*drawTorus(torus, 1);*/
+    /*drawObject(cone, 2);*/
 }
