@@ -13,7 +13,7 @@ Object *sphere, *cube, *torus, *cone, *cylinder;
 
 void init(void) {
     sphere = buildRandomSphere(1000, 1000);
-    homothate(sphere, 0.5, 0.5, 0.5);
+    /*homothate(sphere, 0.5, 0.5, 0.5);*/
     
     cube = buildRandomCube(1000, 1000);
     /*rotate(&cube, PI/4, 0, 0);*/
@@ -22,15 +22,17 @@ void init(void) {
     torus = buildRegularTorus(1000, 400);
     
     cone = buildRegularCone(1000, 400);
+    cylinder = BuildCylindre_random(400,400);
 }
 
 
 void draw(void) {
     g3x_Material(G3Xr, 0.25, 0.5, 0.5, 0.5, 1.);
-    drawSphere(sphere, 1);
+    /*drawSphere(sphere, 1);*/
     /*drawCube(&cube, 1);*/
     /*drawTorus(&torus, 1);*/
     /*drawCone(&cone, 1);*/
+    drawObject(cylinder,1);
 }
 
 
