@@ -1,59 +1,69 @@
-#
-# Les variables d'environnement libG3X, incG3X
-# sont definies dans le fichier ~/.bashrc par le script ../install.sh
-#
-#compilateur
+# Ce makefile n'utilise pas de variable d'environnement.
+
+# compilateur
 CC = gcc
 
-CCEXT=
-ifeq ($(CC),g++) #en mode debug
-  CCEXT=++
-endif
-
-#compil en mode 'debug' ou optmisée (-O2)
-DBG = no
-
-ifeq ($(DBG),yes) #en mode debug
-  CFLAGS = -g -Wpointer-arith -Wall -ansi
-else               #en mode normal
-  CFLAGS = -O2 -ansi
-endif
+FLAGS = -g -Wpointer-arith -Wall -Wextra -Werror -ansi -O2
+IGNORED = -Wno-unused-parameter
+CFLAGS = $(FLAGS) $(IGNORED)
 
 # assemblage des infos de lib. et inc.
-lib =   $(libG3X)$(CCEXT)
+libGL = $(dir $(dir $(shell find /usr/lib/ -name libGL.so | head -n 1)))
+libg3x = ../libg3x/
+lib = -L$(libGL) -L$(libg3x) -lm -lGL -lGLU -lglut -lg3x.64b
+inc = -I$(libg3x)include/ -I$(libGL)include/
+
+
+
+####################################################################################################
+# Ne modifier que ces lignes :
+
 # fichiers *.c locaux
 src = src/
-# fichiers *.h locaux et lib.
-inc = -I./include $(incG3X) 
 
-exec = g3x_example demo_scene3D modelisation sphere
+# fichiers *.o locaux
+bin = bin/
 
-all : $(exec) clean
 
-# règle générique de création de xxx.o à partir de src/xxx.c
-%.o : $(src)%.c
-	@echo "module $@"
+objet = sphere cube cone cylinder torus matrix object
+exec = main
+####################################################################################################
+
+
+
+# Cree bin si besoin
+$(shell mkdir -p $(bin))
+
+object = $(addprefix $(bin),$(addsuffix .o,$(objet)))
+
+all : $(object) $(exec)
+
+
+# rÃ¨gle gÃ©nÃ©rique de crÃ©ation de xxx.o Ã  partir de src/xxx.c
+$(bin)%.o : $(src)%.c
+	@echo "$< -> $@"
 	@$(CC) $(CFLAGS) $(inc) -c $< -o $@
+
+# rÃ¨gle gÃ©nÃ©rique de crÃ©ation de l'executable xxx Ã  partir de src/xxx.c (1 seul module)
+% : $(object) $(bin)%.o
+	@echo "[$^] -> $@"
+	@$(CC) $^ $(lib) $(inc) -o $@
 	@echo "------------------------"
 
-# règle générique de création de l'executable xxx à partir de src/xxx.c (1 seul module)
-% : %.o
-	@echo "assemblage [$^]->$@"
-	@$(CC) $^ $(lib) -o $@
-	@echo "------------------------"
-	
+
+
 .PHONY : clean cleanall ?
 
-# informations sur les paramètres de compilation       
 ? :
 	@echo "---------compilation informations----------"
 	@echo "  processor      : $(PROCBIT)"
 	@echo "  compiler       : $(CC)"
 	@echo "  options        : $(CFLAGS)"
 	@echo "  lib g3x/OpenGl : $(lib)"
-	@echo "  headers        : $(incG3X)"
-clean : 
-	@rm -f *.o
+	@echo "  headers        : $(inc)"
+
+clean :
+	@rm -f $(bin)*.o
+
 cleanall :
-	@rm -f *.o $(exec) *~ */*~
-	
+	@rm -f $(bin)*.o $(exec) *~ */*~

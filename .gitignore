@@ -1,5 +1,7 @@
 .idea/
 bin/
+code.3d/sphere
+code.3d/main
 
 # Prerequisites
 *.d
@@ -27,8 +29,6 @@ bin/
 
 # Shared objects (inc. Windows DLLs)
 *.dll
-*.so
-*.so.*
 *.dylib
 
 # Executables
