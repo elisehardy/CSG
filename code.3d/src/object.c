@@ -8,38 +8,26 @@
 #include "../include/matrix.h"
 
 
-Object sphere, cube, cube2, torus, cone, cylinder;
+Object *sphere, *cube, *torus, *cone, *cylinder;
 
 
 void init(void) {
-    sphere.n = 1000;
-    sphere.p = 1000;
-    sphere.size = sphere.n * sphere.p;
-    buildRandomSphere(&sphere);
-    homothate(&sphere, 0.5, 0.5, 0.5);
+    sphere = buildRandomSphere(1000, 1000);
+    homothate(sphere, 0.5, 0.5, 0.5);
     
-    cube.n = 1000;
-    cube.p = 1000;
-    cube.size = 6 * cube.n * cube.p;
-    buildRandomCube(&cube);
+    cube = buildRandomCube(1000, 1000);
     /*rotate(&cube, PI/4, 0, 0);*/
     /*translate(&cube, 1, 1, 1);*/
     
-    torus.n = 1000;
-    torus.p = 400;
-    torus.size = torus.n * torus.p;
-    buildRegularTorus(&torus);
+    torus = buildRegularTorus(1000, 400);
     
-    cone.n = 1000;
-    cone.p = 400;
-    cone.size = cone.n * cone.p;
-    buildRegularCone(&cone);
+    cone = buildRegularCone(1000, 400);
 }
 
 
 void draw(void) {
     g3x_Material(G3Xr, 0.25, 0.5, 0.5, 0.5, 1.);
-    drawSphere(&sphere,1);
+    drawSphere(sphere, 1);
     /*drawCube(&cube, 1);*/
     /*drawTorus(&torus, 1);*/
     /*drawCone(&cone, 1);*/

@@ -1,18 +1,20 @@
 #include "../include/cube.h"
 
 
-void buildRegularCube(Object *obj) { /*a changer car faire une normal pour chaque point*/
+Object *buildRegularCube(int n, int p) { /*a changer car faire une normal pour chaque point*/
+    Object *obj = (Object *) malloc(sizeof(Object));
     if (obj == NULL) {
-        errno = EFAULT;
+        errno = ENOMEM;
         perror("Error - buildRegularCube ");
         exit(1);
     }
     
-    double objN = (double) obj->n;
-    double objP = (double) obj->p;
-    double idouble, jdouble;
+    double objN, objP, idouble, jdouble;
     int i, j;
     
+    obj->n = n;
+    obj->p = p;
+    obj->size = n * p * 6;
     obj->shape = SHP_CUBE;
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
@@ -21,6 +23,9 @@ void buildRegularCube(Object *obj) { /*a changer car faire une normal pour chaqu
         perror("Error - buildRegularCube ");
         exit(1);
     }
+    
+    objN = (double) obj->n;
+    objP = (double) obj->p;
     
     obj->normal[0][X] = 0.;
     obj->normal[0][Y] = 0.;
@@ -75,20 +80,26 @@ void buildRegularCube(Object *obj) { /*a changer car faire une normal pour chaqu
             obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 5 + j][2] = 2 * jdouble / objP - 1;
         }
     }
+    
+    return obj;
 }
 
 
-void buildRandomCube(Object *obj) {
+Object *buildRandomCube(int n, int p) {
+    Object *obj = (Object *) malloc(sizeof(Object));
     if (obj == NULL) {
-        errno = EFAULT;
+        errno = ENOMEM;
         perror("Error - buildRandomCube ");
         exit(1);
     }
     
-    G3Xvector *n;
-    G3Xpoint *v;
+    G3Xvector *normals;
+    G3Xpoint *vertices;
     int i;
     
+    obj->n = n;
+    obj->p = p;
+    obj->size = n * p * 6;
     obj->shape = SHP_CUBE;
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
@@ -98,70 +109,72 @@ void buildRandomCube(Object *obj) {
         exit(1);
     }
     
-    v = obj->vertex;
-    n = obj->normal;
+    vertices = obj->vertex;
+    normals = obj->normal;
     
     for (i = 0; i < ((obj->size) / 6); i++) {
-        (*v)[0] = g3x_Rand_Delta(0, 1);
-        (*v)[1] = g3x_Rand_Delta(0, 1);
-        (*v)[2] = +1;
-        v++;
+        (*vertices)[0] = g3x_Rand_Delta(0, 1);
+        (*vertices)[1] = g3x_Rand_Delta(0, 1);
+        (*vertices)[2] = +1;
+        vertices++;
         
-        (*v)[0] = g3x_Rand_Delta(0, 1);
-        (*v)[1] = g3x_Rand_Delta(0, 1);
-        (*v)[2] = -1;
-        v++;
+        (*vertices)[0] = g3x_Rand_Delta(0, 1);
+        (*vertices)[1] = g3x_Rand_Delta(0, 1);
+        (*vertices)[2] = -1;
+        vertices++;
         
-        (*v)[0] = g3x_Rand_Delta(0, 1);
-        (*v)[1] = +1;
-        (*v)[2] = g3x_Rand_Delta(0, 1);
-        v++;
+        (*vertices)[0] = g3x_Rand_Delta(0, 1);
+        (*vertices)[1] = +1;
+        (*vertices)[2] = g3x_Rand_Delta(0, 1);
+        vertices++;
         
-        (*v)[0] = g3x_Rand_Delta(0, 1);
-        (*v)[1] = -1;
-        (*v)[2] = g3x_Rand_Delta(0, 1);
-        v++;
+        (*vertices)[0] = g3x_Rand_Delta(0, 1);
+        (*vertices)[1] = -1;
+        (*vertices)[2] = g3x_Rand_Delta(0, 1);
+        vertices++;
         
-        (*v)[0] = +1;
-        (*v)[1] = g3x_Rand_Delta(0, 1);
-        (*v)[2] = g3x_Rand_Delta(0, 1);
-        v++;
+        (*vertices)[0] = +1;
+        (*vertices)[1] = g3x_Rand_Delta(0, 1);
+        (*vertices)[2] = g3x_Rand_Delta(0, 1);
+        vertices++;
         
-        (*v)[0] = -1;
-        (*v)[1] = g3x_Rand_Delta(0, 1);
-        (*v)[2] = g3x_Rand_Delta(0, 1);
-        v++;
+        (*vertices)[0] = -1;
+        (*vertices)[1] = g3x_Rand_Delta(0, 1);
+        (*vertices)[2] = g3x_Rand_Delta(0, 1);
+        vertices++;
         
-        (*n)[0] = 0;
-        (*n)[1] = 0;
-        (*n)[2] = +1;
-        n++;
+        (*normals)[0] = 0;
+        (*normals)[1] = 0;
+        (*normals)[2] = +1;
+        normals++;
         
-        (*n)[0] = 0;
-        (*n)[1] = 0;
-        (*n)[2] = -1;
-        n++;
+        (*normals)[0] = 0;
+        (*normals)[1] = 0;
+        (*normals)[2] = -1;
+        normals++;
         
-        (*n)[0] = 0;
-        (*n)[1] = +1;
-        (*n)[2] = 0;
-        n++;
+        (*normals)[0] = 0;
+        (*normals)[1] = +1;
+        (*normals)[2] = 0;
+        normals++;
         
-        (*n)[0] = 0;
-        (*n)[1] = -1;
-        (*n)[2] = 0;
-        n++;
+        (*normals)[0] = 0;
+        (*normals)[1] = -1;
+        (*normals)[2] = 0;
+        normals++;
         
-        (*n)[0] = +1;
-        (*n)[1] = 0;
-        (*n)[2] = 0;
-        n++;
+        (*normals)[0] = +1;
+        (*normals)[1] = 0;
+        (*normals)[2] = 0;
+        normals++;
         
-        (*n)[0] = -1;
-        (*n)[1] = 0;
-        (*n)[2] = 0;
-        n++;
+        (*normals)[0] = -1;
+        (*normals)[1] = 0;
+        (*normals)[2] = 0;
+        normals++;
     }
+    
+    return obj;
 }
 
 

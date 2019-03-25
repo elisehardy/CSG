@@ -5,18 +5,20 @@
 
 
 /**
- * Build a sphere with regular alignment of vertices.
+ * Build a sphere with regular positionning of vertices.
  *
- * @param obj The Object in which the Sphere will be placed.
+ * @param n Number of meridian.
+ * @param p Number of parallels.
  */
-void buildRegularSphere(Object *obj);
+Object *buildRegularSphere(int n, int p);
 
 /**
- * Build a sphere with randomly distributed vertices.
+ * Build a sphere with an uniform distribution of vertices.
  *
- * @param obj The Object in which the Sphere will be placed.
+ * @param n Number of meridian.
+ * @param p Number of parallels.
  */
-void buildRandomSphere(Object *obj);
+Object *buildRandomSphere(int n, int p);
 
 /**
  * Draw a sphere.

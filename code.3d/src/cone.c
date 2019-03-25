@@ -1,18 +1,20 @@
 #include "../include/cone.h"
 
 
-void buildRegularCone(Object *obj) {
+Object *buildRegularCone(int n, int p) {
+    Object *obj = (Object *) malloc(sizeof(Object));
     if (obj == NULL) {
-        errno = EFAULT;
+        errno = ENOMEM;
         perror("Error - buildRegularCone ");
         exit(1);
     }
     
-    double objN = (double) obj->n;
-    double objP = (double) obj->p;
-    double idouble;
+    double idouble, objN, objP;
     int i, j;
     
+    obj->n = n;
+    obj->p = p;
+    obj->size = n * p;
     obj->shape = SHP_CONE;
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
@@ -21,6 +23,9 @@ void buildRegularCone(Object *obj) {
         perror("Error - buildRegularCone ");
         exit(1);
     }
+    
+    objN = (double) obj->n;
+    objP = (double) obj->p;
     
     for (i = 2; i < obj->p; i++) {
         idouble = (double) i;
@@ -36,6 +41,8 @@ void buildRegularCone(Object *obj) {
             obj->normal[i * (obj->n) + j][2] = 1;
         }
     }
+    
+    return obj;
 }
 
 

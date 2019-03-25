@@ -3,10 +3,14 @@
 
 #include "object.h"
 
+/**
+ * Build a cube using regular vertex positionning.
+ *
+ * @param obj
+ */
+Object* buildRegularCube(int n, int p);
 
-void buildRegularCube(Object *obj);
-
-void buildRandomCube(Object *obj);
+Object* buildRandomCube(int n, int p);
 
 void drawCube(Object *obj, int c);
 

@@ -3,7 +3,7 @@
 
 #include "object.h"
 
-void buildRegularCone(Object *obj);
+Object* buildRegularCone(int n, int p);
 
 void drawCone(Object *obj, int c);
 

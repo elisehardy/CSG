@@ -4,7 +4,7 @@
 #include "object.h"
 
 
-void buildRegularTorus(Object *obj);
+Object* buildRegularTorus(int n, int p);
 
 void drawTorus(Object *obj, int cam);
 

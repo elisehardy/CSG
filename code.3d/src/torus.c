@@ -1,18 +1,20 @@
 #include "../include/torus.h"
 
 
-void buildRegularTorus(Object *obj) {
+Object *buildRegularTorus(int n, int p) {
+    Object *obj = (Object *) malloc(sizeof(Object));
     if (obj == NULL) {
-        errno = EFAULT;
+        errno = ENOMEM;
         perror("Error - buildRegularTorus ");
         exit(1);
     }
     
-    double idouble, jdouble, cosa, sina;
-    double objN = (double) obj->n;
-    double objP = (double) obj->p;
+    double idouble, jdouble, cosa, sina, objN, objP;
     int i, j;
     
+    obj->n = n;
+    obj->p = p;
+    obj->size = n * p;
     obj->shape = SHP_TORUS;
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
@@ -21,6 +23,9 @@ void buildRegularTorus(Object *obj) {
         perror("Error - buildRegularTorus ");
         exit(1);
     }
+    
+    objN = (double) obj->n;
+    objP = (double) obj->p;
     
     for (i = 0; i < obj->p; i++) {
         idouble = (double) i;
@@ -38,6 +43,8 @@ void buildRegularTorus(Object *obj) {
             obj->normal[i * (obj->n) + j][2] = sin(2. * jdouble * PI / objN);
         }
     }
+    
+    return obj;
 }
 
 
