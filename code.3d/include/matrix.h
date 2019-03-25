@@ -36,12 +36,36 @@ void rotate(Object *obj, double x, double y, double z);
 /**
  * Translate the given object alongside each axis by the distance given.
  *
- * @param obj The object being translated.
+ * @param obj The object being rotated.
  * @param x Distance the object will be moved alongside the X.
  * @param y Distance the object will be moved alongside the Y.
  * @param z Distance the object will be moved alongside the Z.
  */
 void translate(Object *obj, double x, double y, double z);
+
+/**
+ * Apply an homothety the given object alongside each axis by the given ratio.
+ *
+ * @param obj The object being dilated.
+ * @param x Ratio the object will be dilated alongside the X.
+ * @param y Ratio the object will be dilated alongside the Y.
+ * @param z Ratio the object will be dilated alongside the Z.
+ */
+void homothate(Object *obj, double x, double y, double z);
+
+/**
+ * Print the given matrix.
+ *
+ * @param m Matrix (4x4) to be printed.
+ */
+void printMatrix(double *m);
+
+/**
+ * Print the given point/vector.
+ *
+ * @param c Point/vector be printed.
+ */
+void printCoord(G3Xcoord c);
 
 #endif
 

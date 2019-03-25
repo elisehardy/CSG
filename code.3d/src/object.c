@@ -16,13 +16,14 @@ void init(void) {
     sphere.p = 1000;
     sphere.size = sphere.n * sphere.p;
     buildRandomSphere(&sphere);
+    homothate(&sphere, 0.5, 0.5, 0.5);
     
-    cube.n = 400;
-    cube.p = 400;
+    cube.n = 1000;
+    cube.p = 1000;
     cube.size = 6 * cube.n * cube.p;
     buildRandomCube(&cube);
-    /*rotate(&cube, 45, 0, 0);*/
-    translate(&cube, 1, 1, 1);
+    /*rotate(&cube, PI/4, 0, 0);*/
+    /*translate(&cube, 1, 1, 1);*/
     
     torus.n = 1000;
     torus.p = 400;
@@ -38,8 +39,8 @@ void init(void) {
 
 void draw(void) {
     g3x_Material(G3Xr, 0.25, 0.5, 0.5, 0.5, 1.);
-    /*drawSphere(&sphere,1);*/
-    drawCube(&cube, 1);
+    drawSphere(&sphere,1);
+    /*drawCube(&cube, 1);*/
     /*drawTorus(&torus, 1);*/
     /*drawCone(&cone, 1);*/
 }

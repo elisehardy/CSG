@@ -37,12 +37,12 @@ static double *translationMatrix(double x, double y, double z) {
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
-/*static double *homothetyMatrix(double x, double y, double z) {
+static double *homothetyMatrixVertex(double x, double y, double z) {
     double *matrix = (double *) calloc(16, sizeof(double));
     
     if (matrix == NULL) {
         errno = ENOMEM;
-        perror("Error - translationMatrix ");
+        perror("Error - homothetyMatrixPoint ");
         exit(1);
     }
     
@@ -52,7 +52,34 @@ static double *translationMatrix(double x, double y, double z) {
     matrix[10] = z;
     
     return matrix;
-}*/
+}
+
+
+/**
+ * Return the matrix corresponding to a basic homothety on normal of the given factor.
+ *
+ * @param x Factor on the X axis
+ * @param y Factor on the Y axis
+ * @param x Factor on the Z axis
+ *
+ * @return The computed 4x4 matrix as an array of 16 points.
+ */
+static double *homothetyMatrixNormal(double x, double y, double z) {
+    double *matrix = (double *) calloc(16, sizeof(double));
+    
+    if (matrix == NULL) {
+        errno = ENOMEM;
+        perror("Error - homothetyMatrixNormal ");
+        exit(1);
+    }
+    
+    matrix[15] = 1.;
+    matrix[0] = y * z;
+    matrix[5] = x * z;
+    matrix[10] = x * y;
+    
+    return matrix;
+}
 
 
 /**
@@ -238,14 +265,24 @@ void translate(Object *obj, double x, double y, double z) {
     int i;
     
     for (i = 0; i < obj->size; i++) {
-        if (i == 0) {
-            printCoord(obj->vertex[i]);
-            printMatrix(mat);
-        }
         matrixCoordMult(mat, obj->vertex[i]);
-        if (i == 0) {
-            printCoord(obj->vertex[i]);
-        }
     }
 }
 
+
+void homothate(Object *obj, double x, double y, double z) {
+    if (obj == NULL) {
+        errno = EFAULT;
+        perror("Error - homothate ");
+        exit(1);
+    }
+    
+    double *vmat = homothetyMatrixVertex(x, y, z);
+    double *nmat = homothetyMatrixNormal(x, y, z);
+    int i;
+    
+    for (i = 0; i < obj->size; i++) {
+        matrixCoordMult(vmat, obj->vertex[i]);
+        matrixCoordMult(nmat, obj->normal[i]);
+    }
+}
