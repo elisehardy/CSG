@@ -49,7 +49,7 @@ Object *buildRegularTorus(int n, int p) {
 
 
 
-Object *buildRandomTorus(int n, int p) {
+Object *buildRandomTorus(int n, int p, int rayonInterne, int rayonExterne) {
     Object *obj = (Object *) malloc(sizeof(Object));
     if (obj == NULL) {
         errno = ENOMEM;
@@ -57,8 +57,9 @@ Object *buildRandomTorus(int n, int p) {
         exit(1);
     }
     
-    double idouble, jdouble, cosa, sina, objN, objP;
-    int i, j;
+   
+    int i;
+    double  theta,phi;
     
     obj->n = n;
     obj->p = p;
@@ -72,24 +73,19 @@ Object *buildRandomTorus(int n, int p) {
         exit(1);
     }
     
-    objN = (double) obj->n;
-    objP = (double) obj->p;
+    G3Xpoint *vertices = obj->vertex;
+    /*G3Xvector *normals = obj->normal;*/
     
-    for (i = 0; i < obj->p; i++) {
-        idouble = (double) i;
-        cosa = cos(2. * idouble * PI / objP);
-        sina = sin(2. * idouble * PI / objP);
-        
-        for (j = 0; j < obj->n; j++) {
-            jdouble = (double) j;
-            obj->vertex[i * (obj->n) + j][0] = (3. + cos(2. * jdouble * PI / objN)) * cosa;
-            obj->vertex[i * (obj->n) + j][1] = (3. + cos(2. * jdouble * PI / objN)) * sina;
-            obj->vertex[i * (obj->n) + j][2] = sin(2. * jdouble * PI / objN);
+    for (i = 0; i < obj->size; i++) {
+        theta = g3x_Rand_Delta(0,0.5)*2*PI;
+        phi = g3x_Rand_Delta(0, 0.5)*2*PI;
+         
+        (*vertices)[0] = (rayonExterne+rayonInterne*cos(phi))*cos(theta);
+        (*vertices)[1] = (rayonExterne+rayonInterne*cos(phi))*sin(theta);
             
-            obj->normal[i * (obj->n) + j][0] = cos(2. * jdouble * PI / objN) * cosa;
-            obj->normal[i * (obj->n) + j][1] = cos(2. * jdouble * PI / objN) * sina;
-            obj->normal[i * (obj->n) + j][2] = sin(2. * jdouble * PI / objN);
-        }
+        (*vertices)[2] = rayonInterne*sin(phi);
+
+        vertices++;
     }
     
     return obj;

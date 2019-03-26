@@ -43,8 +43,8 @@ void drawObject(Object *obj, int c) {
 void init(void) {
    /* sphere = buildRandomSphere(1000, 1000);
     cube = buildRandomCube(1000, 1000);
-    torus = buildRegularTorus(1000, 400);*/
-    cone = buildRandomCone(400, 400);
+    */torus = buildRandomTorus(400, 400, 1,2);
+    /*cone = buildRandomCone(1000, 1000);*/
     /*cylinder = buildRandomCylinder(400,400);*/
 }
 
@@ -52,6 +52,7 @@ void init(void) {
 void draw(void) {
     g3x_Material(G3Xr, 0.25, 0.5, 0.5, 0.5, 1.);
     /*drawObject(sphere, 1);*/
-    drawObject(cone, 1);
+    /*drawObject(cone, 1);*/
     /*drawObject(cylinder,1);*/
+    drawObject(torus,1);
 }
