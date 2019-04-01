@@ -115,60 +115,60 @@ Object *buildRandomCube(int n, int p) {
     for (i = 0; i < ((obj->size) / 6); i++) {
         (*vertices)[0] = g3x_Rand_Delta(0, 1);
         (*vertices)[1] = g3x_Rand_Delta(0, 1);
-        (*vertices)[2] = +1;
+        (*vertices)[2] = +1.;
         vertices++;
         
         (*vertices)[0] = g3x_Rand_Delta(0, 1);
         (*vertices)[1] = g3x_Rand_Delta(0, 1);
-        (*vertices)[2] = -1;
+        (*vertices)[2] = -1.;
         vertices++;
         
         (*vertices)[0] = g3x_Rand_Delta(0, 1);
-        (*vertices)[1] = +1;
+        (*vertices)[1] = +1.;
         (*vertices)[2] = g3x_Rand_Delta(0, 1);
         vertices++;
         
         (*vertices)[0] = g3x_Rand_Delta(0, 1);
-        (*vertices)[1] = -1;
+        (*vertices)[1] = -1.;
         (*vertices)[2] = g3x_Rand_Delta(0, 1);
         vertices++;
         
-        (*vertices)[0] = +1;
+        (*vertices)[0] = +1.;
         (*vertices)[1] = g3x_Rand_Delta(0, 1);
         (*vertices)[2] = g3x_Rand_Delta(0, 1);
         vertices++;
         
-        (*vertices)[0] = -1;
+        (*vertices)[0] = -1.;
         (*vertices)[1] = g3x_Rand_Delta(0, 1);
         (*vertices)[2] = g3x_Rand_Delta(0, 1);
         vertices++;
         
         (*normals)[0] = 0;
         (*normals)[1] = 0;
-        (*normals)[2] = +1;
+        (*normals)[2] = +1.;
         normals++;
         
         (*normals)[0] = 0;
         (*normals)[1] = 0;
-        (*normals)[2] = -1;
+        (*normals)[2] = -1.;
         normals++;
         
         (*normals)[0] = 0;
-        (*normals)[1] = +1;
+        (*normals)[1] = +1.;
         (*normals)[2] = 0;
         normals++;
         
         (*normals)[0] = 0;
-        (*normals)[1] = -1;
+        (*normals)[1] = -1.;
         (*normals)[2] = 0;
         normals++;
         
-        (*normals)[0] = +1;
+        (*normals)[0] = +1.;
         (*normals)[1] = 0;
         (*normals)[2] = 0;
         normals++;
         
-        (*normals)[0] = -1;
+        (*normals)[0] = -1.;
         (*normals)[1] = 0;
         (*normals)[2] = 0;
         normals++;

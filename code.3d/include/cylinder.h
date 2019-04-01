@@ -3,5 +3,11 @@
 
 #include "object.h"
 
+
+
+bool insideCylinder(Object *obj, G3Xcoord);
+
+
 Object* buildRandomCylinder(int n, int p);
+
 #endif
