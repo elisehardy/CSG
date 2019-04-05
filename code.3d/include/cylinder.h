@@ -5,7 +5,7 @@
 
 
 
-bool insideCylinder(Object *obj, G3Xcoord);
+bool insideCylinder(Object *obj, G3Xpoint p);
 
 
 Object* buildRandomCylinder(int n, int p);

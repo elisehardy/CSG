@@ -113,3 +113,8 @@ Object *buildRegularCylinder(Object *obj) {
     
     return obj;
 }
+
+
+bool insideCylinder(Object *obj, G3Xpoint p){
+    return abs(p[2])<1 && p[0]*p[0]+p[1]*p[1]<1; 
+    }

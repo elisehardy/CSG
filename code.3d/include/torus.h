@@ -6,7 +6,7 @@
 
 Object* buildRegularTorus(int n, int p);
 
-bool insideTorus(Object *obj, G3Xcoord);
+bool insideTorus(Object *obj, G3Xpoint p);
 
 void drawTorus(Object *obj, int cam);
 

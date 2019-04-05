@@ -27,6 +27,32 @@ static double *translationMatrix(double x, double y, double z) {
     return matrix;
 }
 
+/**
+ * Return the matrix corresponding to the inverse of a basic translation of the given factor.
+ *
+ * @param x Factor on the X axis
+ * @param y Factor on the Y axis
+ * @param x Factor on the Z axis
+ *
+ * @return The computed 4x4 matrix as an array of 16 points.
+ */
+static double *translationInvMatrix(double x, double y, double z) {
+    double *matrix = (double *) calloc(16, sizeof(double));
+    
+    if (matrix == NULL) {
+        errno = ENOMEM;
+        perror("Error - translationInvMatrix ");
+        exit(1);
+    }
+    
+    matrix[0] = matrix[5] = matrix[10] = matrix[15] = 1.;
+    matrix[3] = -x;
+    matrix[7] = -y;
+    matrix[11] = -z;
+    
+    return matrix;
+}
+
 
 /**
  * Return the matrix corresponding to a basic homothety of the given factor.
@@ -37,7 +63,7 @@ static double *translationMatrix(double x, double y, double z) {
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
-static double *homothetyMatrixVertex(double x, double y, double z) {
+static double *homothetyVertexMatrix(double x, double y, double z) {
     double *matrix = (double *) calloc(16, sizeof(double));
     
     if (matrix == NULL) {
@@ -54,9 +80,8 @@ static double *homothetyMatrixVertex(double x, double y, double z) {
     return matrix;
 }
 
-
 /**
- * Return the matrix corresponding to a basic homothety on normal of the given factor.
+ * Return the matrix corresponding to the inverse of a basic homothety of the given factor on a vertex.
  *
  * @param x Factor on the X axis
  * @param y Factor on the Y axis
@@ -64,12 +89,39 @@ static double *homothetyMatrixVertex(double x, double y, double z) {
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
-static double *homothetyMatrixNormal(double x, double y, double z) {
+static double *homothetyVertexInvMatrix(double x, double y, double z) {
     double *matrix = (double *) calloc(16, sizeof(double));
     
     if (matrix == NULL) {
         errno = ENOMEM;
-        perror("Error - homothetyMatrixNormal ");
+        perror("Error - homothetyVertexInvMatrix ");
+        exit(1);
+    }
+    
+    matrix[15] = 1.;
+    matrix[0] = x ? 1/x : 0;
+    matrix[5] = y ? 1/y : 0;
+    matrix[10] = z ? 1/z : 0;
+    
+    return matrix;
+}
+
+
+/**
+ * Return the matrix corresponding to a basic homothety of the given factor on a normal.
+ *
+ * @param x Factor on the X axis
+ * @param y Factor on the Y axis
+ * @param x Factor on the Z axis
+ *
+ * @return The computed 4x4 matrix as an array of 16 points.
+ */
+static double *homothetyNormalMatrix(double x, double y, double z) {
+    double *matrix = (double *) calloc(16, sizeof(double));
+    
+    if (matrix == NULL) {
+        errno = ENOMEM;
+        perror("Error - homothetyNormalMatrix ");
         exit(1);
     }
     
@@ -77,6 +129,32 @@ static double *homothetyMatrixNormal(double x, double y, double z) {
     matrix[0] = y * z;
     matrix[5] = x * z;
     matrix[10] = x * y;
+    
+    return matrix;
+}
+
+/**
+ * Return the matrix corresponding to the inverse of a basic homothety of the given factor on a normal.
+ *
+ * @param x Factor on the X axis
+ * @param y Factor on the Y axis
+ * @param x Factor on the Z axis
+ *
+ * @return The computed 4x4 matrix as an array of 16 points.
+ */
+static double *homothetyNormalInvMatrix(double x, double y, double z) {
+    double *matrix = (double *) calloc(16, sizeof(double));
+    
+    if (matrix == NULL) {
+        errno = ENOMEM;
+        perror("Error - homothetyNormalInvMatrix ");
+        exit(1);
+    }
+    
+    matrix[15] = 1.;
+    matrix[0] = y && z ? 1/(y * z) : 0;
+    matrix[5] = x && z ? 1/(x * z) : 0;
+    matrix[10] = x && y ? 1/(x * y) : 0;
     
     return matrix;
 }
@@ -103,6 +181,31 @@ static double *xRotationMatrix(double angle) {
     matrix[6] = -sin(angle);
     matrix[9] = sin(angle);
     matrix[10] = cos(angle);
+    
+    return matrix;
+}
+
+/**
+ * Return the matrix corresponding to the inverse of a basic rotation on the X axis by an angle t.
+ *
+ * @param t The angle in radian.
+ *
+ * @return The computed 4x4 matrix as an array of 16 points.
+ */
+static double *xRotationInvMatrix(double angle) {
+    double *matrix = (double *) calloc(16, sizeof(double));
+    
+    if (matrix == NULL) {
+        errno = ENOMEM;
+        perror("Error - xRotationInvMatrix ");
+        exit(1);
+    }
+    
+    matrix[0] = matrix[15] = 1.;
+    matrix[5] = cos(-angle);
+    matrix[6] = -sin(-angle);
+    matrix[9] = sin(-angle);
+    matrix[10] = cos(-angle);
     
     return matrix;
 }
@@ -135,6 +238,32 @@ static double *yRotationMatrix(double angle) {
 
 
 /**
+ * Return the matrix corresponding to the inverse of a basic rotation on the Y axis by an angle t.
+ *
+ * @param t The angle in radian.
+ *
+ * @return The computed 4x4 matrix as an array of 16 points.
+ */
+static double *yRotationInvMatrix(double angle) {
+    double *matrix = (double *) calloc(16, sizeof(double));
+    
+    if (matrix == NULL) {
+        errno = ENOMEM;
+        perror("Error - yRotationInvMatrix ");
+        exit(1);
+    }
+    
+    matrix[5] = matrix[15] = 1.;
+    matrix[0] = cos(-angle);
+    matrix[2] = sin(-angle);
+    matrix[8] = -sin(-angle);
+    matrix[10] = cos(-angle);
+    
+    return matrix;
+}
+
+
+/**
  * Return the matrix corresponding to a basic rotation on the Z axis by an angle t.
  *
  * @param t The angle in radian.
@@ -155,6 +284,32 @@ static double *zRotationMatrix(double angle) {
     matrix[1] = -sin(angle);
     matrix[4] = sin(angle);
     matrix[5] = cos(angle);
+    
+    return matrix;
+}
+
+
+/**
+ * Return the matrix corresponding to the inverse of a basic rotation on the Z axis by an angle t.
+ *
+ * @param t The angle in radian.
+ *
+ * @return The computed 4x4 matrix as an array of 16 points.
+ */
+static double *zRotationInvMatrix(double angle) {
+    double *matrix = (double *) calloc(16, sizeof(double));
+    
+    if (matrix == NULL) {
+        errno = ENOMEM;
+        perror("Error - zRotationInvMatrix ");
+        exit(1);
+    }
+    
+    matrix[10] = matrix[15] = 1.;
+    matrix[0] = cos(-angle);
+    matrix[1] = -sin(-angle);
+    matrix[4] = sin(-angle);
+    matrix[5] = cos(-angle);
     
     return matrix;
 }
@@ -277,8 +432,8 @@ void homothate(Object *obj, double x, double y, double z) {
         exit(1);
     }
     
-    double *vmat = homothetyMatrixVertex(x, y, z);
-    double *nmat = homothetyMatrixNormal(x, y, z);
+    double *vmat = homothetyVertexMatrix(x, y, z);
+    double *nmat = homothetyNormalMatrix(x, y, z);
     int i;
     
     for (i = 0; i < obj->size; i++) {

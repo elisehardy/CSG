@@ -89,3 +89,7 @@ Object *buildRandomSphere(int n, int p) {
     return obj;
 }
 
+bool insideSphere(Object *obj, G3Xpoint p){
+    return (p[0]*p[0] + p[1]*p[1] + p[2]*p[2])<=1;
+    }
+

@@ -214,3 +214,12 @@ void drawCube(Object *obj, int c) {
     
     glEnd();
 }
+
+
+bool insideCube(Object *obj, G3Xpoint p){
+    return MAX(abs(p[0]), MAX(abs(p[1]), abs(p[2])))<=1;
+}
+
+
+
+

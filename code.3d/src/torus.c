@@ -117,3 +117,7 @@ void drawTorus(Object *obj, int cam) {
     
     glEnd();
 }
+
+bool insideTorus(Object *obj, G3Xpoint p){
+    return sqrt(p[0]*p[0] + p[1]*p[1])-2 * sqrt(p[0]*p[0] + p[1]*p[1])-2 + p[2]*p[2]<1;
+    }

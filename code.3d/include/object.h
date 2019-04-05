@@ -1,6 +1,7 @@
 #ifndef CSG_OBJECT_H
 #define CSG_OBJECT_H
 
+
 #include <errno.h>
 
 #include <g3x.h>

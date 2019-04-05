@@ -13,7 +13,7 @@ Object *buildRegularCube(int n, int p);
 
 Object *buildRandomCube(int n, int p);
 
-bool insideCube(Object *obj, G3Xcoord);
+bool insideCube(Object *obj, G3Xpoint p);
 
 void drawCube(Object *obj, int c);
 

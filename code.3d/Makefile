@@ -4,7 +4,7 @@
 CC = gcc
 
 FLAGS = -g -Wpointer-arith -Wall -Wextra -Werror -ansi -O2
-IGNORED = -Wno-unused-parameter
+IGNORED = -Wno-unused-parameter -Wno-unused-function
 CFLAGS = $(FLAGS) $(IGNORED)
 
 # assemblage des infos de lib. et inc.
