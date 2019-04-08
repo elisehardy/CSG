@@ -11,11 +11,6 @@
 Object *sphere, *cube, *torus, *cone, *cylinder;
 
 
-
-
-
-
-
 void drawObject(Object *obj, int c) {
     if (obj == NULL) {
         errno = EFAULT;
@@ -43,9 +38,9 @@ void drawObject(Object *obj, int c) {
 void init(void) {
     sphere = buildRandomSphere(1000, 1000);
     cube = buildRandomCube(400, 400);
-    torus = buildRandomTorus(400, 400,1,2);
+    torus = buildRandomTorus(400, 400, 1, 2);
     cone = buildRandomCone(1000, 400);
-    cylinder = buildRandomCylinder(400,400);
+    cylinder = buildRandomCylinder(400, 400);
 }
 
 

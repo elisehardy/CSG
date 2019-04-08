@@ -27,6 +27,7 @@ static double *translationMatrix(double x, double y, double z) {
     return matrix;
 }
 
+
 /**
  * Return the matrix corresponding to the inverse of a basic translation of the given factor.
  *
@@ -80,6 +81,7 @@ static double *homothetyVertexMatrix(double x, double y, double z) {
     return matrix;
 }
 
+
 /**
  * Return the matrix corresponding to the inverse of a basic homothety of the given factor on a vertex.
  *
@@ -99,9 +101,9 @@ static double *homothetyVertexInvMatrix(double x, double y, double z) {
     }
     
     matrix[15] = 1.;
-    matrix[0] = x ? 1/x : 0;
-    matrix[5] = y ? 1/y : 0;
-    matrix[10] = z ? 1/z : 0;
+    matrix[0] = x ? 1 / x : 0;
+    matrix[5] = y ? 1 / y : 0;
+    matrix[10] = z ? 1 / z : 0;
     
     return matrix;
 }
@@ -133,6 +135,7 @@ static double *homothetyNormalMatrix(double x, double y, double z) {
     return matrix;
 }
 
+
 /**
  * Return the matrix corresponding to the inverse of a basic homothety of the given factor on a normal.
  *
@@ -152,9 +155,9 @@ static double *homothetyNormalInvMatrix(double x, double y, double z) {
     }
     
     matrix[15] = 1.;
-    matrix[0] = y && z ? 1/(y * z) : 0;
-    matrix[5] = x && z ? 1/(x * z) : 0;
-    matrix[10] = x && y ? 1/(x * y) : 0;
+    matrix[0] = y && z ? 1 / (y * z) : 0;
+    matrix[5] = x && z ? 1 / (x * z) : 0;
+    matrix[10] = x && y ? 1 / (x * y) : 0;
     
     return matrix;
 }
@@ -184,6 +187,7 @@ static double *xRotationMatrix(double angle) {
     
     return matrix;
 }
+
 
 /**
  * Return the matrix corresponding to the inverse of a basic rotation on the X axis by an angle t.

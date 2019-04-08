@@ -4,18 +4,41 @@
 #include "object.h"
 
 
+typedef Object Cone;
+
+
 /**
- * Build a sphere with an uniform distribution of vertices.
+ * Build a cone with a standard distribution of vertices.
  *
- * @param n Number of meridian.
- * @param p Number of parallels.
+ * @param n ?
+ * @param p ?
  */
-Object *buildRegularCone(int n, int p);
+Cone *buildRegularCone(int n, int p);
 
-Object *buildRandomCone(int n, int p);
+/**
+ * Build a cone with an uniform distribution of vertices.
+ *
+ * @param n ?
+ * @param p ?
+ */
+Cone *buildRandomCone(int n, int p);
 
-bool insideCone(Object *obj, G3Xcoord);
+/**
+ * Check if a point is inside or on a cone.
+ *
+ * @param cone The cone the point will be checked against.
+ * @param p The point being checked.
+ *
+ * @return true if the point is inside or on the cone, false otherwise.
+ */
+bool insideCone(Cone *cone, G3Xpoint p);
 
-void drawCone(Object *obj, int c);
+/**
+ * Draw a regular cone.
+ *
+ * @param cone The cone.
+ * @param c ?
+ */
+void drawRegularCone(Cone *cone, int c);
 
 #endif

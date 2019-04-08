@@ -1,93 +1,93 @@
 #include "../include/cube.h"
 
 
-Object *buildRegularCube(int n, int p) { /*a changer car faire une normal pour chaque point*/
-    Object *obj = (Object *) malloc(sizeof(Object));
-    if (obj == NULL) {
+Cube *buildRegularCube(int n, int p) { /*a changer car faire une normal pour chaque point*/
+    Cube *cube = (Object *) malloc(sizeof(Object));
+    if (cube == NULL) {
         errno = ENOMEM;
         perror("Error - buildRegularCube ");
         exit(1);
     }
     
-    double objN, objP, idouble, jdouble;
+    double cubeN, cubeP, idouble, jdouble;
     int i, j;
     
-    obj->n = n;
-    obj->p = p;
-    obj->size = n * p * 6;
-    obj->shape = SHP_CUBE;
-    obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
-    obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
-    if (!(obj->vertex && obj->normal)) {
+    cube->n = n;
+    cube->p = p;
+    cube->size = n * p * 6;
+    cube->shape = SHP_CUBE;
+    cube->vertex = (G3Xpoint *) calloc(cube->size, sizeof(G3Xpoint));
+    cube->normal = (G3Xvector *) calloc(cube->size, sizeof(G3Xvector));
+    if (!(cube->vertex && cube->normal)) {
         errno = ENOMEM;
         perror("Error - buildRegularCube ");
         exit(1);
     }
     
-    objN = (double) obj->n;
-    objP = (double) obj->p;
+    cubeN = (double) cube->n;
+    cubeP = (double) cube->p;
     
-    obj->normal[0][X] = 0.;
-    obj->normal[0][Y] = 0.;
-    obj->normal[0][Z] = 1.;
+    cube->normal[0][X] = 0.;
+    cube->normal[0][Y] = 0.;
+    cube->normal[0][Z] = 1.;
     
-    obj->normal[1][X] = 0.;
-    obj->normal[1][Y] = 0.;
-    obj->normal[1][Z] = -1.;
+    cube->normal[1][X] = 0.;
+    cube->normal[1][Y] = 0.;
+    cube->normal[1][Z] = -1.;
     
-    obj->normal[2][X] = 0.;
-    obj->normal[2][Y] = 1.;
-    obj->normal[2][Z] = 0.;
+    cube->normal[2][X] = 0.;
+    cube->normal[2][Y] = 1.;
+    cube->normal[2][Z] = 0.;
     
-    obj->normal[3][X] = 0.;
-    obj->normal[3][Y] = -1.;
-    obj->normal[3][Z] = 0.;
+    cube->normal[3][X] = 0.;
+    cube->normal[3][Y] = -1.;
+    cube->normal[3][Z] = 0.;
     
-    obj->normal[4][X] = 1.;
-    obj->normal[4][Y] = 0.;
-    obj->normal[4][Z] = 0.;
+    cube->normal[4][X] = 1.;
+    cube->normal[4][Y] = 0.;
+    cube->normal[4][Z] = 0.;
     
-    obj->normal[5][X] = -1.;
-    obj->normal[5][Y] = 0.;
-    obj->normal[5][Z] = 0.;
+    cube->normal[5][X] = -1.;
+    cube->normal[5][Y] = 0.;
+    cube->normal[5][Z] = 0.;
     
-    for (i = 0; i < obj->n; i++) {
+    for (i = 0; i < cube->n; i++) {
         idouble = (double) i;
-        for (j = 0; j < obj->p; j++) {
+        for (j = 0; j < cube->p; j++) {
             jdouble = (double) j;
-            obj->vertex[i * (obj->p) + j][0] = 2 * idouble / objN - 1;
-            obj->vertex[i * (obj->p) + j][1] = 2 * jdouble / objP - 1;
-            obj->vertex[i * (obj->p) + j][2] = 1.;
+            cube->vertex[i * (cube->p) + j][0] = 2 * idouble / cubeN - 1;
+            cube->vertex[i * (cube->p) + j][1] = 2 * jdouble / cubeP - 1;
+            cube->vertex[i * (cube->p) + j][2] = 1.;
             
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 1 + j][0] = 2 * idouble / objN - 1;
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 1 + j][1] = 2 * jdouble / objP - 1;
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 1 + j][2] = -1.;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 1 + j][0] = 2 * idouble / cubeN - 1;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 1 + j][1] = 2 * jdouble / cubeP - 1;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 1 + j][2] = -1.;
             
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 2 + j][0] = 2 * idouble / objN - 1;
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 2 + j][1] = 1.;
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 2 + j][2] = 2 * jdouble / objP - 1;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 2 + j][0] = 2 * idouble / cubeN - 1;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 2 + j][1] = 1.;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 2 + j][2] = 2 * jdouble / cubeP - 1;
             
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 3 + j][0] = 2 * idouble / objN - 1;
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 3 + j][1] = -1.;
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 3 + j][2] = 2 * jdouble / objP - 1;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 3 + j][0] = 2 * idouble / cubeN - 1;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 3 + j][1] = -1.;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 3 + j][2] = 2 * jdouble / cubeP - 1;
             
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 4 + j][0] = 1.;
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 4 + j][1] = 2 * idouble / objN - 1;
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 4 + j][2] = 2 * jdouble / objP - 1;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 4 + j][0] = 1.;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 4 + j][1] = 2 * idouble / cubeN - 1;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 4 + j][2] = 2 * jdouble / cubeP - 1;
             
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 5 + j][0] = -1.;
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 5 + j][1] = 2 * idouble / objN - 1;
-            obj->vertex[i * (obj->p) + (obj->p) * (obj->n) * 5 + j][2] = 2 * jdouble / objP - 1;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 5 + j][0] = -1.;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 5 + j][1] = 2 * idouble / cubeN - 1;
+            cube->vertex[i * (cube->p) + (cube->p) * (cube->n) * 5 + j][2] = 2 * jdouble / cubeP - 1;
         }
     }
     
-    return obj;
+    return cube;
 }
 
 
-Object *buildRandomCube(int n, int p) {
-    Object *obj = (Object *) malloc(sizeof(Object));
-    if (obj == NULL) {
+Cube *buildRandomCube(int n, int p) {
+    Cube *cube = (Object *) malloc(sizeof(Object));
+    if (cube == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomCube ");
         exit(1);
@@ -97,22 +97,22 @@ Object *buildRandomCube(int n, int p) {
     G3Xpoint *vertices;
     int i;
     
-    obj->n = n;
-    obj->p = p;
-    obj->size = n * p * 6;
-    obj->shape = SHP_CUBE;
-    obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
-    obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
-    if (!(obj->vertex && obj->normal)) {
+    cube->n = n;
+    cube->p = p;
+    cube->size = n * p * 6;
+    cube->shape = SHP_CUBE;
+    cube->vertex = (G3Xpoint *) calloc(cube->size, sizeof(G3Xpoint));
+    cube->normal = (G3Xvector *) calloc(cube->size, sizeof(G3Xvector));
+    if (!(cube->vertex && cube->normal)) {
         errno = ENOMEM;
         perror("Error - buildRandomCube ");
         exit(1);
     }
     
-    vertices = obj->vertex;
-    normals = obj->normal;
+    vertices = cube->vertex;
+    normals = cube->normal;
     
-    for (i = 0; i < ((obj->size) / 6); i++) {
+    for (i = 0; i < ((cube->size) / 6); i++) {
         (*vertices)[0] = g3x_Rand_Delta(0, 1);
         (*vertices)[1] = g3x_Rand_Delta(0, 1);
         (*vertices)[2] = +1.;
@@ -174,50 +174,56 @@ Object *buildRandomCube(int n, int p) {
         normals++;
     }
     
-    return obj;
+    return cube;
 }
 
 
-void drawCube(Object *obj, int c) {
-    if (obj == NULL) {
+void drawCube(Cube *cube, int c) {
+    if (cube == NULL) {
         errno = EFAULT;
         perror("Error - drawCube ");
         exit(1);
     }
     
-    G3Xvector *n = obj->normal;
-    G3Xpoint *v = obj->vertex;
+    G3Xvector *n = cube->normal;
+    G3Xpoint *v = cube->vertex;
     int cote, face, i, j;
     
     glPointSize(1);
     glBegin(GL_POINTS);
     
     for (face = 0; face < 6; face++) {
-        for (i = 0; i < obj->n; i += c) {
-            for (j = 0; j < obj->p; j += c) {
+        for (i = 0; i < cube->n; i += c) {
+            for (j = 0; j < cube->p; j += c) {
                 glNormal3dv(n[face]);
-                glVertex3dv(v[face * (obj->n) * (obj->p) + j + i * (obj->p)]);
+                glVertex3dv(v[face * (cube->n) * (cube->p) + j + i * (cube->p)]);
             }
             
             glNormal3dv(n[face]);
-            glVertex3dv(v[face * (obj->n) * (obj->p) + i * (obj->p) + (obj->p - 1)]);
+            glVertex3dv(v[face * (cube->n) * (cube->p) + i * (cube->p) + (cube->p - 1)]);
         }
         
-        for (cote = 0; cote < obj->p; cote += c) {
+        for (cote = 0; cote < cube->p; cote += c) {
             glNormal3dv(n[face]);
-            glVertex3dv(v[face * (obj->n) * (obj->p) + (obj->p) * (obj->n - 1) + cote]);
+            glVertex3dv(v[face * (cube->n) * (cube->p) + (cube->p) * (cube->n - 1) + cote]);
         }
         
         glNormal3dv(n[face]);
-        glVertex3dv(v[face * (obj->n) * (obj->p) + (obj->p) * (obj->n - 1) + (obj->p - 1)]);
+        glVertex3dv(v[face * (cube->n) * (cube->p) + (cube->p) * (cube->n - 1) + (cube->p - 1)]);
     }
     
     glEnd();
 }
 
 
-bool insideCube(Object *obj, G3Xpoint p){
-    return MAX(abs(p[0]), MAX(abs(p[1]), abs(p[2])))<=1;
+bool insideCube(Cube *cube, G3Xpoint p) {
+    if (cube == NULL) {
+        errno = EFAULT;
+        perror("Error - insideCube ");
+        exit(1);
+    }
+    
+    return MAX(abs(p[0]), MAX(abs(p[1]), abs(p[2]))) <= 1;
 }
 
 

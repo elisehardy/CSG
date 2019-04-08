@@ -1,7 +1,6 @@
 #ifndef CSG_OBJECT_H
 #define CSG_OBJECT_H
 
-
 #include <errno.h>
 
 #include <g3x.h>
@@ -17,7 +16,7 @@ typedef enum {
 
 
 /**
- * Represents a 3D canonic object.
+ * Represents a 3D canonic Object.
  */
 typedef struct _obj {
     Shape shape; /**< Shape of the Object. */
@@ -34,6 +33,12 @@ void init(void);
 
 void draw(void);
 
-void drawObject(Object *s, int c);
+/**
+ * Draw an object.
+ *
+ * @param obj Object to be drawn.
+ * @param c ?
+ */
+void drawObject(Object *obj, int c);
 
 #endif
