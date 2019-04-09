@@ -19,12 +19,12 @@ typedef enum {
  * Represents a 3D canonic Object.
  */
 typedef struct _obj {
-    Shape shape; /**< Shape of the Object. */
-    G3Xpoint *vertex; /**< Vertexes of the Object. */
-    G3Xvector *normal; /**< Normals of the Object. */
+    Shape shape;                            /**< Shape of the Object. */
+    G3Xpoint *vertex;                       /**< Vertexes of the Object. */
+    G3Xvector *normal;                      /**< Normals of the Object. */
     bool (*pt_in)(struct _obj *, G3Xpoint); /**< Function checking if a vertex is inside.. */
-    bool (*build)(struct _obj *); /**< ?. */
-    int n, p, size; /**< Custom parameters. */
+    bool (*build)(struct _obj *);           /**< ?. */
+    int n, p, size;                         /**< Custom parameters. */
     
 } Object;
 

@@ -122,6 +122,5 @@ bool insideTorus(Torus *torus, G3Xpoint p) {
         exit(1);
     }
     
-    /* Y a pas un problème de priorité ? */
-    return sqrt(p[0] * p[0] + p[1] * p[1]) - 2 * sqrt(p[0] * p[0] + p[1] * p[1]) - 2 + p[2] * p[2] < 1;
+    return (sqrt(p[0] * p[0] + p[1] * p[1]) - 2) * (sqrt(p[0] * p[0] + p[1] * p[1]) - 2) + p[2] * p[2] < 1;
 }
