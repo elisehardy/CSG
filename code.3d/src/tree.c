@@ -1,14 +1,14 @@
 #include "../include/tree.h"
 
 
-Tree* newNode(Operator op, Object *obj) {
+Tree *newNode(Operator op, Object *obj) {
     if (obj == NULL) {
         errno = EFAULT;
         perror("Error - newNode ");
         exit(1);
     }
     
-    Tree *new = (Tree*)malloc(sizeof(Tree));
+    Tree *new = (Tree *) malloc(sizeof(Tree));
     if (new == NULL) {
         errno = ENOMEM;
         perror("Error - newNode ");
