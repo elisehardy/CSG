@@ -49,6 +49,6 @@ void draw(void) {
     /*drawObject(sphere, 1);*/
     drawObject(cube, 1);
     /*drawObject(torus, 1);*/
-    /*drawObject(cone, 1);*/
+    drawObject(cone, 1);
     /*drawObject(cylinder,1);*/
 }
