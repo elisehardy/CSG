@@ -4,6 +4,8 @@ void readAndFillTree(FILE *file, Tree *tree){
     char *line = NULL;
     size_t len = 0;
     char * split;
+    Tree * left = NULL, right = NULL;
+    
     while((read = getline(&line, &len, file)) != -1){
         split = strtok(line, ':');
         if(split == NULL){
@@ -11,7 +13,8 @@ void readAndFillTree(FILE *file, Tree *tree){
                 exit(1);
         }
         printf("%s", split);
-        Tree * node;
+        
+        
         //init node 
         switch(split){
             case "obj":
@@ -19,7 +22,9 @@ void readAndFillTree(FILE *file, Tree *tree){
                 if(split != NULL){
                     if(strcmp(split, "cube")==0){
                         Object *cube;
-                        node->obj = cube;
+                        if (left == NULL) {
+                            left = newLeaf(cube);
+                        }
                     }
                      else if(strcmp(split, "sphere")==0){
                         Object *sphere;
