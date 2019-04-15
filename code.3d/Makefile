@@ -25,7 +25,7 @@ src = src/
 bin = bin/
 
 
-objet = sphere cube cone cylinder torus matrix object
+objet = sphere cube cone cylinder torus matrix object tree
 exec = main
 ####################################################################################################
 
