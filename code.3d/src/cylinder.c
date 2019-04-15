@@ -125,12 +125,8 @@ Cylinder *buildRandomCylinder(int n, int p) {
 }
 
 
-bool insideCylinder(Cylinder *cylinder, G3Xpoint p) {
-    if (cylinder == NULL) {
-        errno = EFAULT;
-        perror("Error - insideCylinder ");
-        exit(1);
-    }
+bool insideCylinder(G3Xpoint p) {
+  
     
     return abs(p[2]) < 1 && p[0] * p[0] + p[1] * p[1] < 1;
 }
