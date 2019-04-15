@@ -365,14 +365,14 @@ double *matrixMatrixMult(double *m, double *factor) {
 }
 
 
-void matrixCoordMult(double *factor, G3Xcoord p) {
+G3Xpoint *matrixCoordMult(double *factor, G3Xpoint p) {
     if (!p) {
         errno = EFAULT;
         perror("Error - matrixCoordMult ");
         exit(1);
     }
     
-    G3Xcoord res;
+    G3Xpoint *res = malloc(sizeof(G3Xpoint));
     double sum;
     int i, j;
     
@@ -381,10 +381,10 @@ void matrixCoordMult(double *factor, G3Xcoord p) {
         for (j = 0; j < 3; j++) {
             sum += factor[i * 4 + j] * p[j];
         }
-        res[i] = sum + factor[i * 4 + 3];
+        *res[i] = sum + factor[i * 4 + 3];
     }
     
-    memcpy(p, res, sizeof(G3Xcoord));
+    return res;
 }
 
 
@@ -396,7 +396,6 @@ void rotate(Tree *node, double x, double y, double z) {
     }
     
     double *mat;
-    
     if (x) {
         mat = xRotationMatrix(x);
         propagate(node, mat, mat, xRotationInvMatrix(x), true);
@@ -420,7 +419,6 @@ void translate(Tree *node, double x, double y, double z) {
     }
     
     double *mat = translationMatrix(x, y, z);
-    
     propagate(node, mat, mat, translationInvMatrix(x, y, z), true);
 }
 

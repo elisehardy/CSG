@@ -1,21 +1,46 @@
 #include "../include/tree.h"
 
+#include "../include/matrix.h"
 
-Tree *newNode(Operator op, Object *obj) {
+static bool insideNode(Tree *tree, G3Xpoint p) {
+    if (tree->left != NULL && tree->right != NULL) {
+        switch (tree->op) {
+            case SOUSTRACTION:
+                return insideNode(tree->left, p) && !insideNode(tree->right, p);
+            case UNION:
+                return insideNode(tree->left, p) != insideNode(tree->right, p);
+            case INTERSECTION:
+                return insideNode(tree->left, p) && insideNode(tree->right, p);
+            default:
+                return insideNode(tree->left, p) || insideNode(tree->right, p);
+        }
+    } else if (tree->left != NULL || tree->right != NULL) {
+        fprintf(stderr, " insideNode : Invalid node - only one son");
+        exit(1);
+    }
+    
+    G3Xpoint *reversed = matrixCoordMult(tree->mi, p);
+    
+    return tree->obj->pt_in(*reversed);
+}
+
+
+
+Tree *newLeaf(Object *obj) {
     if (obj == NULL) {
         errno = EFAULT;
-        perror("Error - newNode ");
+        perror("Error - newLeaf ");
         exit(1);
     }
     
     Tree *new = (Tree *) malloc(sizeof(Tree));
     if (new == NULL) {
         errno = ENOMEM;
-        perror("Error - newNode ");
+        perror("Error - newLeaf ");
         exit(1);
     }
     
-    new->op = op;
+    new->op = NONE;
     new->obj = obj;
     new->md = NULL;
     new->mi = NULL;
@@ -31,6 +56,41 @@ Tree *newNode(Operator op, Object *obj) {
 }
 
 
+Tree *newNode(Tree *left, Tree *right, Operator op) {
+    if (left == NULL || right == NULL) {
+        errno = EFAULT;
+        perror("Error - newNode ");
+        exit(1);
+    }
+    
+    Tree *new = (Tree *) malloc(sizeof(Tree));
+    if (new == NULL) {
+        errno = ENOMEM;
+        perror("Error - newNode ");
+        exit(1);
+    }
+    
+    
+    
+    new->op = op;
+    new->md = NULL;
+    new->mi = NULL;
+    new->mn = NULL;
+    new->neg = false;
+    new->left = left;
+    new->right = right;
+    new->obj = merge(left->obj, right->obj);
+    new->visible = malloc(sizeof(bool) * new->obj->size);
+    
+    int i;
+    for (i = 0; i < new->obj->size; i++) {
+        new->visible[i] = insideNode(new, new->obj->vertex[i]);
+    }
+    
+    return new;
+}
+
+/*
 void unionTree(Object *objA, Object *objB) {
     int i;
     int v;
@@ -94,23 +154,4 @@ void soustractionTree(Object *objA, Object *objB) {
             objB->visible[i] = 0;
         }
     }
-    
-    
-    
-bool pt_inTreeRec(Tree *tree, G3Xpoint p){
-            if(tree->left != NULL && tree->right != NULL){
-                switch(tree->op){
-                        case SOUSTRACTION:
-                           return  pt_inTreeRec(tree->left) && !pt_inTreeRec(tree->right);
-                        case UNION:
-                           return  pt_inTreeRec(tree->left) != pt_inTreeRec(tree->right);
-                        case INTERSECTION:
-                           return  pt_inTreeRec(tree->left) && pt_inTreeRec(tree->right);
-                    
-                }
-            }
-            else{
-                return tree->obj.pt_in(p);
-            }
-        }
-}
+}*/

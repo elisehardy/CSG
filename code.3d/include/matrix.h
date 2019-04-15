@@ -1,7 +1,6 @@
 #ifndef CSG_MATRIX_H
 #define CSG_MATRIX_H
 
-#include "object.h"
 #include "tree.h"
 
 /**
@@ -17,16 +16,18 @@
 double *matrixMatrixMult(double *m, double *factor);
 
 /**
- * Compute the multiplication p = factor * p.
+ * Compute the multiplication factor * p.
  *
  * @param p The point being multiplied.
  * @param factor The matrix by which p will be multiplied. Must be 4x4 and represented as an array
  * of 16 doubles.
+ *
+ * @return The computed point.
  */
-void matrixCoordMult(double *factor, G3Xpoint p);
+G3Xpoint * matrixCoordMult(double *factor, G3Xpoint p);
 
 /**
- * Rotate the given object around each axis by the angles given.
+ * Rotate the given node around each axis by the angles given.
  *
  * @param obj The object being rotated.
  * @param x Angle (in radian) of rotation around the X axis.
@@ -36,7 +37,7 @@ void matrixCoordMult(double *factor, G3Xpoint p);
 void rotate(Tree *node, double x, double y, double z);
 
 /**
- * Translate the given object alongside each axis by the distance given.
+ * Translate the given node alongside each axis by the distance given.
  *
  * @param obj The object being rotated.
  * @param x Distance the object will be moved alongside the X.
@@ -46,7 +47,7 @@ void rotate(Tree *node, double x, double y, double z);
 void translate(Tree *node, double x, double y, double z);
 
 /**
- * Apply an homothety the given object alongside each axis by the given ratio.
+ * Apply an homothety the given node alongside each axis by the given ratio.
  *
  * @param obj The object being dilated.
  * @param x Ratio the object will be dilated alongside the X.

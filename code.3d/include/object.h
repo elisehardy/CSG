@@ -11,7 +11,7 @@
  * Canonical shapes.
  */
 typedef enum {
-    SHP_SPHERE, SHP_CUBE, SHP_CYLINDER, SHP_CONE, SHP_TORUS
+    SHP_SPHERE, SHP_CUBE, SHP_CYLINDER, SHP_CONE, SHP_TORUS, SHP_COMPOSITE
 } Shape;
 
 
@@ -23,15 +23,13 @@ typedef struct _obj {
     G3Xpoint *vertex;                       /**< Vertexes of the Object. */
     G3Xvector *normal;                      /**< Normals of the Object. */
     bool *visible;                          /**< Boolean array telling whether a point I should be drawn */
-    bool (*pt_in)( G3Xpoint); /**< Function checking if a vertex is inside.. */
+    bool (*pt_in)(G3Xpoint);               /**< Function checking if a vertex is inside. */
     bool (*build)(struct _obj *);           /**< ?. */
     int n, p, size;                         /**< Custom parameters. */
 } Object;
 
 
-void init(void);
-
-void draw(void);
+Object *merge(Object *a, Object *b);
 
 /**
  * Draw an object.

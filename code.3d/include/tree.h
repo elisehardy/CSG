@@ -3,9 +3,8 @@
 
 #include "object.h"
 
-
 typedef enum {
-    UNION, INTERSECTION, SOUSTRACTION,
+    UNION, INTERSECTION, SOUSTRACTION, EQUAL, NONE
 } Operator;
 
 
@@ -24,6 +23,9 @@ typedef struct _node {
 } Tree;
 
 
+
+Tree *newLeaf(Object *obj);
+
 /**
  * Create a new node.
  *
@@ -38,6 +40,6 @@ typedef struct _node {
  *
  * @return The newly created node.
  */
-Tree *newNode(Operator op, Object *obj);
+Tree *newNode(Tree *left, Tree *right, Operator op);
 
 #endif
