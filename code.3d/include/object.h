@@ -26,7 +26,6 @@ typedef struct _obj {
     bool (*pt_in)(struct _obj *, G3Xpoint); /**< Function checking if a vertex is inside.. */
     bool (*build)(struct _obj *);           /**< ?. */
     int n, p, size;                         /**< Custom parameters. */
-    
 } Object;
 
 

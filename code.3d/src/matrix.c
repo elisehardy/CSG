@@ -137,33 +137,6 @@ static double *homothetyNormalMatrix(double x, double y, double z) {
 
 
 /**
- * Return the matrix corresponding to the inverse of a basic homothety of the given factor on a normal.
- *
- * @param x Factor on the X axis
- * @param y Factor on the Y axis
- * @param x Factor on the Z axis
- *
- * @return The computed 4x4 matrix as an array of 16 points.
- */
-static double *homothetyNormalInvMatrix(double x, double y, double z) {
-    double *matrix = (double *) calloc(16, sizeof(double));
-    
-    if (matrix == NULL) {
-        errno = ENOMEM;
-        perror("Error - homothetyNormalInvMatrix ");
-        exit(1);
-    }
-    
-    matrix[15] = 1.;
-    matrix[0] = y && z ? 1 / (y * z) : 0;
-    matrix[5] = x && z ? 1 / (x * z) : 0;
-    matrix[10] = x && y ? 1 / (x * y) : 0;
-    
-    return matrix;
-}
-
-
-/**
  * Return the matrix corresponding to a basic rotation on the X axis by an angle t.
  *
  * @param t The angle in radian.
@@ -319,6 +292,37 @@ static double *zRotationInvMatrix(double angle) {
 }
 
 
+/**
+ * Recursively propagate a transformation matrix to the node's sons.
+ *
+ * @param node Node of the tree.
+ * @param vertex Transformation matrix of the vertices.
+ * @param normal Transformation matrix of the normals.
+ * @param inverse Inverse transformation matrix of the vertices.
+ */
+static void propagate(Tree *node, double *vertex, double *normal, double *inverse, bool translation) {
+    if (node == NULL) {
+        errno = EFAULT;
+        perror("Error - propagate ");
+        exit(1);
+    }
+    
+    if (node->left && node->right) {
+        propagate(node->left, vertex, normal, inverse, translation);
+        propagate(node->right, vertex, normal, inverse, translation);
+    } else if (!node->left && !node->right) {
+        node->md = !node->md ? vertex : matrixMatrixMult(vertex, node->md);
+        node->mi = !node->mi ? vertex : matrixMatrixMult(node->mi, vertex);
+        if (!translation) {
+            node->mn = !node->mn ? vertex : matrixMatrixMult(vertex, node->mn);
+        }
+    } else {
+        fprintf(stderr, " propagate : Invalid node - only one son");
+        exit(1);
+    }
+}
+
+
 void printMatrix(double *m) {
     int i, j;
     
@@ -336,7 +340,7 @@ void printCoord(G3Xcoord coord) {
 }
 
 
-void matrixMatrixMult(double *m, double *factor) {
+double *matrixMatrixMult(double *m, double *factor) {
     double *res = (double *) calloc(16, sizeof(double));
     int i, j, k;
     double sum;
@@ -357,7 +361,7 @@ void matrixMatrixMult(double *m, double *factor) {
         }
     }
     
-    *m = *res;
+    return res;
 }
 
 
@@ -384,64 +388,52 @@ void matrixCoordMult(double *factor, G3Xcoord p) {
 }
 
 
-void rotate(Object *obj, double x, double y, double z) {
-    if (obj == NULL) {
+void rotate(Tree *node, double x, double y, double z) {
+    if (node == NULL) {
         errno = EFAULT;
         perror("Error - rotate ");
         exit(1);
     }
     
-    double *xMat = xRotationMatrix(x);
-    double *yMat = yRotationMatrix(y);
-    double *zMat = zRotationMatrix(z);
-    int i;
+    double *mat;
     
-    for (i = 0; i < obj->size; i++) {
-        if (x) {
-            matrixCoordMult(xMat, obj->vertex[i]);
-            matrixCoordMult(xMat, obj->normal[i]);
-        }
-        if (y) {
-            matrixCoordMult(yMat, obj->vertex[i]);
-            matrixCoordMult(yMat, obj->normal[i]);
-        }
-        if (z) {
-            matrixCoordMult(zMat, obj->vertex[i]);
-            matrixCoordMult(yMat, obj->normal[i]);
-        }
+    if (x) {
+        mat = xRotationMatrix(x);
+        propagate(node, mat, mat, xRotationInvMatrix(x), true);
+    }
+    if (y) {
+        mat = yRotationMatrix(y);
+        propagate(node, mat, mat, yRotationInvMatrix(y), true);
+    }
+    if (z) {
+        mat = zRotationMatrix(z);
+        propagate(node, mat, mat, zRotationInvMatrix(z), true);
     }
 }
 
 
-void translate(Object *obj, double x, double y, double z) {
-    if (obj == NULL) {
+void translate(Tree *node, double x, double y, double z) {
+    if (node == NULL) {
         errno = EFAULT;
         perror("Error - translate ");
         exit(1);
     }
     
     double *mat = translationMatrix(x, y, z);
-    int i;
     
-    for (i = 0; i < obj->size; i++) {
-        matrixCoordMult(mat, obj->vertex[i]);
-    }
+    propagate(node, mat, mat, translationInvMatrix(x, y, z), true);
 }
 
 
-void homothate(Object *obj, double x, double y, double z) {
-    if (obj == NULL) {
+void homothate(Tree *node, double x, double y, double z) {
+    if (node == NULL) {
         errno = EFAULT;
         perror("Error - homothate ");
         exit(1);
     }
     
-    double *vmat = homothetyVertexMatrix(x, y, z);
-    double *nmat = homothetyNormalMatrix(x, y, z);
-    int i;
-    
-    for (i = 0; i < obj->size; i++) {
-        matrixCoordMult(vmat, obj->vertex[i]);
-        matrixCoordMult(nmat, obj->normal[i]);
-    }
+    propagate(
+            node, homothetyVertexMatrix(x, y, z), homothetyNormalMatrix(x, y, z), homothetyVertexInvMatrix(x, y, z),
+            false
+    );
 }

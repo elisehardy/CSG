@@ -31,71 +31,67 @@ Tree *newNode(Operator op, Object *obj) {
 }
 
 
-void unionTree(Object *objA, Object *objB){
+void unionTree(Object *objA, Object *objB) {
     int i;
     int v;
     //make transforme de l'union
     //make inverse pour les deux objet pour A applique inverse de B et pour B applique inverse de A
-    for(i = 0; i<objA->size;i++){
-        if(objA->pt_in(objA, objB->vertex)){
+    for (i = 0; i < objA->size; i++) {
+        if (objA->pt_in(objA, objB->vertex)) {
             objA->visible[i] = 0;
-            
-        }else{
-            objA->visible[i]=1;
+        } else {
+            objA->visible[i] = 1;
         }
     }
-    for(i = 0; i<objB->size;i++){
-        if(objB->pt_in(objB, objA->vertex)){
+    for (i = 0; i < objB->size; i++) {
+        if (objB->pt_in(objB, objA->vertex)) {
             objB->visible[i] = 0;
-            
-        }else{
-            objB->visible[i]=1;
+        } else {
+            objB->visible[i] = 1;
         }
     }
 }
 
-void intersectionTree(Object *objA, Object *objB){
+
+void intersectionTree(Object *objA, Object *objB) {
     int i;
     int v;
     //make transforme de l'inter
     //make inverse pour les deux objet pour A applique inverse de B et pour B applique inverse de A
-    for(i = 0; i<objA->size;i++){
-        if(objA->pt_in(objA, objB->vertex)){
+    for (i = 0; i < objA->size; i++) {
+        if (objA->pt_in(objA, objB->vertex)) {
             objA->visible[i] = 1;
-            
-        }else{
-            objA->visible[i]=0;
+        } else {
+            objA->visible[i] = 0;
         }
     }
-    for(i = 0; i<objB->size;i++){
-        if(objB->pt_in(objB, objA->vertex)){
+    for (i = 0; i < objB->size; i++) {
+        if (objB->pt_in(objB, objA->vertex)) {
             objB->visible[i] = 1;
-            
-        }else{
-            objB->visible[i]=0;
+        } else {
+            objB->visible[i] = 0;
         }
     }
 }
 
-void soustractionTree(Object *objA, Object *objB){
+
+void soustractionTree(Object *objA, Object *objB) {
     int i;
     int v;
     //make transforme de la soustraction
     //make inverse pour les deux objet pour A applique inverse de B et pour B applique inverse de A
-    for(i = 0; i<objA->size;i++){
-        if(objA->pt_in(objA, objB->vertex)){
+    for (i = 0; i < objA->size; i++) {
+        if (objA->pt_in(objA, objB->vertex)) {
             objA->visible[i] = 0;
-            
-        }else{
-            objA->visible[i]=1;
+        } else {
+            objA->visible[i] = 1;
         }
     }
-    for(i = 0; i<objB->size;i++){
-        if(objB->pt_in(objB, objA->vertex)){
+    for (i = 0; i < objB->size; i++) {
+        if (objB->pt_in(objB, objA->vertex)) {
             objB->visible[i] = 1;
-            
-        }else{
-            objB->visible[i]=0;
+        } else {
+            objB->visible[i] = 0;
         }
     }
 }

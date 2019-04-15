@@ -2,17 +2,19 @@
 #define CSG_MATRIX_H
 
 #include "object.h"
-
+#include "tree.h"
 
 /**
- * Compute the multiplication m = factor * m.
+ * Compute the multiplication factor * m.
  *
  * Both matrix must be 4x4 and represented as an array of 16 doubles.
  *
  * @param m The matrix being multiplied.
  * @param factor The matrix by which m will be multiplied.
+ *
+ * @return The computed matrix.
  */
-void matrixMatrixMult(double *m, double *factor);
+double *matrixMatrixMult(double *m, double *factor);
 
 /**
  * Compute the multiplication p = factor * p.
@@ -31,7 +33,7 @@ void matrixCoordMult(double *factor, G3Xpoint p);
  * @param y Angle (in radian) of rotation around the Y axis.
  * @param z Angle (in radian) of rotation around the Z axis.
  */
-void rotate(Object *obj, double x, double y, double z);
+void rotate(Tree *node, double x, double y, double z);
 
 /**
  * Translate the given object alongside each axis by the distance given.
@@ -41,7 +43,7 @@ void rotate(Object *obj, double x, double y, double z);
  * @param y Distance the object will be moved alongside the Y.
  * @param z Distance the object will be moved alongside the Z.
  */
-void translate(Object *obj, double x, double y, double z);
+void translate(Tree *node, double x, double y, double z);
 
 /**
  * Apply an homothety the given object alongside each axis by the given ratio.
@@ -51,7 +53,7 @@ void translate(Object *obj, double x, double y, double z);
  * @param y Ratio the object will be dilated alongside the Y.
  * @param z Ratio the object will be dilated alongside the Z.
  */
-void homothate(Object *obj, double x, double y, double z);
+void homothate(Tree *node, double x, double y, double z);
 
 /**
  * Print the given matrix.
