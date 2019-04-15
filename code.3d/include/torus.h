@@ -31,7 +31,7 @@ Torus *buildRandomTorus(int n, int p, int innerRadius, int outerRadius);
  *
  * @return true if the point is inside or on the torus, false otherwise.
  */
-bool insideTorus(Torus *torus, G3Xpoint p);
+bool insideTorus( G3Xpoint p);
 
 /**
  * Draw a regular torus.

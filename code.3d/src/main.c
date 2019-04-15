@@ -1,3 +1,4 @@
+#include "../include/object.h"
 #include "../include/cone.h"
 #include "../include/cube.h"
 #include "../include/cylinder.h"
@@ -5,7 +6,23 @@
 #include "../include/torus.h"
 #include "../include/matrix.h"
 
+Object *sphere, *cube, *torus, *cone, *cylinder;
 
+void init(void) {
+    sphere = buildRandomSphere(1000, 1000);
+    cube = buildRandomCube(400, 400);
+    torus = buildRandomTorus(400, 400, 1, 2);
+    cone = buildRandomCone(1000, 400);
+    cylinder = buildRandomCylinder(400, 400);
+}
+void draw(void) {
+    g3x_Material(G3Xr, 0.25, 0.5, 0.5, 0.5, 1.);
+    /*drawObject(sphere, 1);*/
+    drawObject(cube, 1);
+    /*drawObject(torus, 1);*/
+    drawObject(cone, 1);
+    /*drawObject(cylinder,1);*/
+}
 int main(int argc, char **argv) {
     /* initialisation de la fenêtre graphique et paramétrage Gl */
     g3x_InitWindow(*argv, 768, 512);

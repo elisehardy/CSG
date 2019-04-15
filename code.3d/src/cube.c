@@ -216,12 +216,8 @@ void drawCube(Cube *cube, int c) {
 }
 
 
-bool insideCube(Cube *cube, G3Xpoint p) {
-    if (cube == NULL) {
-        errno = EFAULT;
-        perror("Error - insideCube ");
-        exit(1);
-    }
+bool insideCube( G3Xpoint p) {
+  
     
     return MAX(abs(p[0]), MAX(abs(p[1]), abs(p[2]))) <= 1;
 }

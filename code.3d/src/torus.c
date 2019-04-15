@@ -115,12 +115,8 @@ void drawTorus(Torus *torus, int cam) {
 }
 
 
-bool insideTorus(Torus *torus, G3Xpoint p) {
-    if (torus == NULL) {
-        errno = EFAULT;
-        perror("Error - insideTorus ");
-        exit(1);
-    }
+bool insideTorus( G3Xpoint p) {
+   
     
     return (sqrt(p[0] * p[0] + p[1] * p[1]) - 2) * (sqrt(p[0] * p[0] + p[1] * p[1]) - 2) + p[2] * p[2] < 1;
 }

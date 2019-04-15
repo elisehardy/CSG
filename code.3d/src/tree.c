@@ -98,4 +98,23 @@ void soustractionTree(Object *objA, Object *objB){
             objB->visible[i]=0;
         }
     }
+    
+    
+    
+bool pt_inTreeRec(Tree *tree, G3Xpoint p){
+            if(tree->left != NULL && tree->right != NULL){
+                switch(tree->op){
+                        case SOUSTRACTION:
+                           return  pt_inTreeRec(tree->left) && !pt_inTreeRec(tree->right);
+                        case UNION:
+                           return  pt_inTreeRec(tree->left) != pt_inTreeRec(tree->right);
+                        case INTERSECTION:
+                           return  pt_inTreeRec(tree->left) && pt_inTreeRec(tree->right);
+                    
+                }
+            }
+            else{
+                return tree->obj.pt_in(p);
+            }
+        }
 }

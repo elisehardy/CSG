@@ -31,6 +31,6 @@ Cylinder *buildRandomCylinder(int n, int p);
  *
  * @return true if the point is inside or on the cylinder, false otherwise.
  */
-bool insideCylinder(Cylinder *cylinder, G3Xpoint p);
+bool insideCylinder( G3Xpoint p);
 
 #endif
