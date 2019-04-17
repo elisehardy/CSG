@@ -72,7 +72,7 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     
     
     
-    new->op = op;
+    new->op = op;int
     new->md = NULL;
     new->mi = NULL;
     new->mn = NULL;
