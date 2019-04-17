@@ -3,7 +3,7 @@
 # compilateur
 CC = gcc
 
-FLAGS = -g -Wpointer-arith -Wall -Wextra -Werror -ansi -O2
+FLAGS = -g -Wpointer-arith -Wall -Wextra -Werror -O2
 IGNORED = -Wno-unused-parameter -Wno-unused-function
 CFLAGS = $(FLAGS) $(IGNORED)
 
@@ -25,7 +25,7 @@ src = src/
 bin = bin/
 
 
-objet = sphere cube cone cylinder torus matrix object tree
+objet = sphere cube cone cylinder torus matrix queue file object tree
 exec = main
 ####################################################################################################
 

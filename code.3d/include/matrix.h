@@ -3,6 +3,7 @@
 
 #include "tree.h"
 
+
 /**
  * Compute the multiplication factor * m.
  *
@@ -24,7 +25,7 @@ double *matrixMatrixMult(double *m, double *factor);
  *
  * @return The computed point.
  */
-G3Xpoint * matrixCoordMult(double *factor, G3Xpoint p);
+G3Xpoint *matrixCoordMult(double *factor, G3Xpoint p);
 
 /**
  * Rotate the given node around each axis by the angles given.

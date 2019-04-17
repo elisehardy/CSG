@@ -3,8 +3,9 @@
 
 #include "object.h"
 
+
 typedef enum {
-    UNION, INTERSECTION, SOUSTRACTION, EQUAL, NONE
+    UNION, INTERSECTION, SUBTRACTION, EQUAL, NONE
 } Operator;
 
 
@@ -23,11 +24,8 @@ typedef struct _node {
 } Tree;
 
 
-
-Tree *newLeaf(Object *obj);
-
 /**
- * Create a new node.
+ * Create a new leaf from the given object.
  *
  * Field are initialized like this :
  * - neg is initialized to false.
@@ -40,6 +38,24 @@ Tree *newLeaf(Object *obj);
  *
  * @return The newly created node.
  */
+Tree *newLeaf(Object *obj);
+
+/**
+ * Return a new node linking left and right with op.
+ *
+ * @param left The left operand of the operation.
+ * @param right The right operand of the operation.
+ * @param op The operator of the operation.
+ *
+ * @return The newly created node.
+ */
 Tree *newNode(Tree *left, Tree *right, Operator op);
+
+/**
+ * Print a Tree.
+ *
+ * @param root Root of the tree.
+ */
+void printTree(Tree *root);
 
 #endif

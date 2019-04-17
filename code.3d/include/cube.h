@@ -31,7 +31,7 @@ Cube *buildRandomCube(int n, int p);
  *
  * @return true if the point is inside or on the cube, false otherwise.
  */
-bool insideCube( G3Xpoint p);
+bool insideCube(G3Xpoint p);
 
 /**
  * Draw a regular cube.

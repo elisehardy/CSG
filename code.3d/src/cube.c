@@ -1,3 +1,4 @@
+#include <errno.h>
 #include "../include/cube.h"
 
 
@@ -216,8 +217,7 @@ void drawCube(Cube *cube, int c) {
 }
 
 
-bool insideCube( G3Xpoint p) {
-  
+bool insideCube(G3Xpoint p) {
     
     return MAX(abs(p[0]), MAX(abs(p[1]), abs(p[2]))) <= 1;
 }

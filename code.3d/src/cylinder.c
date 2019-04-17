@@ -1,3 +1,4 @@
+#include <errno.h>
 #include "../include/cylinder.h"
 
 
@@ -126,7 +127,6 @@ Cylinder *buildRandomCylinder(int n, int p) {
 
 
 bool insideCylinder(G3Xpoint p) {
-  
     
     return abs(p[2]) < 1 && p[0] * p[0] + p[1] * p[1] < 1;
 }

@@ -1,3 +1,4 @@
+#include <errno.h>
 #include "../include/matrix.h"
 
 
@@ -310,13 +311,15 @@ static void propagate(Tree *node, double *vertex, double *normal, double *invers
     if (node->left && node->right) {
         propagate(node->left, vertex, normal, inverse, translation);
         propagate(node->right, vertex, normal, inverse, translation);
-    } else if (!node->left && !node->right) {
+    }
+    else if (!node->left && !node->right) {
         node->md = !node->md ? vertex : matrixMatrixMult(vertex, node->md);
         node->mi = !node->mi ? vertex : matrixMatrixMult(node->mi, vertex);
         if (!translation) {
             node->mn = !node->mn ? vertex : matrixMatrixMult(vertex, node->mn);
         }
-    } else {
+    }
+    else {
         fprintf(stderr, " propagate : Invalid node - only one son");
         exit(1);
     }

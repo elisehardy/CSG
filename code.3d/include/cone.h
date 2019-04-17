@@ -31,7 +31,7 @@ Cone *buildRandomCone(int n, int p);
  *
  * @return true if the point is inside or on the cone, false otherwise.
  */
-bool insideCone( G3Xpoint p);
+bool insideCone(G3Xpoint p);
 
 /**
  * Draw a regular cone.

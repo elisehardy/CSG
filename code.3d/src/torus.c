@@ -1,3 +1,4 @@
+#include <errno.h>
 #include "../include/torus.h"
 
 
@@ -115,8 +116,7 @@ void drawTorus(Torus *torus, int cam) {
 }
 
 
-bool insideTorus( G3Xpoint p) {
-   
+bool insideTorus(G3Xpoint p) {
     
     return (sqrt(p[0] * p[0] + p[1] * p[1]) - 2) * (sqrt(p[0] * p[0] + p[1] * p[1]) - 2) + p[2] * p[2] < 1;
 }

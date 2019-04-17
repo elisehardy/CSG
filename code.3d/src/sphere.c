@@ -1,3 +1,4 @@
+#include <errno.h>
 #include "../include/sphere.h"
 
 
@@ -89,8 +90,7 @@ Sphere *buildRandomSphere(int n, int p) {
 }
 
 
-bool insideSphere( G3Xpoint p) {
-   
+bool insideSphere(G3Xpoint p) {
     
     return (p[0] * p[0] + p[1] * p[1] + p[2] * p[2]) <= 1;
 }

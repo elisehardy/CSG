@@ -31,6 +31,6 @@ Sphere *buildRandomSphere(int n, int p);
  *
  * @return true if the point is inside or on the sphere, false otherwise.
  */
-bool insideSphere( G3Xpoint p);
+bool insideSphere(G3Xpoint p);
 
 #endif
