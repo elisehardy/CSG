@@ -27,6 +27,14 @@ typedef struct _obj {
 } Object;
 
 
+/**
+ * Merge two Object into a composite object.
+ *
+ * @param a First Object.
+ * @param b Second Object.
+ *
+ * @return The new composite Object.
+ */
 Object *merge(Object *a, Object *b);
 
 /**
