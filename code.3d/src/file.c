@@ -15,7 +15,7 @@
 /**
  * Trim whitespace on both side of str, returning the new size of str.
  *
- * @param str String to bez trimmed.
+ * @param str String to be trimmed.
  *
  * @return The size of the trimmed string.
  */
@@ -34,11 +34,11 @@ static int trim(char *str) {
         return 0;
     }
     
-    str[len + 1] = '\0';
     size = len - i + 1;
     
     printf("%s %d %d %d\n", str, i, len, size);
     memmove(str, str + i, size);
+    str[size] = '\0';
     
     return size;
 }
