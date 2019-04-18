@@ -5,7 +5,7 @@
 
 
 static bool insideNode(Tree *tree, G3Xpoint p) {
-    if (!tree->left + !tree->right == 1) {
+    if ((tree->left == NULL) + (tree->right == NULL) == 1) {
         fprintf(stderr, "Error: insideNode - Invalid node.");
         exit(1);
     }
