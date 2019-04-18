@@ -33,8 +33,8 @@ void draw(void) {
 
 
 int main(int argc, char **argv) {
-    FILE *file;
-    Tree *tree;
+    Tree *tree = NULL;
+    FILE *file = NULL;
     
     /* initialisation de la fenêtre graphique et paramétrage Gl */
     g3x_InitWindow(*argv, 768, 512);

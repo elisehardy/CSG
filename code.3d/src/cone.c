@@ -73,6 +73,7 @@ Cone *buildRandomCone(int n, int p) {
     cone->p = p;
     cone->size = n * p;
     cone->shape = SHP_CONE;
+    cone->pt_in = NULL;
     cone->vertex = (G3Xpoint *) calloc(cone->size, sizeof(G3Xpoint));
     cone->normal = (G3Xvector *) calloc(cone->size, sizeof(G3Xvector));
     if (!(cone->vertex && cone->normal)) {

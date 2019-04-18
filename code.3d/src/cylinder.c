@@ -2,44 +2,16 @@
 #include "../include/cylinder.h"
 
 
-Cylinder *buildRegularCylinder(int n, int p) {
-    Cylinder *cylinder = (Object *) malloc(sizeof(Object));
-    if (cylinder == NULL) {
-        errno = ENOMEM;
-        perror("Error - buildRegularCylinder ");
-        exit(1);
-    }
-    
-    cylinder->n = n;
-    cylinder->p = p;
-    cylinder->size = n * p;
-    cylinder->shape = SHP_CYLINDER;
-    cylinder->vertex = (G3Xpoint *) calloc(cylinder->size, sizeof(G3Xpoint));
-    cylinder->normal = (G3Xvector *) calloc(cylinder->size, sizeof(G3Xvector));
-    if (!(cylinder->vertex && cylinder->normal)) {
-        errno = ENOMEM;
-        perror("Error - buildRegularCylinder ");
-        exit(1);
-    }
-    
-    double theta, z;
-    int i, j;
-    
-    for (i = 0; i < cylinder->p; i++) {
-        for (j = 0; j < cylinder->n; j++) {
-            z = sqrt(g3x_Rand_Delta(0, 1));
-            theta = g3x_Rand_Delta(0, 2 * PI);
-            cylinder->vertex[i * (cylinder->n) + j][0] = z * cos(theta);
-            cylinder->vertex[i * (cylinder->n) + j][1] = z * sin(theta);
-            cylinder->vertex[i * (cylinder->n) + j][2] = z;
-            
-            cylinder->normal[i * (cylinder->n) + j][0] = cos(theta);
-            cylinder->normal[i * (cylinder->n) + j][1] = sin(theta);
-            cylinder->normal[i * (cylinder->n) + j][2] = 1;
-        }
-    }
-    
-    return cylinder;
+/**
+ * Check if a point is inside or on a cylinder.
+ *
+ * @param cylinder The cylinder the point will be checked against.
+ * @param p The point being checked.
+ *
+ * @return true if the point is inside or on the cylinder, false otherwise.
+ */
+static bool insideCylinder(G3Xpoint p) {
+    return abs(p[2]) < 1 && p[0] * p[0] + p[1] * p[1] < 1;
 }
 
 
@@ -55,6 +27,7 @@ Cylinder *buildRandomCylinder(int n, int p) {
     cylinder->p = p;
     cylinder->size = n * p;
     cylinder->shape = SHP_CYLINDER;
+    cylinder->pt_in = insideCylinder;
     cylinder->vertex = (G3Xpoint *) calloc(cylinder->size, sizeof(G3Xpoint));
     cylinder->normal = (G3Xvector *) calloc(cylinder->size, sizeof(G3Xvector));
     if (!(cylinder->vertex && cylinder->normal)) {
@@ -123,10 +96,4 @@ Cylinder *buildRandomCylinder(int n, int p) {
     }
     
     return cylinder;
-}
-
-
-bool insideCylinder(G3Xpoint p) {
-    
-    return abs(p[2]) < 1 && p[0] * p[0] + p[1] * p[1] < 1;
 }

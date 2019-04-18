@@ -22,21 +22,23 @@
 static int trim(char *str) {
     int size, i = 0, len = strlen(str) - 1;
     
-    while (isspace(str[i]) && i <= len) {
+    if (len == -1) {
+        return 0;
+    }
+    
+    while (isspace(str[i]) && i < len) {
         i++;
     }
-    while (isspace(str[len]) > i) {
+    while (isspace(str[len]) && len > i) {
         len--;
     }
     
-    if (i > len) {
+    if (i == len) {
         str[0] = '\0';
         return 0;
     }
     
     size = len - i + 1;
-    
-    printf("%s %d %d %d\n", str, i, len, size);
     memmove(str, str + i, size);
     str[size] = '\0';
     
@@ -119,29 +121,32 @@ static Operator parseOp(char *token, int line) {
 
 Tree *parseFile(FILE *file) {
     char *line = NULL, *token = NULL;
+    Tree *current = NULL;
     Stack *stack = NULL;
-    Tree *root = NULL;
     size_t len = 0;
+    Operator op;
     int l, read;
     
     for (l = 1; (read = getline(&line, &len, file)) != -1; l++) {
+        trim(line);
+        if (!strlen(line)) {
+            continue;
+        }
+        
         if ((token = strtok(line, ":")) == NULL) {
             fprintf(stderr, "Error: Syntax error (line %d).\n", l);
             exit(1);
         }
         
         trim(token);
-        
         if (!strcmp(token, "obj")) {
             if ((token = strtok(NULL, ":")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
             trim(token);
-            addStack(stack, parseObj(token, l));
-        }
-        
-        else if (!strcmp(token, "obj")) {
+            current = newLeaf(parseObj(token, l));
+            stack = addStack(stack, current);
         }
         
         else if (!strcmp(token, "col")) {
@@ -168,15 +173,15 @@ Tree *parseFile(FILE *file) {
                 exit(1);
             }
             trim(token);
-            parseOp(token, l);
+            op = parseOp(token, l);
+            current = newNode(popStack(&stack), popStack(&stack), op);
+            stack = addStack(stack, current);
         }
-        
         
         else {
             fprintf(stderr, "Error: Unknown action (line %d) - '%s'\n", l, token);
             exit(1);
         }
     }
-    
-    return root;
+    return popStack(&stack);
 }

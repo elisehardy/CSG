@@ -5,7 +5,15 @@
 
 
 static bool insideNode(Tree *tree, G3Xpoint p) {
+    if (!tree->left + !tree->right == 1) {
+        fprintf(stderr, "Error: insideNode - Invalid node.");
+        exit(1);
+    }
+    
     if (tree->left == NULL && tree->right == NULL) {
+        if (tree->mi == NULL) {
+            return tree->obj->pt_in(p);
+        }
         return tree->obj->pt_in(*matrixCoordMult(tree->mi, p));
     }
     
@@ -25,7 +33,7 @@ static bool insideNode(Tree *tree, G3Xpoint p) {
 static char *getTreeData(Tree *node) {
     if (node == NULL) {
         errno = EFAULT;
-        perror("Error - printTreeRec ");
+        perror("Error - getTreeData ");
         exit(1);
     }
     
@@ -66,19 +74,16 @@ static char *getTreeData(Tree *node) {
 
 static void printTreeRec(Tree *node, int space) {
     if (node == NULL) {
-        errno = EFAULT;
-        perror("Error - printTreeRec ");
-        exit(1);
+        return;
     }
     
-    space += 8;
-    printTreeRec(node->right, space);
+    printTreeRec(node->right, space + 8);
     printf("\n");
     for (int i = 0; i < space; i++) {
         printf(" ");
     }
     printf("%s\n", getTreeData(node));
-    printTreeRec(node->left, space);
+    printTreeRec(node->left, space + 8);
 }
 
 

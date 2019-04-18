@@ -1,14 +1,14 @@
 #ifndef CSG_STACK_H
 #define CSG_STACK_H
 
-#include "object.h"
+#include "tree.h"
 
 
 /**
  * A queue of Object.
  */
 typedef struct _cell {
-    Object *obj;        /**< An Object. */
+    Tree *node;        /**< An Object. */
     struct _cell *next; /**< The next element of this cell. */
 } Stack;
 
@@ -20,7 +20,7 @@ typedef struct _cell {
  *
  * @return The newly created queue containing obj.
  */
-Stack *newStack(Object *obj);
+Stack *newStack(Tree *node);
 
 /**
  * Remove the first Object from the stack and return it.
@@ -29,7 +29,7 @@ Stack *newStack(Object *obj);
  *
  * @return The first Object of the stack.
  */
-Object *popStack(Stack *q);
+Tree *popStack(Stack **stack);
 
 /**
  * Add a new Object to the stack. If q is NULL, create a new stack.
@@ -37,6 +37,8 @@ Object *popStack(Stack *q);
  * @param q A queue, NULL to create a new stack.
  * @param obj The object to be added to the stack.
  */
-void addStack(Stack *q, Object *obj);
+Stack *addStack(Stack *stack, Tree *node);
+
+void printStack(Stack *stack);
 
 #endif
