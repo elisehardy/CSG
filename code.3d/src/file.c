@@ -9,7 +9,7 @@
 #include "../include/cylinder.h"
 #include "../include/torus.h"
 #include "../include/cone.h"
-#include "../include/queue.h"
+#include "../include/stack.h"
 
 
 /**
@@ -119,7 +119,7 @@ static Operator parseOp(char *token, int line) {
 
 Tree *parseFile(FILE *file) {
     char *line = NULL, *token = NULL;
-    Queue *queue = NULL;
+    Stack *stack = NULL;
     Tree *root = NULL;
     size_t len = 0;
     int l, read;
@@ -138,7 +138,7 @@ Tree *parseFile(FILE *file) {
                 exit(1);
             }
             trim(token);
-            addQueue(queue, parseObj(token, l));
+            addStack(stack, parseObj(token, l));
         }
         
         else if (!strcmp(token, "obj")) {
@@ -170,6 +170,7 @@ Tree *parseFile(FILE *file) {
             trim(token);
             parseOp(token, l);
         }
+        
         
         else {
             fprintf(stderr, "Error: Unknown action (line %d) - '%s'\n", l, token);

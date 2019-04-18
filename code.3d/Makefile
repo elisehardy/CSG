@@ -25,7 +25,7 @@ src = src/
 bin = bin/
 
 
-objet = sphere cube cone cylinder torus matrix queue file object tree
+objet = sphere cube cone cylinder torus matrix stack file object tree
 exec = main
 ####################################################################################################
 
