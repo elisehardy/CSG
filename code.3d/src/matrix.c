@@ -316,7 +316,7 @@ static void propagate(Tree *node, double *vertex, double *normal, double *invers
         propagate(node->right, vertex, normal, inverse, translation);
     } else if (!node->left && !node->right) {
         node->md = !node->md ? vertex : matrixMatrixMult(vertex, node->md);
-        node->mi = !node->mi ? vertex : matrixMatrixMult(node->mi, vertex);
+        node->mi = !node->mi ? vertex : matrixMatrixMult(vertex, node->mi);
         if (!translation) {
             node->mn = !node->mn ? vertex : matrixMatrixMult(vertex, node->mn);
         }
@@ -438,7 +438,7 @@ void translate(Tree *node, double x, double y, double z) {
     }
     
     double *mat = translationMatrix(x, y, z);
-    propagate(node, mat, mat, translationInvMatrix(x, y, z), true);
+    propagate(node, mat, NULL, translationInvMatrix(x, y, z), true);
 }
 
 

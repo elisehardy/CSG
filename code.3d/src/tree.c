@@ -12,9 +12,11 @@ static bool insideNode(Tree *tree, G3Xpoint p) {
     
     if (tree->left == NULL && tree->right == NULL) {
         if (tree->mi == NULL) {
+            
             return tree->obj->pt_in(p);
         }
-        return tree->obj->pt_in(matrixCoordMult(tree->mi, p));
+    
+        return tree->obj->pt_in(matrixCoordMult(p,tree->mi));
     }
     
     switch (tree->op) {
@@ -153,6 +155,7 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     new->visible = malloc(sizeof(bool) * new->obj->size);
     
     int i;
+    
     for (i = 0; i < new->obj->size; i++) {
         new->visible[i] = insideNode(new, new->obj->vertex[i]);
     }
@@ -175,11 +178,13 @@ void drawNode(Tree *node, int c) {
     glPointSize(1);
     glBegin(GL_POINTS);
     
-    for (i = 0; i < size; i += c) {
-        if (node->visible[i]) {
-            g3x_Material(node->obj->color[i], 0.25, 0.5, 0.5, 0.5, 1.);
-            glNormal3dv(n[i]);
-            glVertex3dv(v[i]);
+    if(!node->neg) {
+        for (i = 0; i < size; i += c) {
+            if (node->visible[i]) {
+                g3x_Material(node->obj->color[i], 0.25, 0.5, 0.5, 0.5, 1.);
+                glNormal3dv(n[i]);
+                glVertex3dv(v[i]);
+            }
         }
     }
     

@@ -28,6 +28,8 @@ void init(void) {
     
     tree = parseFile(file);
     fclose(file);
+    
+    printTree(tree);
 }
 
 
