@@ -2,6 +2,17 @@
 #include "../include/cone.h"
 
 
+/**
+ * Check if a point is inside or on a cone.
+ *
+ * @param cone The cone the point will be checked against.
+ * @param p The point being checked.
+ *
+ * @return true if the point is inside or on the cone, false otherwise.
+ */
+static bool insideCone(G3Xpoint p) {
+    return (p[2] > -1 && p[2] < 0) && (p[0] * p[0] + p[1] * p[1]) < (p[2] * p[2]);
+}
 
 
 Cone *buildRandomCone(int n, int p) {
@@ -19,7 +30,7 @@ Cone *buildRandomCone(int n, int p) {
     cone->p = p;
     cone->size = n * p;
     cone->shape = SHP_CONE;
-    cone->pt_in = NULL;
+    cone->pt_in = insideCone;
     cone->vertex = (G3Xpoint *) calloc(cone->size, sizeof(G3Xpoint));
     cone->normal = (G3Xvector *) calloc(cone->size, sizeof(G3Xvector));
     if (!(cone->vertex && cone->normal)) {
@@ -63,8 +74,4 @@ Cone *buildRandomCone(int n, int p) {
     return cone;
 }
 
-
-bool insideCone(G3Xpoint p){
-    return (p[2]>-1 && p[2]<0) && (p[0]*p[0]+p[1]*p[1]) < (p[2]*p[2]);
-    }
 

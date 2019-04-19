@@ -9,9 +9,7 @@
 #include "../include/cylinder.h"
 #include "../include/torus.h"
 #include "../include/cone.h"
-
 #include "../include/matrix.h"
-
 #include "../include/stack.h"
 
 
@@ -66,18 +64,14 @@ static Object *parseObj(char *token, int line) {
     
     if (strcmp(token, "cube") == 0) {
         return buildRandomCube(1000, 1000);
-    }
-    else if (!strcmp(token, "sphere")) {
+    } else if (!strcmp(token, "sphere")) {
         return buildRandomSphere(1000, 1000);
-    }
-    else if (!strcmp(token, "cylinder")) {
+    } else if (!strcmp(token, "cylinder")) {
         return buildRandomCylinder(1000, 1000);
-    }
-    else if (!strcmp(token, "torus")) {
+    } else if (!strcmp(token, "torus")) {
         /* FAUT DÉCIDER D'UNE VALEUR CANONIQUE POUR INNER RADIUS ET OUTER RADIUS */
         return buildRandomTorus(1000, 1000, 1, 2);
-    }
-    else if (!strcmp(token, "cone")) {
+    } else if (!strcmp(token, "cone")) {
         return buildRandomCone(1000, 1000);
     }
     
@@ -133,8 +127,8 @@ static Operator parseOp(char *token, int line) {
  *
  * @return The corresponding color.
  */
-static G3Xcolor* parseCol(char *r, char *b, char * g, char *a) {
-    if (r == NULL || g == NULL || b == NULL || a ==  NULL) {
+static G3Xcolor *parseCol(char *r, char *b, char *g, char *a) {
+    if (r == NULL || g == NULL || b == NULL || a == NULL) {
         errno = EFAULT;
         perror("Error - parseCol ");
         exit(1);
@@ -156,7 +150,6 @@ static G3Xcolor* parseCol(char *r, char *b, char * g, char *a) {
 }
 
 
-
 /**
  * Return a color corresponding to the one following 'col:'.
  *
@@ -168,28 +161,23 @@ static G3Xcolor* parseCol(char *r, char *b, char * g, char *a) {
  *
  * @return The corresponding color.
  */
-static void parseT(Tree * tree,char *x, char *y, char * z) {
-    if (tree ==  NULL || x == NULL || y == NULL || z == NULL ) {
+static void parseT(Tree *tree, char *x, char *y, char *z) {
+    if (tree == NULL || x == NULL || y == NULL || z == NULL) {
         errno = EFAULT;
         perror("Error - parseT ");
         exit(1);
     }
     
-      translate(tree,strtof(x, NULL),strtof(y, NULL),strtof(z, NULL));
-    
-   
-    
-    
-    
-   
+    translate(tree, strtof(x, NULL), strtof(y, NULL), strtof(z, NULL));
 }
 
-Tree *parseFile(FILE *file) {
 
+Tree *parseFile(FILE *file) {
+    
     char *line = NULL, *token = NULL, *r, *g, *b, *a, *x, *y, *z;
     Tree *current = NULL;
     G3Xcolor *color;
-
+    
     Stack *stack = NULL;
     size_t len = 0;
     Operator op;
@@ -213,12 +201,10 @@ Tree *parseFile(FILE *file) {
                 exit(1);
             }
             trim(token);
-
+            
             current = newLeaf(parseObj(token, l));
             stack = addStack(stack, current);
-        }
-        
-        else if (!strcmp(token, "col")) {
+        } else if (!strcmp(token, "col")) {
             if ((r = strtok(NULL, ".")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
@@ -235,10 +221,8 @@ Tree *parseFile(FILE *file) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
-            color = parseCol(r, g, b, a); 
-        }
-        
-        else if (!strcmp(token, "T")) {
+            color = parseCol(r, g, b, a);
+        } else if (!strcmp(token, "T")) {
             if ((x = strtok(NULL, ".")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
@@ -251,23 +235,11 @@ Tree *parseFile(FILE *file) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
-           
-        
-        }
-        
-        else if (!strcmp(token, "H")) {
-        }
-        
-        else if (!strcmp(token, "Rx")) {
-        }
-        
-        else if (!strcmp(token, "Ry")) {
-        }
-        
-        else if (!strcmp(token, "Rz")) {
-        }
-        
-        else if (!strcmp(token, "op")) {
+        } else if (!strcmp(token, "H")) {
+        } else if (!strcmp(token, "Rx")) {
+        } else if (!strcmp(token, "Ry")) {
+        } else if (!strcmp(token, "Rz")) {
+        } else if (!strcmp(token, "op")) {
             if ((token = strtok(NULL, ":")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
@@ -276,9 +248,7 @@ Tree *parseFile(FILE *file) {
             op = parseOp(token, l);
             current = newNode(popStack(&stack), popStack(&stack), op);
             stack = addStack(stack, current);
-        }
-        
-        else {
+        } else {
             fprintf(stderr, "Error: Unknown action (line %d) - '%s'\n", l, token);
             exit(1);
         }

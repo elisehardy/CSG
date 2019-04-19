@@ -3,17 +3,23 @@
 
 
 Object *merge(Object *a, Object *b) {
+    if (a == NULL || b == NULL) {
+        errno = EFAULT;
+        perror("Error - merge ");
+        exit(1);
+    }
+    
     Object *obj = (Object *) malloc(sizeof(Object));
     if (obj == NULL) {
         errno = ENOMEM;
-        perror("Error - buildRandomobj ");
+        perror("Error - merge ");
         exit(1);
     }
     
     obj->n = 0;
     obj->p = 0;
-    obj->size = a->size + b->size;
     obj->shape = SHP_COMPOSITE;
+    obj->size = a->size + b->size;
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
     

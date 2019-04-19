@@ -10,31 +10,38 @@
 #include "../include/file.h"
 
 
-Object *sphere, *cube, *torus, *cone, *cylinder;
+Tree *tree;
+
+
+char *filepath;
 
 
 void init(void) {
-    sphere = buildRandomSphere(1000, 1000);
-    cube = buildRandomCube(400, 400);
-    torus = buildRandomTorus(400, 400, 1, 2);
-    cone = buildRandomCone(1000, 400);
-    cylinder = buildRandomCylinder(400, 400);
+    FILE *file;
+    Tree *tree;
+    
+    file = fopen(filepath, "r");
+    if (file == NULL) {
+        errno = ENOENT;
+        perror(filepath);
+        exit(1);
+    }
+    
+    tree = parseFile(file);
+    
+    fclose(file);
 }
 
 
 void draw(void) {
     g3x_Material(G3Xr, 0.25, 0.5, 0.5, 0.5, 1.);
-    /*drawObject(sphere, 1);*/
-    drawObject(cube, 1);
-    /*drawObject(torus, 1);*/
-    drawObject(cone, 1);
-    /*drawObject(cylinder,1);*/
+    drawObject(tree->obj, 1);
 }
 
 
 int main(int argc, char **argv) {
-    Tree *tree = NULL;
-    FILE *file = NULL;
+    
+    filepath = argv[0];
     
     /* initialisation de la fenêtre graphique et paramétrage Gl */
     g3x_InitWindow(*argv, 768, 512);
@@ -43,16 +50,6 @@ int main(int argc, char **argv) {
     /* position, orientation de la caméra */
     g3x_SetCameraSpheric(0.25 * PI, +0.25 * PI, 6., (G3Xpoint) {0., 0., 0.});
     
-    file = fopen(argv[1], "r");
-    if (file == NULL) {
-        errno = ENOENT;
-        perror(argv[1]);
-        exit(1);
-    }
-    /*create tree*/
-    tree = parseFile(file);
-    
-    printTree(tree);
     
     /* définition des fonctions */
     g3x_SetInitFunction(init);     /* la fonction d'initialisation */

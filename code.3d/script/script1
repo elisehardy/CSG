@@ -16,6 +16,6 @@ op: sous
 
 op: equal
 
-obj: torus
+obj: cone
 
 op: union
