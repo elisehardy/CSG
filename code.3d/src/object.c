@@ -30,14 +30,14 @@ Object *merge(Object *a, Object *b) {
         exit(1);
     }
     
-    memcpy(obj->vertex, a->vertex, a->size);
-    memcpy(obj->vertex + a->size, b->vertex, b->size);
+    memcpy(obj->vertex, a->vertex, a->size * sizeof(G3Xpoint));
+    memcpy(obj->vertex + a->size, b->vertex, b->size * sizeof(G3Xpoint));
     
-    memcpy(obj->normal, a->normal, a->size);
-    memcpy(obj->normal + a->size, b->normal, b->size);
+    memcpy(obj->normal, a->normal, a->size * sizeof(G3Xvector));
+    memcpy(obj->normal + a->size, b->normal, b->size * sizeof(G3Xvector));
     
-    memcpy(obj->color, a->color, a->size);
-    memcpy(obj->color + a->size, b->color, b->size);
+    memcpy(obj->color, a->color, a->size * sizeof(G3Xcolor));
+    memcpy(obj->color + a->size, b->color, b->size * sizeof(G3Xcolor));
     
     return obj;
 }

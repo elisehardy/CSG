@@ -3,29 +3,37 @@
 #include "../include/tree.h"
 #include "../include/matrix.h"
 
+int num = 0;
 
 static bool insideNode(Tree *tree, G3Xpoint p) {
     if ((tree->left == NULL) + (tree->right == NULL) == 1) {
         fprintf(stderr, "Error: insideNode - Invalid node.");
         exit(1);
     }
-    
+    double *p2;
+    int a, b;
     if (tree->left == NULL && tree->right == NULL) {
         if (tree->mi == NULL) {
-            
-            return tree->obj->pt_in(p);
+            p2 = p;
+            int in = tree->obj->pt_in(p2);
+            return in;
         }
-    
-        return tree->obj->pt_in(matrixCoordMult(p,tree->mi));
+        
+        p2 = matrixCoordMult(tree->mi, p);
+        int in = tree->obj->pt_in(p2);
+        return in;
     }
     
     switch (tree->op) {
         case SUBTRACTION:
-            return insideNode(tree->left, p) && !insideNode(tree->right, p);
+            return !insideNode(tree->right, p);
         case UNION:
-            return insideNode(tree->left, p) != insideNode(tree->right, p);
+            a = insideNode(tree->left, p), b = insideNode(tree->right, p);
+            return a != b;
         case INTERSECTION:
             return insideNode(tree->left, p) && insideNode(tree->right, p);
+        case EQUAL:
+            return true;
         default:
             return insideNode(tree->left, p) || insideNode(tree->right, p);
     }

@@ -4,4 +4,4 @@ col:1;1;1;0
 obj: sphere
 T: 1;0;0
 
-op: sous
+op: inter

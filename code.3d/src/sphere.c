@@ -11,7 +11,7 @@
  * @return true if the point is inside or on the sphere, false otherwise.
  */
 static bool insideSphere(G3Xpoint p) {
-    return (p[0] * p[0] + p[1] * p[1] + p[2] * p[2]) <= 1;
+    return (p[0] * p[0] + p[1] * p[1] + p[2] * p[2]) <= 1.0000001;
 }
 
 
@@ -63,7 +63,7 @@ Sphere *buildRandomSphere(int n, int p) {
         vertices++;
     }
     
-    memcpy(sphere->normal, sphere->vertex, sphere->n * sphere->p * sizeof(G3Xvector));
+    memcpy(sphere->normal, sphere->vertex, sphere->size * sizeof(G3Xvector));
     
     return sphere;
 }
