@@ -158,15 +158,9 @@ static G3Xcolor* parseCol(char *r, char *b, char * g, char *a) {
 
 
 /**
- * Return a color corresponding to the one following 'col:'.
+ * Return a tranlsation corresponding to the one following 'T:'.
  *
- * @param b String following 'blue:'.
- * @param r String following 'red:'.
- * @param g String following 'green:'.
- * @param a String following 'alpha:'.
- * @param line Current line number in the script.
- *
- * @return The corresponding color.
+
  */
 static void parseT(Tree * tree,char *x, char *y, char * z) {
     if (tree ==  NULL || x == NULL || y == NULL || z == NULL ) {
@@ -177,11 +171,43 @@ static void parseT(Tree * tree,char *x, char *y, char * z) {
     
       translate(tree,strtof(x, NULL),strtof(y, NULL),strtof(z, NULL));
     
-   
+
+}
+
+
+/**
+ * Return a homothate corresponding to the one following 'col:'.
+ *
+
+ */
+static void parseH(Tree * tree,char *x, char *y, char * z) {
+    if (tree ==  NULL || x == NULL || y == NULL || z == NULL ) {
+        errno = EFAULT;
+        perror("Error - parseT ");
+        exit(1);
+    }
     
+      homothate(tree,strtof(x, NULL),strtof(y, NULL),strtof(z, NULL));
     
+
+}
+
+
+/**
+ * Return a rotate corresponding to the one following 'col:'.
+ *
+
+ */
+static void parseR(Tree * tree,char *x, char *y, char * z) {
+    if (tree ==  NULL || x == NULL || y == NULL || z == NULL ) {
+        errno = EFAULT;
+        perror("Error - parseT ");
+        exit(1);
+    }
     
-   
+      rotate(tree,strtof(x, NULL),strtof(y, NULL),strtof(z, NULL));
+    
+
 }
 
 Tree *parseFile(FILE *file) {
@@ -251,20 +277,50 @@ Tree *parseFile(FILE *file) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
-           
+           parseT(current, x, y, z);
         
         }
         
         else if (!strcmp(token, "H")) {
+            if ((x = strtok(NULL, ".")) == NULL) {
+                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
+                exit(1);
+            }
+            if ((y = strtok(NULL, ".")) == NULL) {
+                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
+                exit(1);
+            }
+            if ((z = strtok(NULL, ".")) == NULL) {
+                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
+                exit(1);
+            }
+            parseH(current, x, y, z);
         }
         
         else if (!strcmp(token, "Rx")) {
+            if ((x = strtok(NULL, ".")) == NULL) {
+                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
+                exit(1);
+            }
+            parseR(current, x, "0", "0");
         }
         
         else if (!strcmp(token, "Ry")) {
+            if ((y = strtok(NULL, ".")) == NULL) {
+                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
+                exit(1);
+            }
+            parseR(current, "0", y, "0");
+
         }
         
         else if (!strcmp(token, "Rz")) {
+            if ((z = strtok(NULL, ".")) == NULL) {
+                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
+                exit(1);
+            }
+            parseR(current, "0", "0", z);
+
         }
         
         else if (!strcmp(token, "op")) {
