@@ -9,6 +9,8 @@ typedef enum {
 } Operator;
 
 
+
+
 /**
  * CSG Tree used to represents composite Objects.
  */

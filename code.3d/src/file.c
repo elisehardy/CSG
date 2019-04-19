@@ -10,6 +10,7 @@
 #include "../include/torus.h"
 #include "../include/cone.h"
 #include "../include/queue.h"
+#include "../include/matrix.h"
 
 
 /**
@@ -70,7 +71,7 @@ static Object *parseObj(char *token, int line) {
     }
     else if (!strcmp(token, "torus")) {
         /* FAUT DÉCIDER D'UNE VALEUR CANONIQUE POUR INNER RADIUS ET OUTER RADIUS */
-        return buildRandomTorus(1000, 1000, 10, 20);
+        return buildRandomTorus(1000, 1000, 1, 2);
     }
     else if (!strcmp(token, "cone")) {
         return buildRandomCone(1000, 1000);
@@ -117,10 +118,78 @@ static Operator parseOp(char *token, int line) {
 }
 
 
+/**
+ * Return a color corresponding to the one following 'col:'.
+ *
+ * @param b String following 'blue:'.
+ * @param r String following 'red:'.
+ * @param g String following 'green:'.
+ * @param a String following 'alpha:'.
+ * @param line Current line number in the script.
+ *
+ * @return The corresponding color.
+ */
+static G3Xcolor* parseCol(char *r, char *b, char * g, char *a) {
+    if (r == NULL || g == NULL || b == NULL || a ==  NULL) {
+        errno = EFAULT;
+        perror("Error - parseCol ");
+        exit(1);
+    }
+    
+    G3Xcolor *color = malloc(sizeof(float) * 4);
+    if (!color) {
+        errno = ENOMEM;
+        perror("Error - parseCol ");
+        exit(1);
+    }
+    
+    *color[0] = strtof(r, NULL);
+    *color[1] = strtof(g, NULL);
+    *color[2] = strtof(b, NULL);
+    *color[3] = strtof(a, NULL);
+    
+    return color;
+}
+
+
+
+/**
+ * Return a color corresponding to the one following 'col:'.
+ *
+ * @param b String following 'blue:'.
+ * @param r String following 'red:'.
+ * @param g String following 'green:'.
+ * @param a String following 'alpha:'.
+ * @param line Current line number in the script.
+ *
+ * @return The corresponding color.
+ */
+static double* parseT(char *x, char *y, char * z) {
+    if (x == NULL || y == NULL || z == NULL ) {
+        errno = EFAULT;
+        perror("Error - parseT ");
+        exit(1);
+    }
+    
+     double *matrix = translationMatrix(strtof(x, NULL),strtof(y, NULL),strtof(z, NULL));
+    
+    if (matrix == NULL) {
+        errno = ENOMEM;
+        perror("Error - parseT ");
+        exit(1);
+    }
+    
+    
+    
+    
+    return matrix;
+}
+
 Tree *parseFile(FILE *file) {
-    char *line = NULL, *token = NULL;
+    char *line = NULL, *token = NULL, *r, *g, *b, *a, *x, *y, *z;
     Queue *queue = NULL;
-    Tree *root = NULL;
+    Tree *root = NULL, current = NULL;
+    G3Xcolor *color;
     size_t len = 0;
     int l, read;
     
@@ -138,16 +207,45 @@ Tree *parseFile(FILE *file) {
                 exit(1);
             }
             trim(token);
-            addQueue(queue, parseObj(token, l));
-        }
-        
-        else if (!strcmp(token, "obj")) {
+            current = parseObj(token, l);
+            addQueue(queue, current);
         }
         
         else if (!strcmp(token, "col")) {
+            if ((r = strtok(NULL, ".")) == NULL) {
+                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
+                exit(1);
+            }
+            if ((g = strtok(NULL, ".")) == NULL) {
+                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
+                exit(1);
+            }
+            if ((b = strtok(NULL, ".")) == NULL) {
+                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
+                exit(1);
+            }
+            if ((a = strtok(NULL, ".")) == NULL) {
+                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
+                exit(1);
+            }
+            color = parseCol(r, g, b, a); 
         }
         
         else if (!strcmp(token, "T")) {
+            if ((x = strtok(NULL, ".")) == NULL) {
+                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
+                exit(1);
+            }
+            if ((y = strtok(NULL, ".")) == NULL) {
+                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
+                exit(1);
+            }
+            if ((z = strtok(NULL, ".")) == NULL) {
+                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
+                exit(1);
+            }
+           
+        
         }
         
         else if (!strcmp(token, "H")) {
