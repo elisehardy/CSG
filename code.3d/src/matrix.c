@@ -320,7 +320,7 @@ static void propagate(Tree *node, double *vertex, double *normal, double *invers
         }
     }
     else {
-        fprintf(stderr, " propagate : Invalid node - only one son");
+        fprintf(stderr, " propagate : Invalid node");
         exit(1);
     }
 }
@@ -369,7 +369,7 @@ double *matrixMatrixMult(double *m, double *factor) {
 
 
 G3Xpoint *matrixCoordMult(double *factor, G3Xpoint p) {
-    if (!p) {
+    if (p == NULL || factor == NULL) {
         errno = EFAULT;
         perror("Error - matrixCoordMult ");
         exit(1);

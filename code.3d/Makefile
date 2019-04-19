@@ -4,7 +4,7 @@
 CC = gcc
 
 FLAGS = -g -Wpointer-arith -Wall -Wextra -Werror -O2
-IGNORED = -Wno-unused-parameter -Wno-unused-function
+IGNORED = -Wno-unused-parameter -Wno-unused-function -Wno-unused-but-set-variable
 CFLAGS = $(FLAGS) $(IGNORED)
 
 # assemblage des infos de lib. et inc.
@@ -25,7 +25,7 @@ src = src/
 bin = bin/
 
 
-objet = sphere cube cone cylinder torus matrix queue file object tree
+objet = sphere cube cone cylinder torus matrix stack file object tree
 exec = main
 ####################################################################################################
 

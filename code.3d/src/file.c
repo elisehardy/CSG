@@ -9,8 +9,10 @@
 #include "../include/cylinder.h"
 #include "../include/torus.h"
 #include "../include/cone.h"
-#include "../include/queue.h"
+
 #include "../include/matrix.h"
+
+#include "../include/stack.h"
 
 
 /**
@@ -23,21 +25,23 @@
 static int trim(char *str) {
     int size, i = 0, len = strlen(str) - 1;
     
-    while (isspace(str[i]) && i <= len) {
+    if (len == -1) {
+        return 0;
+    }
+    
+    while (isspace(str[i]) && i < len) {
         i++;
     }
-    while (isspace(str[len]) > i) {
+    while (isspace(str[len]) && len > i) {
         len--;
     }
     
-    if (i > len) {
+    if (i == len) {
         str[0] = '\0';
         return 0;
     }
     
     size = len - i + 1;
-    
-    printf("%s %d %d %d\n", str, i, len, size);
     memmove(str, str + i, size);
     str[size] = '\0';
     
@@ -164,51 +168,54 @@ static G3Xcolor* parseCol(char *r, char *b, char * g, char *a) {
  *
  * @return The corresponding color.
  */
-static double* parseT(char *x, char *y, char * z) {
-    if (x == NULL || y == NULL || z == NULL ) {
+static void parseT(Tree * tree,char *x, char *y, char * z) {
+    if (tree ==  NULL || x == NULL || y == NULL || z == NULL ) {
         errno = EFAULT;
         perror("Error - parseT ");
         exit(1);
     }
     
-     double *matrix = translationMatrix(strtof(x, NULL),strtof(y, NULL),strtof(z, NULL));
+      translate(tree,strtof(x, NULL),strtof(y, NULL),strtof(z, NULL));
     
-    if (matrix == NULL) {
-        errno = ENOMEM;
-        perror("Error - parseT ");
-        exit(1);
-    }
+   
     
     
     
-    
-    return matrix;
+   
 }
 
 Tree *parseFile(FILE *file) {
+
     char *line = NULL, *token = NULL, *r, *g, *b, *a, *x, *y, *z;
-    Queue *queue = NULL;
-    Tree *root = NULL, current = NULL;
+    Tree *current = NULL;
     G3Xcolor *color;
+
+    Stack *stack = NULL;
     size_t len = 0;
+    Operator op;
     int l, read;
     
     for (l = 1; (read = getline(&line, &len, file)) != -1; l++) {
+        trim(line);
+        if (!strlen(line)) {
+            continue;
+        }
+        
         if ((token = strtok(line, ":")) == NULL) {
             fprintf(stderr, "Error: Syntax error (line %d).\n", l);
             exit(1);
         }
         
         trim(token);
-        
         if (!strcmp(token, "obj")) {
             if ((token = strtok(NULL, ":")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
             trim(token);
-            current = parseObj(token, l);
-            addQueue(queue, current);
+
+            current = newLeaf(parseObj(token, l));
+            stack = addStack(stack, current);
         }
         
         else if (!strcmp(token, "col")) {
@@ -266,7 +273,9 @@ Tree *parseFile(FILE *file) {
                 exit(1);
             }
             trim(token);
-            parseOp(token, l);
+            op = parseOp(token, l);
+            current = newNode(popStack(&stack), popStack(&stack), op);
+            stack = addStack(stack, current);
         }
         
         else {
@@ -274,6 +283,5 @@ Tree *parseFile(FILE *file) {
             exit(1);
         }
     }
-    
-    return root;
+    return popStack(&stack);
 }

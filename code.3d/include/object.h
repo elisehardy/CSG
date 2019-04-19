@@ -20,8 +20,9 @@ typedef struct _obj {
     Shape shape;                            /**< Shape of the Object. */
     G3Xpoint *vertex;                       /**< Vertexes of the Object. */
     G3Xvector *normal;                      /**< Normals of the Object. */
+    G3Xcolor color;                         /**< Color of the Object. */
     bool *visible;                          /**< Boolean array telling whether a point I should be drawn */
-    bool (*pt_in)(G3Xpoint);               /**< Function checking if a vertex is inside. */
+    bool (*pt_in)(G3Xpoint);                /**< Function checking if a vertex is inside. */
     bool (*build)(struct _obj *);           /**< ?. */
     int n, p, size;                         /**< Custom parameters. */
 } Object;
