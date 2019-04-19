@@ -28,20 +28,20 @@ void init(void) {
     }
     
     tree = parseFile(file);
-    
     fclose(file);
+    printf("PARSE %p %p %p %p %p\n", tree, tree->obj, tree->obj->vertex, tree->obj->normal, tree->visible);
 }
 
 
 void draw(void) {
+    printf("DRAWn %p\n", tree);
     g3x_Material(G3Xr, 0.25, 0.5, 0.5, 0.5, 1.);
     drawObject(tree->obj, 1);
 }
 
 
 int main(int argc, char **argv) {
-    
-    filepath = argv[0];
+    filepath = argv[1];
     
     /* initialisation de la fenêtre graphique et paramétrage Gl */
     g3x_InitWindow(*argv, 768, 512);
@@ -50,13 +50,11 @@ int main(int argc, char **argv) {
     /* position, orientation de la caméra */
     g3x_SetCameraSpheric(0.25 * PI, +0.25 * PI, 6., (G3Xpoint) {0., 0., 0.});
     
-    
     /* définition des fonctions */
     g3x_SetInitFunction(init);     /* la fonction d'initialisation */
     g3x_SetDrawFunction(draw);     /* la fonction de dessin        */
     g3x_SetAnimFunction(NULL);         /* pas de fonction d'animation  */
     g3x_SetExitFunction(NULL);     /* pas de fonction de sortie    */
-    
     
     /* boucle d'exécution principale */
     return g3x_MainStart();
