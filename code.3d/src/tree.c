@@ -14,7 +14,7 @@ static bool insideNode(Tree *tree, G3Xpoint p) {
         if (tree->mi == NULL) {
             return tree->obj->pt_in(p);
         }
-        return tree->obj->pt_in(*matrixCoordMult(tree->mi, p));
+        return tree->obj->pt_in(matrixCoordMult(tree->mi, p));
     }
     
     switch (tree->op) {
@@ -158,6 +158,32 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     }
     
     return new;
+}
+
+
+void drawNode(Tree *node, int c) {
+    if (node == NULL) {
+        errno = EFAULT;
+        perror("Error - drawObject ");
+        exit(1);
+    }
+    
+    
+    G3Xvector *n = node->obj->normal;
+    G3Xpoint *v = node->obj->vertex;
+    int i, size = node->obj->size;
+    glPointSize(1);
+    glBegin(GL_POINTS);
+    
+    for (i = 0; i < size; i += c) {
+        if (node->visible[i]) {
+            g3x_Material(node->obj->color[i], 0.25, 0.5, 0.5, 0.5, 1.);
+            glNormal3dv(n[i]);
+            glVertex3dv(v[i]);
+        }
+    }
+    
+    glEnd();
 }
 
 /*

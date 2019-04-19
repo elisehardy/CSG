@@ -35,6 +35,10 @@ static int trim(char *str) {
     }
     
     if (i == len) {
+        if (!isspace(str[i])) {
+            return 1;
+        }
+        
         str[0] = '\0';
         return 0;
     }
@@ -63,13 +67,13 @@ static Object *parseObj(char *token, int line) {
     }
     
     if (strcmp(token, "cube") == 0) {
-        return buildRandomCube(1000, 1000);
+        return buildRandomCube(400, 400);
     } else if (!strcmp(token, "sphere")) {
         return buildRandomSphere(1000, 1000);
     } else if (!strcmp(token, "cylinder")) {
         return buildRandomCylinder(1000, 1000);
     } else if (!strcmp(token, "torus")) {
-        /* FAUT DÉCIDER D'UNE VALEUR CANONIQUE POUR INNER RADIUS ET OUTER RADIUS */
+        /* TODO FAUT DÉCIDER D'UNE VALEUR CANONIQUE POUR INNER RADIUS ET OUTER RADIUS */
         return buildRandomTorus(1000, 1000, 1, 2);
     } else if (!strcmp(token, "cone")) {
         return buildRandomCone(1000, 1000);
@@ -127,24 +131,24 @@ static Operator parseOp(char *token, int line) {
  *
  * @return The corresponding color.
  */
-static G3Xcolor *parseCol(char *r, char *b, char *g, char *a) {
+static float *parseCol(char *r, char *b, char *g, char *a) {
     if (r == NULL || g == NULL || b == NULL || a == NULL) {
         errno = EFAULT;
         perror("Error - parseCol ");
         exit(1);
     }
     
-    G3Xcolor *color = malloc(sizeof(float) * 4);
+    float *color = malloc(sizeof(float) * 4);
     if (!color) {
         errno = ENOMEM;
         perror("Error - parseCol ");
         exit(1);
     }
     
-    *color[0] = strtof(r, NULL);
-    *color[1] = strtof(g, NULL);
-    *color[2] = strtof(b, NULL);
-    *color[3] = strtof(a, NULL);
+    color[0] = strtof(r, NULL);
+    color[1] = strtof(g, NULL);
+    color[2] = strtof(b, NULL);
+    color[3] = strtof(a, NULL);
     
     return color;
 }
@@ -202,15 +206,15 @@ Tree *parseFile(FILE *file) {
     
     char *line = NULL, *token = NULL, *r, *g, *b, *a, *x, *y, *z;
     Tree *current = NULL;
-    G3Xcolor *color;
-    
+    float *color;
     Stack *stack = NULL;
     size_t len = 0;
+    int l, read, i;
     Operator op;
-    int l, read;
     
     for (l = 1; (read = getline(&line, &len, file)) != -1; l++) {
         trim(line);
+        
         if (!strlen(line)) {
             continue;
         }
@@ -231,65 +235,69 @@ Tree *parseFile(FILE *file) {
             current = newLeaf(parseObj(token, l));
             stack = addStack(stack, current);
         } else if (!strcmp(token, "col")) {
-            if ((r = strtok(NULL, ".")) == NULL) {
+            if ((r = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
-            if ((g = strtok(NULL, ".")) == NULL) {
+            if ((g = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
-            if ((b = strtok(NULL, ".")) == NULL) {
+            if ((b = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
-            if ((a = strtok(NULL, ".")) == NULL) {
+            if ((a = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
             color = parseCol(r, g, b, a);
+            for (i = 0; i < current->obj->size; i++) {
+                memcpy(current->obj->color[i], color, sizeof(float) * 4);
+            }
+            
         } else if (!strcmp(token, "T")) {
-            if ((x = strtok(NULL, ".")) == NULL) {
+            if ((x = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
-            if ((y = strtok(NULL, ".")) == NULL) {
+            if ((y = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
-            if ((z = strtok(NULL, ".")) == NULL) {
+            if ((z = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
             parseT(current, x, y, z);
         } else if (!strcmp(token, "H")) {
-            if ((x = strtok(NULL, ".")) == NULL) {
+            if ((x = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
-            if ((y = strtok(NULL, ".")) == NULL) {
+            if ((y = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
-            if ((z = strtok(NULL, ".")) == NULL) {
+            if ((z = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
             parseH(current, x, y, z);
         } else if (!strcmp(token, "Rx")) {
-            if ((x = strtok(NULL, ".")) == NULL) {
+            if ((x = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
             parseR(current, x, "0", "0");
         } else if (!strcmp(token, "Ry")) {
-            if ((y = strtok(NULL, ".")) == NULL) {
+            if ((y = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
             parseR(current, "0", y, "0");
         } else if (!strcmp(token, "Rz")) {
-            if ((z = strtok(NULL, ".")) == NULL) {
+            if ((z = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }

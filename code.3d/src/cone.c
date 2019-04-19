@@ -31,13 +31,19 @@ Cone *buildRandomCone(int n, int p) {
     cone->size = n * p;
     cone->shape = SHP_CONE;
     cone->pt_in = insideCone;
+    cone->color = malloc(sizeof(char *) * cone->size);
     cone->vertex = (G3Xpoint *) calloc(cone->size, sizeof(G3Xpoint));
     cone->normal = (G3Xvector *) calloc(cone->size, sizeof(G3Xvector));
-    if (!(cone->vertex && cone->normal)) {
+    if (!(cone->vertex && cone->normal && cone->color)) {
         errno = ENOMEM;
         perror("Error - buildRandomCone ");
         exit(1);
     }
+    
+    for (i = 0; i < cone->size; i++) {
+        memcpy(cone->color[i], G3Xr, sizeof(float) * 4);
+    }
+    
     G3Xpoint *vertices = cone->vertex;
     G3Xvector *normals = cone->normal;
     double d;

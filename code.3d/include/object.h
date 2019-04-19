@@ -20,7 +20,7 @@ typedef struct _obj {
     Shape shape;                            /**< Shape of the Object. */
     G3Xpoint *vertex;                       /**< Vertexes of the Object. */
     G3Xvector *normal;                      /**< Normals of the Object. */
-    G3Xcolor color;                         /**< Color of the Object. */
+    G3Xcolor *color;                         /**< Color of the Object. */
     bool *visible;                          /**< Boolean array telling whether a point I should be drawn */
     bool (*pt_in)(G3Xpoint);                /**< Function checking if a vertex is inside. */
     bool (*build)(struct _obj *);           /**< ?. */
@@ -37,13 +37,5 @@ typedef struct _obj {
  * @return The new composite Object.
  */
 Object *merge(Object *a, Object *b);
-
-/**
- * Draw an object.
- *
- * @param obj Object to be drawn.
- * @param c ?
- */
-void drawObject(Object *obj, int c);
 
 #endif

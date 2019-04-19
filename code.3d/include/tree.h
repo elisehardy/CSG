@@ -53,6 +53,15 @@ Tree *newLeaf(Object *obj);
  */
 Tree *newNode(Tree *left, Tree *right, Operator op);
 
+
+/**
+ * Draw a node.
+ *
+ * @param node Node to be drawn.
+ * @param c ?
+ */
+void drawNode(Tree *node, int c);
+
 /**
  * Print a Tree.
  *

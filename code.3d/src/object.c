@@ -1,5 +1,6 @@
 #include <errno.h>
 #include "../include/object.h"
+#include "../include/tree.h"
 
 
 Object *merge(Object *a, Object *b) {
@@ -20,8 +21,14 @@ Object *merge(Object *a, Object *b) {
     obj->p = 0;
     obj->shape = SHP_COMPOSITE;
     obj->size = a->size + b->size;
+    obj->color = malloc(sizeof(G3Xpoint) * obj->size);
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
+    if (!(obj->vertex && obj->normal && obj->color)) {
+        errno = ENOMEM;
+        perror("Error - merge ");
+        exit(1);
+    }
     
     memcpy(obj->vertex, a->vertex, a->size);
     memcpy(obj->vertex + a->size, b->vertex, b->size);
@@ -29,33 +36,10 @@ Object *merge(Object *a, Object *b) {
     memcpy(obj->normal, a->normal, a->size);
     memcpy(obj->normal + a->size, b->normal, b->size);
     
+    memcpy(obj->color, a->color, a->size);
+    memcpy(obj->color + a->size, b->color, b->size);
+    
     return obj;
-}
-
-
-void drawObject(Object *obj, int c) {
-    if (obj == NULL) {
-        errno = EFAULT;
-        perror("Error - drawObject ");
-        exit(1);
-    }
-    
-    G3Xvector *n = obj->normal;
-    G3Xpoint *v = obj->vertex;
-    int bit = 0;
-    glPointSize(1);
-    glBegin(GL_POINTS);
-    
-    while (v < obj->vertex + obj->size) {
-        glNormal3dv(*n);
-        n += c;
-        glVertex3dv(*v);
-        v += c;
-        
-        bit++;
-    }
-    
-    glEnd();
 }
 
 

@@ -32,12 +32,17 @@ Torus *buildRandomTorus(int n, int p, int innerRadius, int outerRadius) {
     torus->size = n * p;
     torus->shape = SHP_TORUS;
     torus->pt_in = insideTorus;
+    torus->color = malloc(sizeof(G3Xpoint) * torus->size);
     torus->vertex = (G3Xpoint *) calloc(torus->size, sizeof(G3Xpoint));
     torus->normal = (G3Xvector *) calloc(torus->size, sizeof(G3Xvector));
-    if (!(torus->vertex && torus->normal)) {
+    if (!(torus->vertex && torus->normal && torus->color)) {
         errno = ENOMEM;
         perror("Error - buildRandomTorus ");
         exit(1);
+    }
+    
+    for (i = 0; i < torus->size; i++) {
+        memcpy(torus->color[i], G3Xr, sizeof(float)*4);
     }
     
     G3Xpoint *vertices = torus->vertex;

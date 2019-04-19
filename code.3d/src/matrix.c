@@ -308,20 +308,36 @@ static void propagate(Tree *node, double *vertex, double *normal, double *invers
         exit(1);
     }
     
+    int i;
+    double *p;
+    
     if (node->left && node->right) {
         propagate(node->left, vertex, normal, inverse, translation);
         propagate(node->right, vertex, normal, inverse, translation);
-    }
-    else if (!node->left && !node->right) {
+    } else if (!node->left && !node->right) {
         node->md = !node->md ? vertex : matrixMatrixMult(vertex, node->md);
         node->mi = !node->mi ? vertex : matrixMatrixMult(node->mi, vertex);
         if (!translation) {
             node->mn = !node->mn ? vertex : matrixMatrixMult(vertex, node->mn);
         }
-    }
-    else {
+    } else {
         fprintf(stderr, " propagate : Invalid node");
         exit(1);
+    }
+    
+    for (i = 0; i < node->obj->size; i++) {
+        p = matrixCoordMult(vertex, node->obj->vertex[i]);
+        node->obj->vertex[i][0] = p[0];
+        node->obj->vertex[i][1] = p[1];
+        node->obj->vertex[i][2] = p[2];
+        free(p);
+        if (!translation) {
+            p = matrixCoordMult(normal, node->obj->normal[i]);
+            node->obj->normal[i][0] = p[0];
+            node->obj->normal[i][1] = p[1];
+            node->obj->normal[i][2] = p[2];
+            free(p);
+        }
     }
 }
 
@@ -368,14 +384,14 @@ double *matrixMatrixMult(double *m, double *factor) {
 }
 
 
-G3Xpoint *matrixCoordMult(double *factor, G3Xpoint p) {
+double *matrixCoordMult(double *factor, G3Xpoint p) {
     if (p == NULL || factor == NULL) {
         errno = EFAULT;
         perror("Error - matrixCoordMult ");
         exit(1);
     }
     
-    G3Xpoint *res = malloc(sizeof(G3Xpoint));
+    double *res = malloc(sizeof(double) * 3);
     double sum;
     int i, j;
     
@@ -384,7 +400,7 @@ G3Xpoint *matrixCoordMult(double *factor, G3Xpoint p) {
         for (j = 0; j < 3; j++) {
             sum += factor[i * 4 + j] * p[j];
         }
-        *res[i] = sum + factor[i * 4 + 3];
+        res[i] = sum + factor[i * 4 + 3];
     }
     
     return res;

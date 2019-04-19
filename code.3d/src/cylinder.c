@@ -23,20 +23,26 @@ Cylinder *buildRandomCylinder(int n, int p) {
         exit(1);
     }
     
+    int i;
+    
     cylinder->n = n;
     cylinder->p = p;
     cylinder->size = n * p;
     cylinder->shape = SHP_CYLINDER;
     cylinder->pt_in = insideCylinder;
+    cylinder->color = malloc(sizeof(G3Xpoint) * cylinder->size);
     cylinder->vertex = (G3Xpoint *) calloc(cylinder->size, sizeof(G3Xpoint));
     cylinder->normal = (G3Xvector *) calloc(cylinder->size, sizeof(G3Xvector));
-    if (!(cylinder->vertex && cylinder->normal)) {
+    if (!(cylinder->vertex && cylinder->normal && cylinder->color)) {
         errno = ENOMEM;
         perror("Error - buildRandomCylinder ");
         exit(1);
     }
     
-    int i;
+    for (i = 0; i < cylinder->size; i++) {
+        memcpy(cylinder->color[i], G3Xr, sizeof(float)*4);
+    }
+    
     double d;
     G3Xpoint *vertices = cylinder->vertex;
     G3Xvector *normals = cylinder->normal;

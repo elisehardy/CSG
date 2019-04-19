@@ -18,7 +18,6 @@ char *filepath;
 
 void init(void) {
     FILE *file;
-    Tree *tree;
     
     file = fopen(filepath, "r");
     if (file == NULL) {
@@ -29,14 +28,11 @@ void init(void) {
     
     tree = parseFile(file);
     fclose(file);
-    printf("PARSE %p %p %p %p %p\n", tree, tree->obj, tree->obj->vertex, tree->obj->normal, tree->visible);
 }
 
 
 void draw(void) {
-    printf("DRAWn %p\n", tree);
-    g3x_Material(G3Xr, 0.25, 0.5, 0.5, 0.5, 1.);
-    drawObject(tree->obj, 1);
+    drawNode(tree, 1);
 }
 
 
