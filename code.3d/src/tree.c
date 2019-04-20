@@ -5,37 +5,42 @@
 
 int num = 0;
 
-static bool insideNode(Tree *tree, G3Xpoint p) {
+static bool insideNode(Tree *tree, G3Xpoint p, int index) {
     if ((tree->left == NULL) + (tree->right == NULL) == 1) {
         fprintf(stderr, "Error: insideNode - Invalid node.");
         exit(1);
     }
-    double *p2;
-    int a, b;
+    
     if (tree->left == NULL && tree->right == NULL) {
         if (tree->mi == NULL) {
-            p2 = p;
-            int in = tree->obj->pt_in(p2);
-            return in;
+            return  tree->obj->pt_in(p);
         }
         
-        p2 = matrixCoordMult(tree->mi, p);
-        int in = tree->obj->pt_in(p2);
-        return in;
+        return tree->obj->pt_in(matrixCoordMult(tree->mi, p));
     }
     
+    bool left = index < tree->left->obj->size;
     switch (tree->op) {
         case SUBTRACTION:
-            return !insideNode(tree->right, p);
+            if (left) {
+                return !insideNode(tree->right, p, index);
+            } else {
+                return insideNode(tree->left, p, index - tree->left->obj->size);
+            }
         case UNION:
-            a = insideNode(tree->left, p), b = insideNode(tree->right, p);
-            return a != b;
+            if (left) {
+                return !insideNode(tree->right, p, index);
+            } else {
+                return !insideNode(tree->left, p, index - tree->left->obj->size);
+            }
         case INTERSECTION:
-            return insideNode(tree->left, p) && insideNode(tree->right, p);
-        case EQUAL:
-            return true;
+            if (left) {
+                return insideNode(tree->right, p, index);
+            } else {
+                return insideNode(tree->left, p, index - tree->left->obj->size);
+            }
         default:
-            return insideNode(tree->left, p) || insideNode(tree->right, p);
+            return true;
     }
 }
 
@@ -165,7 +170,7 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     int i;
     
     for (i = 0; i < new->obj->size; i++) {
-        new->visible[i] = insideNode(new, new->obj->vertex[i]);
+        new->visible[i] = insideNode(new, new->obj->vertex[i], i);
     }
     
     return new;

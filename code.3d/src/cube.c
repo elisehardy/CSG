@@ -11,7 +11,7 @@
  * @return true if the point is inside or on the cube, false otherwise.
  */
 static bool insideCube(G3Xpoint p) {
-    return MAX(abs(p[0]), MAX(abs(p[1]), abs(p[2]))) <= 1;
+    return p[0] <= 1 && p[0] >= -1 && p[1] <= 1 && p[1] >= -1 && p[2] <= 1 && p[2] >= -1;
 }
 
 
@@ -42,7 +42,7 @@ Cube *buildRandomCube(int n, int p) {
     }
     
     for (i = 0; i < cube->size; i++) {
-        memcpy(cube->color[i], G3Xr, sizeof(float)*4);
+        memcpy(cube->color[i], G3Xr, sizeof(float) * 4);
     }
     
     vertices = cube->vertex;

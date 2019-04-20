@@ -154,10 +154,10 @@ static double *xRotationMatrix(double angle) {
     }
     
     matrix[0] = matrix[15] = 1.;
-    matrix[5] = cos(angle);
-    matrix[6] = -sin(angle);
-    matrix[9] = sin(angle);
-    matrix[10] = cos(angle);
+    matrix[5] = cos(angle * DegToRad);
+    matrix[6] = -sin(angle * DegToRad);
+    matrix[9] = sin(angle * DegToRad);
+    matrix[10] = cos(angle * DegToRad);
     
     return matrix;
 }
@@ -180,10 +180,10 @@ static double *xRotationInvMatrix(double angle) {
     }
     
     matrix[0] = matrix[15] = 1.;
-    matrix[5] = cos(-angle);
-    matrix[6] = -sin(-angle);
-    matrix[9] = sin(-angle);
-    matrix[10] = cos(-angle);
+    matrix[5] = cos(-angle * DegToRad);
+    matrix[6] = -sin(-angle * DegToRad);
+    matrix[9] = sin(-angle * DegToRad);
+    matrix[10] = cos(-angle * DegToRad);
     
     return matrix;
 }
@@ -206,10 +206,10 @@ static double *yRotationMatrix(double angle) {
     }
     
     matrix[5] = matrix[15] = 1.;
-    matrix[0] = cos(angle);
-    matrix[2] = sin(angle);
-    matrix[8] = -sin(angle);
-    matrix[10] = cos(angle);
+    matrix[0] = cos(angle * DegToRad);
+    matrix[2] = sin(angle * DegToRad);
+    matrix[8] = -sin(angle * DegToRad);
+    matrix[10] = cos(angle * DegToRad);
     
     return matrix;
 }
@@ -232,10 +232,10 @@ static double *yRotationInvMatrix(double angle) {
     }
     
     matrix[5] = matrix[15] = 1.;
-    matrix[0] = cos(-angle);
-    matrix[2] = sin(-angle);
-    matrix[8] = -sin(-angle);
-    matrix[10] = cos(-angle);
+    matrix[0] = cos(-angle * DegToRad);
+    matrix[2] = sin(-angle * DegToRad);
+    matrix[8] = -sin(-angle * DegToRad);
+    matrix[10] = cos(-angle * DegToRad);
     
     return matrix;
 }
@@ -258,10 +258,10 @@ static double *zRotationMatrix(double angle) {
     }
     
     matrix[10] = matrix[15] = 1.;
-    matrix[0] = cos(angle);
-    matrix[1] = -sin(angle);
-    matrix[4] = sin(angle);
-    matrix[5] = cos(angle);
+    matrix[0] = cos(angle * DegToRad);
+    matrix[1] = -sin(angle * DegToRad);
+    matrix[4] = sin(angle * DegToRad);
+    matrix[5] = cos(angle * DegToRad);
     
     return matrix;
 }
@@ -284,10 +284,10 @@ static double *zRotationInvMatrix(double angle) {
     }
     
     matrix[10] = matrix[15] = 1.;
-    matrix[0] = cos(-angle);
-    matrix[1] = -sin(-angle);
-    matrix[4] = sin(-angle);
-    matrix[5] = cos(-angle);
+    matrix[0] = cos(-angle * DegToRad);
+    matrix[1] = -sin(-angle * DegToRad);
+    matrix[4] = sin(-angle * DegToRad);
+    matrix[5] = cos(-angle * DegToRad);
     
     return matrix;
 }

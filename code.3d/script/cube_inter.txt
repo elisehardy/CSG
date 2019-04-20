@@ -1,0 +1,9 @@
+obj: cube
+col:1;1;1;0
+
+obj: cube
+T: 1;1;1
+
+
+op: inter
+

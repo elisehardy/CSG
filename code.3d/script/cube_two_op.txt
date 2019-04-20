@@ -1,0 +1,16 @@
+
+obj: sphere
+H: 2;0.5;0.5
+
+obj: cone
+H: 2;0.5;0.5
+Ry: 90
+
+obj: cube
+col:1;1;1;0
+
+op: equal
+
+
+op: sous
+
