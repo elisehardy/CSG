@@ -3,7 +3,6 @@
 #include "../include/tree.h"
 #include "../include/matrix.h"
 
-int num = 0;
 
 static bool insideNode(Tree *tree, G3Xpoint p, int index) {
     if ((tree->left == NULL) + (tree->right == NULL) == 1) {
@@ -11,36 +10,55 @@ static bool insideNode(Tree *tree, G3Xpoint p, int index) {
         exit(1);
     }
     
+    // This node is a leaf
     if (tree->left == NULL && tree->right == NULL) {
         if (tree->mi == NULL) {
-            return  tree->obj->pt_in(p);
+            return tree->obj->pt_in(p);
         }
         
         return tree->obj->pt_in(matrixCoordMult(tree->mi, p));
     }
     
-    bool left = index < tree->left->obj->size;
+    // p is a point of a primitive from this tree
+    if (index >= 0) {
+        bool left = index < tree->left->obj->size;
+        switch (tree->op) {
+            case SUBTRACTION:
+                if (left) {
+                    return !insideNode(tree->right, p, -1);
+                }
+                else {
+                    return insideNode(tree->left, p, -1);
+                }
+            case UNION:
+                if (left) {
+                    return !insideNode(tree->right, p, -1);
+                }
+                else {
+                    return !insideNode(tree->left, p, -1);
+                }
+            case INTERSECTION:
+                if (left) {
+                    return insideNode(tree->right, p, -1);
+                }
+                else {
+                    return insideNode(tree->left, p, -1);
+                }
+            default:
+                return true;
+        }
+    }
+    
+    // p is a point from another tree
     switch (tree->op) {
         case SUBTRACTION:
-            if (left) {
-                return !insideNode(tree->right, p, index);
-            } else {
-                return insideNode(tree->left, p, index - tree->left->obj->size);
-            }
+            return insideNode(tree->left, p, -1) && !insideNode(tree->right, p, -1);
         case UNION:
-            if (left) {
-                return !insideNode(tree->right, p, index);
-            } else {
-                return !insideNode(tree->left, p, index - tree->left->obj->size);
-            }
+            return insideNode(tree->left, p, -1) || insideNode(tree->right, p, -1);
         case INTERSECTION:
-            if (left) {
-                return insideNode(tree->right, p, index);
-            } else {
-                return insideNode(tree->left, p, index - tree->left->obj->size);
-            }
+            return insideNode(tree->left, p, -1) && insideNode(tree->right, p, -1);
         default:
-            return true;
+            return insideNode(tree->left, p, -1) || insideNode(tree->right, p, -1);
     }
 }
 
@@ -164,13 +182,16 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     new->neg = false;
     new->left = left;
     new->right = right;
-    new->obj = merge(left->obj, right->obj);
+    new->obj = merge(left->obj, right->obj, op == SUBTRACTION);
     new->visible = malloc(sizeof(bool) * new->obj->size);
     
-    int i;
+    memcpy(new->visible, left->visible, left->obj->size * sizeof(bool));
+    memcpy(new->visible + left->obj->size, right->visible, right->obj->size * sizeof(bool));
     
-    for (i = 0; i < new->obj->size; i++) {
-        new->visible[i] = insideNode(new, new->obj->vertex[i], i);
+    for (int i = 0; i < new->obj->size; i++) {
+        if (new->visible[i]) {
+            new->visible[i] = insideNode(new, new->obj->vertex[i], i);
+        }
     }
     
     return new;
@@ -184,17 +205,25 @@ void drawNode(Tree *node, int c) {
         exit(1);
     }
     
-    
     G3Xvector *n = node->obj->normal;
     G3Xpoint *v = node->obj->vertex;
     int i, size = node->obj->size;
+    G3Xcolor previous;
+    
+    memcpy(previous, G3Xr, sizeof(G3Xcolor));
+    
     glPointSize(1);
     glBegin(GL_POINTS);
+    g3x_Material(previous, 0.25, 0.5, 0.5, 0.5, 1.);
     
-    if(!node->neg) {
+    if (!node->neg) {
         for (i = 0; i < size; i += c) {
+            if (memcmp(previous, node->obj->color[i], sizeof(G3Xcolor))) {
+                memcpy(previous, node->obj->color[i], sizeof(G3Xcolor));
+                g3x_Material(previous, 0.25, 0.5, 0.5, 0.5, 1.);
+            }
+            
             if (node->visible[i]) {
-                g3x_Material(node->obj->color[i], 0.25, 0.5, 0.5, 0.5, 1.);
                 glNormal3dv(n[i]);
                 glVertex3dv(v[i]);
             }
@@ -203,69 +232,3 @@ void drawNode(Tree *node, int c) {
     
     glEnd();
 }
-
-/*
-void unionTree(Object *objA, Object *objB) {
-    int i;
-    int v;
-    //make transforme de l'union
-    //make inverse pour les deux objet pour A applique inverse de B et pour B applique inverse de A
-    for (i = 0; i < objA->size; i++) {
-        if (objA->pt_in(objA, objB->vertex)) {
-            objA->visible[i] = 0;
-        } else {
-            objA->visible[i] = 1;
-        }
-    }
-    for (i = 0; i < objB->size; i++) {
-        if (objB->pt_in(objB, objA->vertex)) {
-            objB->visible[i] = 0;
-        } else {
-            objB->visible[i] = 1;
-        }
-    }
-}
-
-
-void intersectionTree(Object *objA, Object *objB) {
-    int i;
-    int v;
-    //make transforme de l'inter
-    //make inverse pour les deux objet pour A applique inverse de B et pour B applique inverse de A
-    for (i = 0; i < objA->size; i++) {
-        if (objA->pt_in(objA, objB->vertex)) {
-            objA->visible[i] = 1;
-        } else {
-            objA->visible[i] = 0;
-        }
-    }
-    for (i = 0; i < objB->size; i++) {
-        if (objB->pt_in(objB, objA->vertex)) {
-            objB->visible[i] = 1;
-        } else {
-            objB->visible[i] = 0;
-        }
-    }
-}
-
-
-void SUBTRACTIONTree(Object *objA, Object *objB) {
-    int i;
-    int v;
-    //make transforme de la SUBTRACTION
-    //make inverse pour les deux objet pour A applique inverse de B et pour B applique inverse de A
-    for (i = 0; i < objA->size; i++) {
-        if (objA->pt_in(objA, objB->vertex)) {
-            objA->visible[i] = 0;
-        } else {
-            objA->visible[i] = 1;
-        }
-    }
-    for (i = 0; i < objB->size; i++) {
-        if (objB->pt_in(objB, objA->vertex)) {
-            objB->visible[i] = 1;
-        } else {
-            objB->visible[i] = 0;
-        }
-    }
-}*/

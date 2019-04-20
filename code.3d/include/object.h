@@ -33,9 +33,10 @@ typedef struct _obj {
  *
  * @param a First Object.
  * @param b Second Object.
+ * @param sous If set two true, will inverse the normal of b.
  *
  * @return The new composite Object.
  */
-Object *merge(Object *a, Object *b);
+Object *merge(Object *a, Object *b, bool negate);
 
 #endif

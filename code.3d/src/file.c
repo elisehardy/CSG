@@ -131,7 +131,7 @@ static Operator parseOp(char *token, int line) {
  *
  * @return The corresponding color.
  */
-static float *parseCol(char *r, char *b, char *g, char *a) {
+static float *parseCol(char *r, char *g, char *b, char *a) {
     if (r == NULL || g == NULL || b == NULL || a == NULL) {
         errno = EFAULT;
         perror("Error - parseCol ");
@@ -215,7 +215,7 @@ Tree *parseFile(FILE *file) {
     for (l = 1; (read = getline(&line, &len, file)) != -1; l++) {
         trim(line);
         
-        if (!strlen(line)) {
+        if (!strlen(line) || line[0] == '#') {
             continue;
         }
         

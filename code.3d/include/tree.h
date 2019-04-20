@@ -15,10 +15,10 @@ typedef enum {
  * CSG Tree used to represents composite Objects.
  */
 typedef struct _node {
-    Operator op;               /**< Operator used by this node.*/
+    Operator op;                /**< Operator used by this node.*/
     Object *obj;                /**< Object used by this node. */
+    bool *visible;              /**< Boolean array telling whether a point I should be drawn. */
     bool neg;                   /**< ? */
-    bool *visible;              /**< Boolean array telling whether a point I should be drawn */
     double *md;                 /**< ? */
     double *mi;                 /**< ? */
     double *mn;                 /**< ? */
