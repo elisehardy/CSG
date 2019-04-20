@@ -20,7 +20,7 @@
  *
  * @return The size of the trimmed string.
  */
-static int trim(char *str) {
+static int trimAndLower(char *str) {
     int size, i = 0, len = strlen(str) - 1;
     
     if (len == -1) {
@@ -47,12 +47,16 @@ static int trim(char *str) {
     memmove(str, str + i, size);
     str[size] = '\0';
     
+    for (i = 0; str[i]; i++) {
+        str[i] = tolower(str[i]);
+    }
+    
     return size;
 }
 
 
 /**
- * Return an Object corresponding to the one follow 'obj:'.
+ * Return an Object corresponding to the one following 'obj:'.
  *
  * @param token String following 'obj:'.
  * @param line Current line number in the script.
@@ -68,14 +72,18 @@ static Object *parseObj(char *token, int line) {
     
     if (strcmp(token, "cube") == 0) {
         return buildRandomCube(400, 400);
-    } else if (!strcmp(token, "sphere")) {
+    }
+    else if (!strcmp(token, "sphere")) {
         return buildRandomSphere(1000, 1000);
-    } else if (!strcmp(token, "cylinder")) {
+    }
+    else if (!strcmp(token, "cylinder")) {
         return buildRandomCylinder(1000, 1000);
-    } else if (!strcmp(token, "torus")) {
+    }
+    else if (!strcmp(token, "torus")) {
         /* TODO FAUT DÉCIDER D'UNE VALEUR CANONIQUE POUR INNER RADIUS ET OUTER RADIUS */
         return buildRandomTorus(1000, 1000, 1, 2);
-    } else if (!strcmp(token, "cone")) {
+    }
+    else if (!strcmp(token, "cone")) {
         return buildRandomCone(1000, 1000);
     }
     
@@ -85,7 +93,7 @@ static Object *parseObj(char *token, int line) {
 
 
 /**
- * Return an Operator corresponding to the one follow 'op:'.
+ * Return an Operator corresponding to the one following 'op:'.
  *
  * @param token String following 'op:'.
  * @param line Current line number in the script.
@@ -123,9 +131,9 @@ static Operator parseOp(char *token, int line) {
 /**
  * Return a color corresponding to the one following 'col:'.
  *
- * @param b String following 'blue:'.
  * @param r String following 'red:'.
  * @param g String following 'green:'.
+ * @param b String following 'blue:'.
  * @param a String following 'alpha:'.
  * @param line Current line number in the script.
  *
@@ -139,7 +147,7 @@ static float *parseCol(char *r, char *g, char *b, char *a) {
     }
     
     float *color = malloc(sizeof(float) * 4);
-    if (!color) {
+    if (color == NULL) {
         errno = ENOMEM;
         perror("Error - parseCol ");
         exit(1);
@@ -155,9 +163,12 @@ static float *parseCol(char *r, char *g, char *b, char *a) {
 
 
 /**
- * Return a tranlsation corresponding to the one following 'T:'.
+ * Translate a node according to the given x, y, z.
  *
-
+ * @param tree Node to be translated.
+ * @param x Translation distance on X.
+ * @param y Translation distance on Y.
+ * @param z Translation distance on Z.
  */
 static void parseT(Tree *tree, char *x, char *y, char *z) {
     if (tree == NULL || x == NULL || y == NULL || z == NULL) {
@@ -171,25 +182,12 @@ static void parseT(Tree *tree, char *x, char *y, char *z) {
 
 
 /**
- * Return a homothate corresponding to the one following 'col:'.
+ * Rotate a node according to the given x, y, z.
  *
-
- */
-static void parseH(Tree *tree, char *x, char *y, char *z) {
-    if (tree == NULL || x == NULL || y == NULL || z == NULL) {
-        errno = EFAULT;
-        perror("Error - parseT ");
-        exit(1);
-    }
-    
-    homothate(tree, strtof(x, NULL), strtof(y, NULL), strtof(z, NULL));
-}
-
-
-/**
- * Return a rotate corresponding to the one following 'col:'.
- *
-
+ * @param tree Node to be rotated.
+ * @param x Rotation angle on X.
+ * @param y Rotation angle on Y.
+ * @param z Rotation angle on Z.
  */
 static void parseR(Tree *tree, char *x, char *y, char *z) {
     if (tree == NULL || x == NULL || y == NULL || z == NULL) {
@@ -199,6 +197,25 @@ static void parseR(Tree *tree, char *x, char *y, char *z) {
     }
     
     rotate(tree, strtof(x, NULL), strtof(y, NULL), strtof(z, NULL));
+}
+
+
+/**
+ * Dilate a node according to the given x, y, z.
+ *
+ * @param tree Node to be dilated.
+ * @param x Factor of dilatation on X.
+ * @param y Factor of dilatation on Y.
+ * @param z Factor of dilatation on Z.
+ */
+static void parseH(Tree *tree, char *x, char *y, char *z) {
+    if (tree == NULL || x == NULL || y == NULL || z == NULL) {
+        errno = EFAULT;
+        perror("Error - parseT ");
+        exit(1);
+    }
+    
+    homothate(tree, strtof(x, NULL), strtof(y, NULL), strtof(z, NULL));
 }
 
 
@@ -213,8 +230,7 @@ Tree *parseFile(FILE *file) {
     Operator op;
     
     for (l = 1; (read = getline(&line, &len, file)) != -1; l++) {
-        trim(line);
-        
+        trimAndLower(line);
         if (!strlen(line) || line[0] == '#') {
             continue;
         }
@@ -223,31 +239,23 @@ Tree *parseFile(FILE *file) {
             fprintf(stderr, "Error: Syntax error (line %d).\n", l);
             exit(1);
         }
+        trimAndLower(token);
         
-        trim(token);
+        // Object
         if (!strcmp(token, "obj")) {
             if ((token = strtok(NULL, ":")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
-            trim(token);
-            
+            trimAndLower(token);
             current = newLeaf(parseObj(token, l));
             stack = addStack(stack, current);
-        } else if (!strcmp(token, "col")) {
-            if ((r = strtok(NULL, ";")) == NULL) {
-                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
-                exit(1);
-            }
-            if ((g = strtok(NULL, ";")) == NULL) {
-                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
-                exit(1);
-            }
-            if ((b = strtok(NULL, ";")) == NULL) {
-                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
-                exit(1);
-            }
-            if ((a = strtok(NULL, ";")) == NULL) {
+        }
+            
+            // Color
+        else if (!strcmp(token, "col")) {
+            if ((r = strtok(NULL, ";")) == NULL || (g = strtok(NULL, ";")) == NULL || (b = strtok(NULL, ";")) == NULL
+                || (a = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
@@ -255,66 +263,71 @@ Tree *parseFile(FILE *file) {
             for (i = 0; i < current->obj->size; i++) {
                 memcpy(current->obj->color[i], color, sizeof(float) * 4);
             }
+        }
             
-        } else if (!strcmp(token, "T")) {
-            if ((x = strtok(NULL, ";")) == NULL) {
-                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
-                exit(1);
-            }
-            if ((y = strtok(NULL, ";")) == NULL) {
-                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
-                exit(1);
-            }
-            if ((z = strtok(NULL, ";")) == NULL) {
+            // Translation
+        else if (!strcmp(token, "t")) {
+            if ((x = strtok(NULL, ";")) == NULL || (y = strtok(NULL, ";")) == NULL || (z = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
             parseT(current, x, y, z);
-        } else if (!strcmp(token, "H")) {
-            if ((x = strtok(NULL, ";")) == NULL) {
-                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
-                exit(1);
-            }
-            if ((y = strtok(NULL, ";")) == NULL) {
-                fprintf(stderr, "Error: Syntax error (line %d).\n", l);
-                exit(1);
-            }
-            if ((z = strtok(NULL, ";")) == NULL) {
+        }
+            
+            // Dilatation
+        else if (!strcmp(token, "h")) {
+            if ((x = strtok(NULL, ";")) == NULL || (y = strtok(NULL, ";")) == NULL || (z = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
             parseH(current, x, y, z);
-        } else if (!strcmp(token, "Rx")) {
+        }
+            
+            // X Rotation
+        else if (!strcmp(token, "rx")) {
             if ((x = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
             parseR(current, x, "0", "0");
-        } else if (!strcmp(token, "Ry")) {
+        }
+            
+            // Y Rotation
+        else if (!strcmp(token, "ry")) {
             if ((y = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
             parseR(current, "0", y, "0");
-        } else if (!strcmp(token, "Rz")) {
+        }
+            
+            // Z Rotation
+        else if (!strcmp(token, "rz")) {
             if ((z = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
             parseR(current, "0", "0", z);
-        } else if (!strcmp(token, "op")) {
+        }
+            
+            // Operation
+        else if (!strcmp(token, "op")) {
             if ((token = strtok(NULL, ":")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
-            trim(token);
+            trimAndLower(token);
             op = parseOp(token, l);
             current = newNode(popStack(&stack), popStack(&stack), op);
             stack = addStack(stack, current);
-        } else {
+        }
+            
+            // Unknown
+        else {
             fprintf(stderr, "Error: Unknown action (line %d) - '%s'\n", l, token);
             exit(1);
         }
     }
+    
     return popStack(&stack);
 }

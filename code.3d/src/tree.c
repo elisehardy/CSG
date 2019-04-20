@@ -6,7 +6,7 @@
 
 static bool insideNode(Tree *tree, G3Xpoint p, int index) {
     if ((tree->left == NULL) + (tree->right == NULL) == 1) {
-        fprintf(stderr, "Error: insideNode - Invalid node.");
+        fprintf(stderr, "Error: insideNode - Invalid node.\n");
         exit(1);
     }
     
@@ -95,12 +95,12 @@ static char *getTreeData(Tree *node) {
             case SHP_TORUS:
                 return "TORUS";
             case SHP_COMPOSITE:
-                fprintf(stderr, "Error: printTreeData - composite without operator");
+                fprintf(stderr, "Error: printTreeData - composite without operator\n");
                 exit(1);
         }
     }
     
-    fprintf(stderr, "Error: printTreeData - Invalid node");
+    fprintf(stderr, "Error: printTreeData - Invalid node\n");
     exit(1);
 }
 
@@ -182,12 +182,19 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     new->neg = false;
     new->left = left;
     new->right = right;
-    new->obj = merge(left->obj, right->obj, op == SUBTRACTION);
-    new->visible = malloc(sizeof(bool) * new->obj->size);
     
+    new->obj = merge(left->obj, right->obj);
+    if (op == SUBTRACTION) {
+        for (int i = left->obj->size; i < new->obj->size; i++) {
+            new->obj->normal[i][0] *= -1;
+            new->obj->normal[i][1] *= -1;
+            new->obj->normal[i][2] *= -1;
+        }
+    }
+    
+    new->visible = malloc(sizeof(bool) * new->obj->size);
     memcpy(new->visible, left->visible, left->obj->size * sizeof(bool));
     memcpy(new->visible + left->obj->size, right->visible, right->obj->size * sizeof(bool));
-    
     for (int i = 0; i < new->obj->size; i++) {
         if (new->visible[i]) {
             new->visible[i] = insideNode(new, new->obj->vertex[i], i);

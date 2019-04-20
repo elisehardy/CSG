@@ -42,7 +42,7 @@ Torus *buildRandomTorus(int n, int p, int innerRadius, int outerRadius) {
     }
     
     for (i = 0; i < torus->size; i++) {
-        memcpy(torus->color[i], G3Xr, sizeof(float)*4);
+        memcpy(torus->color[i], G3Xr, sizeof(float) * 4);
     }
     
     G3Xpoint *vertices = torus->vertex;

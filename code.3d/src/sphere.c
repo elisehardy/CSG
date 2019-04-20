@@ -42,7 +42,7 @@ Sphere *buildRandomSphere(int n, int p) {
     }
     
     for (i = 0; i < sphere->size; i++) {
-        memcpy(sphere->color[i], G3Xr, sizeof(float)*4);
+        memcpy(sphere->color[i], G3Xr, sizeof(float) * 4);
     }
     
     vertices = sphere->vertex;

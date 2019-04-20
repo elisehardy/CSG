@@ -314,14 +314,16 @@ static void propagate(Tree *node, double *vertex, double *normal, double *invers
     if (node->left && node->right) {
         propagate(node->left, vertex, normal, inverse, translation);
         propagate(node->right, vertex, normal, inverse, translation);
-    } else if (!node->left && !node->right) {
+    }
+    else if (!node->left && !node->right) {
         node->md = !node->md ? vertex : matrixMatrixMult(vertex, node->md);
         node->mi = !node->mi ? inverse : matrixMatrixMult(inverse, node->mi);
         if (!translation) {
             node->mn = !node->mn ? normal : matrixMatrixMult(normal, node->mn);
         }
-    } else {
-        fprintf(stderr, " propagate : Invalid node");
+    }
+    else {
+        fprintf(stderr, " propagate : Invalid node\n");
         exit(1);
     }
     

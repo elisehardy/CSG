@@ -40,7 +40,7 @@ Cylinder *buildRandomCylinder(int n, int p) {
     }
     
     for (i = 0; i < cylinder->size; i++) {
-        memcpy(cylinder->color[i], G3Xr, sizeof(float)*4);
+        memcpy(cylinder->color[i], G3Xr, sizeof(float) * 4);
     }
     
     double d;

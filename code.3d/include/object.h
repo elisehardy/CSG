@@ -21,10 +21,9 @@ typedef struct _obj {
     G3Xpoint *vertex;                       /**< Vertexes of the Object. */
     G3Xvector *normal;                      /**< Normals of the Object. */
     G3Xcolor *color;                         /**< Color of the Object. */
-    bool *visible;                          /**< Boolean array telling whether a point I should be drawn */
     bool (*pt_in)(G3Xpoint);                /**< Function checking if a vertex is inside. */
-    bool (*build)(struct _obj *);           /**< ?. */
-    int n, p, size;                         /**< Custom parameters. */
+    int size;                               /**< Number of vertices / normals in this object. */
+    int n, p;                               /**< Custom parameters. */
 } Object;
 
 
@@ -33,10 +32,9 @@ typedef struct _obj {
  *
  * @param a First Object.
  * @param b Second Object.
- * @param sous If set two true, will inverse the normal of b.
  *
  * @return The new composite Object.
  */
-Object *merge(Object *a, Object *b, bool negate);
+Object *merge(Object *a, Object *b);
 
 #endif

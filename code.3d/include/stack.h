@@ -39,6 +39,11 @@ Tree *popStack(Stack **stack);
  */
 Stack *addStack(Stack *stack, Tree *node);
 
+/**
+ * Print a stack on stdout.
+ *
+ * @param stack Stack to be printed
+ */
 void printStack(Stack *stack);
 
 #endif

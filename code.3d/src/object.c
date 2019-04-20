@@ -1,9 +1,8 @@
 #include <errno.h>
 #include "../include/object.h"
-#include "../include/tree.h"
 
 
-Object *merge(Object *a, Object *b, bool negate) {
+Object *merge(Object *a, Object *b) {
     if (a == NULL || b == NULL) {
         errno = EFAULT;
         perror("Error - merge ");
@@ -35,13 +34,6 @@ Object *merge(Object *a, Object *b, bool negate) {
     
     memcpy(obj->normal, a->normal, a->size * sizeof(G3Xvector));
     memcpy(obj->normal + a->size, b->normal, b->size * sizeof(G3Xvector));
-    if (negate) {
-        for (int i = a->size; i < obj->size; i++) {
-            obj->normal[i][0] *= -1;
-            obj->normal[i][1] *= -1;
-            obj->normal[i][2] *= -1;
-        }
-    }
     
     memcpy(obj->color, a->color, a->size * sizeof(G3Xcolor));
     memcpy(obj->color + a->size, b->color, b->size * sizeof(G3Xcolor));

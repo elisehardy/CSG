@@ -1,11 +1,4 @@
 #include <errno.h>
-#include "../include/object.h"
-#include "../include/cone.h"
-#include "../include/cube.h"
-#include "../include/cylinder.h"
-#include "../include/sphere.h"
-#include "../include/torus.h"
-#include "../include/matrix.h"
 #include "../include/tree.h"
 #include "../include/file.h"
 

@@ -2,14 +2,22 @@
 #include "../include/stack.h"
 
 
-static char *cellString(Stack *stack) {
-    if (stack == NULL) {
+/**
+ * Return a string corresponding to a Stack's cell.
+ *
+ *
+ * @param cell Cell to be interpreted as a string.
+ *
+ * @return A string corresponding to the given cell.
+ */
+static char *cellString(Stack *cell) {
+    if (cell == NULL) {
         errno = EFAULT;
         perror("Error - cellString ");
         exit(1);
     }
     
-    Tree *node = stack->node;
+    Tree *node = cell->node;
     
     switch (node->op) {
         case UNION:
@@ -21,7 +29,8 @@ static char *cellString(Stack *stack) {
         case EQUAL:
             return "=";
         case NONE:
-            break;
+            fprintf(stderr, "Error: cellString - Invalid stack (Node with NONE operator).\n");
+            exit(1);;
     }
     if (node->obj != NULL) {
         switch (node->obj->shape) {
@@ -36,12 +45,12 @@ static char *cellString(Stack *stack) {
             case SHP_TORUS:
                 return "TORUS";
             case SHP_COMPOSITE:
-                fprintf(stderr, "Error: cellString - composite without operator");
+                fprintf(stderr, "Error: cellString - composite without operator.\n");
                 exit(1);
         }
     }
     
-    fprintf(stderr, "Error: cellString - Invalid stack");
+    fprintf(stderr, "Error: cellString - Invalid stack.\n");
     exit(1);
 }
 

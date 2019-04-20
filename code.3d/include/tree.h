@@ -9,8 +9,6 @@ typedef enum {
 } Operator;
 
 
-
-
 /**
  * CSG Tree used to represents composite Objects.
  */
@@ -52,7 +50,6 @@ Tree *newLeaf(Object *obj);
  * @return The newly created node.
  */
 Tree *newNode(Tree *left, Tree *right, Operator op);
-
 
 /**
  * Draw a node.
