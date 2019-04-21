@@ -153,6 +153,34 @@ static void printTreeRec(Tree *node, int space) {
     printTreeRec(node->left, space + 8);
 }
 
+/**
+ * @brief Free the memory allocated for a Tree.
+ *
+ * Ensure Object is only freed at root.
+ *
+ * @param node Tree to be freed.
+ */
+static void _freeTree(Tree *node, bool freeObj) {
+    if (node == NULL) {
+        return;
+    }
+    
+    _freeTree(node->left, false);
+    _freeTree(node->right, false);
+    
+    free(node->visible);
+    
+    if (freeObj) {
+        freeObject(node->obj);
+    } else {
+        free(node->obj);
+    }
+    if (node->mi != NULL) {
+        free(node->mi);
+    }
+    
+    free(node);
+}
 
 void printTree(Tree *root) {
     if (root == NULL) {
@@ -245,7 +273,7 @@ void drawNode(Tree *node, int c) {
     G3Xvector *n = node->obj->normal;
     G3Xpoint *v = node->obj->vertex;
     int i, size = node->obj->size;
-    G3Xcolor previous= {0};
+    G3Xcolor previous = {0};
     
     memcpy(previous, G3Xr, sizeof(G3Xcolor));
     
@@ -272,18 +300,5 @@ void drawNode(Tree *node, int c) {
 
 
 void freeTree(Tree *node) {
-    if (node == NULL) {
-        return;
-    }
-    
-    freeTree(node->left);
-    freeTree(node->right);
-    
-    freeObject(node->obj);
-    free(node->visible);
-    if (node->mi != NULL) {
-        free(node->mi);
-    }
-    
-    free(node);
+    _freeTree(node, true);
 }
