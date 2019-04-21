@@ -1,3 +1,19 @@
+/** @file main.c
+ *
+ *  @brief Contains the ***main*** of the project and *g3x* `init()` and `draw()` functions.
+ *
+ *  @author Elise Hardy
+ *  @author Quentin Coumes
+ *
+ *  @dir code.3d
+ *  @brief The project root.
+ *  @dir code.3d/include
+ *  @brief Contains headers of the project.
+ *  @dir code.3d/src
+ *  @brief Contains sources of the project.
+ */
+
+
 #include <errno.h>
 #include "../include/tree.h"
 #include "../include/file.h"

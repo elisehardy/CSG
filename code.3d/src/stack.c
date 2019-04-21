@@ -1,9 +1,17 @@
+/** @file stack.c
+ *
+ *  @brief Contains the definition of the **Stack**'s functions.
+ *
+ *  @author Elise Hardy
+ *  @author Quentin Coumes
+ */
+
 #include <errno.h>
 #include "../include/stack.h"
 
 
 /**
- * Return a string corresponding to a Stack's cell.
+ * @brief  Return a string corresponding to a Stack's cell.
  *
  *
  * @param cell Cell to be interpreted as a string.

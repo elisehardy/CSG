@@ -1,3 +1,12 @@
+/** @file tree.c
+ *
+ *  @brief Contains the definition of the **Tree**'s functions.
+ *
+ *  @author Elise Hardy
+ *  @author Quentin Coumes
+ */
+
+
 #include <errno.h>
 
 #include "../include/tree.h"

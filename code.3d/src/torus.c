@@ -1,11 +1,18 @@
+/** @file torus.c
+ *
+ *  @brief Contains the definition of the **Torus**'s functions.
+ *
+ *  @author Elise Hardy
+ *  @author Quentin Coumes
+ */
+
 #include <errno.h>
 #include "../include/torus.h"
 
 
 /**
- * Check if a point is inside or on a torus.
+ * @brief  Check if a point is inside or on a torus.
  *
- * @param torus The torus the point will be checked against.
  * @param p The point being checked.
  *
  * @return true if the point is inside or on the torus, false otherwise.

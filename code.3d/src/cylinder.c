@@ -1,11 +1,18 @@
+/** @file cylinder.c
+ *
+ *  @brief Contains the definition of the **Cylinder**'s functions.
+ *
+ *  @author Elise Hardy
+ *  @author Quentin Coumes
+ */
+
 #include <errno.h>
 #include "../include/cylinder.h"
 
 
 /**
- * Check if a point is inside or on a cylinder.
+ * @brief  Check if a point is inside or on a cylinder.
  *
- * @param cylinder The cylinder the point will be checked against.
  * @param p The point being checked.
  *
  * @return true if the point is inside or on the cylinder, false otherwise.

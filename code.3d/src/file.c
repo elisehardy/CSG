@@ -1,3 +1,12 @@
+/** @file file.c
+ *
+ *  @brief Contains the definition of the **file parsing**'s functions.
+ *
+ *  @author Elise Hardy
+ *  @author Quentin Coumes
+ */
+
+
 #include <errno.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -14,7 +23,7 @@
 
 
 /**
- * Trim whitespace on both side of str, returning the new size of str.
+ * @brief  Trim whitespace on both side of str, returning the new size of str.
  *
  * @param str String to be trimmed.
  *
@@ -56,7 +65,7 @@ static int trimAndLower(char *str) {
 
 
 /**
- * Return an Object corresponding to the one following 'obj:'.
+ * @brief  Return an Object corresponding to the one following 'obj:'.
  *
  * @param token String following 'obj:'.
  * @param line Current line number in the script.
@@ -93,7 +102,7 @@ static Object *parseObj(char *token, int line) {
 
 
 /**
- * Return an Operator corresponding to the one following 'op:'.
+ * @brief  Return an Operator corresponding to the one following 'op:'.
  *
  * @param token String following 'op:'.
  * @param line Current line number in the script.
@@ -129,13 +138,12 @@ static Operator parseOp(char *token, int line) {
 
 
 /**
- * Return a color corresponding to the one following 'col:'.
+ * @brief  Return a color corresponding to the one following 'col:'.
  *
  * @param r String following 'red:'.
  * @param g String following 'green:'.
  * @param b String following 'blue:'.
  * @param a String following 'alpha:'.
- * @param line Current line number in the script.
  *
  * @return The corresponding color.
  */
@@ -163,7 +171,7 @@ static float *parseCol(char *r, char *g, char *b, char *a) {
 
 
 /**
- * Translate a node according to the given x, y, z.
+ * @brief  Translate a node according to the given x, y, z.
  *
  * @param tree Node to be translated.
  * @param x Translation distance on X.
@@ -182,7 +190,7 @@ static void parseT(Tree *tree, char *x, char *y, char *z) {
 
 
 /**
- * Rotate a node according to the given x, y, z.
+ * @brief  Rotate a node according to the given x, y, z.
  *
  * @param tree Node to be rotated.
  * @param x Rotation angle on X.
@@ -192,7 +200,7 @@ static void parseT(Tree *tree, char *x, char *y, char *z) {
 static void parseR(Tree *tree, char *x, char *y, char *z) {
     if (tree == NULL || x == NULL || y == NULL || z == NULL) {
         errno = EFAULT;
-        perror("Error - parseT ");
+        perror("Error - parseR ");
         exit(1);
     }
     
@@ -201,7 +209,7 @@ static void parseR(Tree *tree, char *x, char *y, char *z) {
 
 
 /**
- * Dilate a node according to the given x, y, z.
+ * @brief  Dilate a node according to the given x, y, z.
  *
  * @param tree Node to be dilated.
  * @param x Factor of dilatation on X.
@@ -211,7 +219,7 @@ static void parseR(Tree *tree, char *x, char *y, char *z) {
 static void parseH(Tree *tree, char *x, char *y, char *z) {
     if (tree == NULL || x == NULL || y == NULL || z == NULL) {
         errno = EFAULT;
-        perror("Error - parseT ");
+        perror("Error - parseH ");
         exit(1);
     }
     
@@ -226,10 +234,10 @@ Tree *parseFile(FILE *file) {
     float *color;
     Stack *stack = NULL;
     size_t len = 0;
-    int l, read, i;
+    int l, i;
     Operator op;
     
-    for (l = 1; (read = getline(&line, &len, file)) != -1; l++) {
+    for (l = 1; getline(&line, &len, file) != -1; l++) {
         trimAndLower(line);
         if (!strlen(line) || line[0] == '#') {
             continue;

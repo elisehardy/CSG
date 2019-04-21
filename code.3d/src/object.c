@@ -1,3 +1,11 @@
+/** @file object.c
+ *
+ *  @brief Contains the definition of the **Object**'s functions.
+ *
+ *  @author Elise Hardy
+ *  @author Quentin Coumes
+ */
+
 #include <errno.h>
 #include "../include/object.h"
 

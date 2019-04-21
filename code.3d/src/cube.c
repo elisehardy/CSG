@@ -1,11 +1,19 @@
+/** @file cube.c
+ *
+ *  @brief Contains the definition of the **Cube**'s functions.
+ *
+ *  @author Elise Hardy
+ *  @author Quentin Coumes
+ */
+
+
 #include <errno.h>
 #include "../include/cube.h"
 
 
 /**
- * Check if a point is inside or on a cube.
+ * @brief  Check if a point is inside or on a cube.
  *
- * @param cube The cube the point will be checked against.
  * @param p The point being checked.
  *
  * @return true if the point is inside or on the cube, false otherwise.

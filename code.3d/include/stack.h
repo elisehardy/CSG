@@ -1,3 +1,11 @@
+/** @file stack.h
+ *
+ *  @brief Header for the **Stack** definition and functions.
+ *
+ *  @author Elise Hardy
+ *  @author Quentin Coumes
+ */
+
 #ifndef CSG_STACK_H
 #define CSG_STACK_H
 
@@ -5,7 +13,7 @@
 
 
 /**
- * A queue of Object.
+ * @brief  A queue of Object.
  */
 typedef struct _cell {
     Tree *node;        /**< An Object. */
@@ -14,33 +22,33 @@ typedef struct _cell {
 
 
 /**
- * Create a new Stack from the given Object.
+ * @brief  Create a new Stack from the given Object.
  *
- * @param obj First element of the Stack.
+ * @param node First element of the Stack.
  *
  * @return The newly created queue containing obj.
  */
 Stack *newStack(Tree *node);
 
 /**
- * Remove the first Object from the stack and return it.
+ * @brief  Remove the first Object from the stack and return it.
  *
- * @param q A non-NULL stack.
+ * @param stack A non-NULL stack.
  *
  * @return The first Object of the stack.
  */
 Tree *popStack(Stack **stack);
 
 /**
- * Add a new Object to the stack. If q is NULL, create a new stack.
+ * @brief  Add a new node to the stack. If stack is NULL, create a new stack.
  *
- * @param q A queue, NULL to create a new stack.
- * @param obj The object to be added to the stack.
+ * @param stack A stack, NULL to create a new stack.
+ * @param node The node to be added to the stack.
  */
 Stack *addStack(Stack *stack, Tree *node);
 
 /**
- * Print a stack on stdout.
+ * @brief  Print a stack on stdout.
  *
  * @param stack Stack to be printed
  */

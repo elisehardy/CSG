@@ -8,7 +8,6 @@ IGNORED = -Wno-unused-parameter -Wno-unused-function -Wno-unused-but-set-variabl
 CFLAGS = $(FLAGS) $(IGNORED)
 
 # assemblage des infos de lib. et inc.
-#libGL = $(dir $(dir $(shell find /usr/lib/ -name libGL.so | head -n 1)))
 libg3x = ../libg3x/
 lib = $(libG3X)$(CCEXT)
 inc = $(incG3X)

@@ -1,11 +1,19 @@
+/** @file sphere.c
+ *
+ *  @brief Contains the definition of the **Sphere**'s functions.
+ *
+ *  @author Elise Hardy
+ *  @author Quentin Coumes
+ */
+
+
 #include <errno.h>
 #include "../include/sphere.h"
 
 
 /**
- * Check if a point is inside or on a sphere.
+ * @brief  Check if a point is inside or on a sphere.
  *
- * @param sphere The sphere the point will be checked against.
  * @param p The point being checked.
  *
  * @return true if the point is inside or on the sphere, false otherwise.

@@ -1,3 +1,11 @@
+/** @file tree.h
+ *
+ *  @brief Header for the **CSG tree** definition and functions.
+ *
+ *  @author Elise Hardy
+ *  @author Quentin Coumes
+ */
+
 #ifndef CSG_TREE_H
 #define CSG_TREE_H
 
@@ -10,7 +18,7 @@ typedef enum {
 
 
 /**
- * CSG Tree used to represents composite Objects.
+ * @brief  CSG Tree used to represents composite Objects.
  */
 typedef struct _node {
     Operator op;                /**< Operator used by this node.*/
@@ -25,15 +33,8 @@ typedef struct _node {
 
 
 /**
- * Create a new leaf from the given object.
+ * @brief  Create a new leaf from the given object.
  *
- * Field are initialized like this :
- * - neg is initialized to false.
- * - visible is allocated with obj->size cell and filled with 1.
- * - Every matrix are set to NULL.
- * - Both sons are set to NULL.
- *
- * @param op Operator of this node.
  * @param obj Object of this node.
  *
  * @return The newly created node.
@@ -41,7 +42,7 @@ typedef struct _node {
 Tree *newLeaf(Object *obj);
 
 /**
- * Return a new node linking left and right with op.
+ * @brief  Return a new node linking left and right with op.
  *
  * @param left The left operand of the operation.
  * @param right The right operand of the operation.
@@ -52,7 +53,7 @@ Tree *newLeaf(Object *obj);
 Tree *newNode(Tree *left, Tree *right, Operator op);
 
 /**
- * Draw a node.
+ * @brief  Draw a node.
  *
  * @param node Node to be drawn.
  * @param c ?
@@ -60,7 +61,7 @@ Tree *newNode(Tree *left, Tree *right, Operator op);
 void drawNode(Tree *node, int c);
 
 /**
- * Print a Tree.
+ * @brief  Print a Tree.
  *
  * @param root Root of the tree.
  */

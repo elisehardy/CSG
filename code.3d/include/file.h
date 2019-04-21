@@ -1,3 +1,11 @@
+/** @file file.h
+ *
+ *  @brief Header for the **file parsing** functions.
+ *
+ *  @author Elise Hardy
+ *  @author Quentin Coumes
+ */
+
 #ifndef CSG_FILE_H
 #define CSG_FILE_H
 
@@ -6,7 +14,7 @@
 
 
 /**
- * Parse the given file, construction the corresponding CSG tree.
+ * @brief  Parse the given file, construction the corresponding CSG tree.
  *
  * @param file File to be parsed.
  *

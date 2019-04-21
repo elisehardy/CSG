@@ -1,13 +1,21 @@
+/** @file matrix.c
+ *
+ *  @brief Contains the definition of the **Matrix**'s functions.
+ *
+ *  @author Elise Hardy
+ *  @author Quentin Coumes
+ */
+
 #include <errno.h>
 #include "../include/matrix.h"
 
 
 /**
- * Return the matrix corresponding to a basic translation of the given factor.
+ * @brief  Return the matrix corresponding to a basic translation of the given factor.
  *
  * @param x Factor on the X axis
  * @param y Factor on the Y axis
- * @param x Factor on the Z axis
+ * @param z Factor on the Z axis
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
@@ -30,11 +38,11 @@ static double *translationMatrix(double x, double y, double z) {
 
 
 /**
- * Return the matrix corresponding to the inverse of a basic translation of the given factor.
+ * @brief  Return the matrix corresponding to the inverse of a basic translation of the given factor.
  *
  * @param x Factor on the X axis
  * @param y Factor on the Y axis
- * @param x Factor on the Z axis
+ * @param z Factor on the Z axis
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
@@ -57,11 +65,11 @@ static double *translationInvMatrix(double x, double y, double z) {
 
 
 /**
- * Return the matrix corresponding to a basic homothety of the given factor.
+ * @brief  Return the matrix corresponding to a basic homothety of the given factor.
  *
  * @param x Factor on the X axis
  * @param y Factor on the Y axis
- * @param x Factor on the Z axis
+ * @param z Factor on the Z axis
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
@@ -84,11 +92,11 @@ static double *homothetyVertexMatrix(double x, double y, double z) {
 
 
 /**
- * Return the matrix corresponding to the inverse of a basic homothety of the given factor on a vertex.
+ * @brief  Return the matrix corresponding to the inverse of a basic homothety of the given factor on a vertex.
  *
  * @param x Factor on the X axis
  * @param y Factor on the Y axis
- * @param x Factor on the Z axis
+ * @param z Factor on the Z axis
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
@@ -111,11 +119,11 @@ static double *homothetyVertexInvMatrix(double x, double y, double z) {
 
 
 /**
- * Return the matrix corresponding to a basic homothety of the given factor on a normal.
+ * @brief  Return the matrix corresponding to a basic homothety of the given factor on a normal.
  *
  * @param x Factor on the X axis
  * @param y Factor on the Y axis
- * @param x Factor on the Z axis
+ * @param z Factor on the Z axis
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
@@ -138,9 +146,9 @@ static double *homothetyNormalMatrix(double x, double y, double z) {
 
 
 /**
- * Return the matrix corresponding to a basic rotation on the X axis by an angle t.
+ * @brief  Return the matrix corresponding to a basic rotation on the X axis by an angle t.
  *
- * @param t The angle in radian.
+ * @param angle The angle in degree.
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
@@ -164,9 +172,9 @@ static double *xRotationMatrix(double angle) {
 
 
 /**
- * Return the matrix corresponding to the inverse of a basic rotation on the X axis by an angle t.
+ * @brief  Return the matrix corresponding to the inverse of a basic rotation on the X axis by an angle t.
  *
- * @param t The angle in radian.
+ * @param angle The angle in degree.
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
@@ -190,9 +198,9 @@ static double *xRotationInvMatrix(double angle) {
 
 
 /**
- * Return the matrix corresponding to a basic rotation on the Y axis by an angle t.
+ * @brief  Return the matrix corresponding to a basic rotation on the Y axis by an angle t.
  *
- * @param t The angle in radian.
+ * @param angle The angle in degree.
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
@@ -216,9 +224,9 @@ static double *yRotationMatrix(double angle) {
 
 
 /**
- * Return the matrix corresponding to the inverse of a basic rotation on the Y axis by an angle t.
+ * @brief  Return the matrix corresponding to the inverse of a basic rotation on the Y axis by an angle t.
  *
- * @param t The angle in radian.
+ * @param angle The angle in degree.
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
@@ -242,9 +250,9 @@ static double *yRotationInvMatrix(double angle) {
 
 
 /**
- * Return the matrix corresponding to a basic rotation on the Z axis by an angle t.
+ * @brief  Return the matrix corresponding to a basic rotation on the Z axis by an angle t.
  *
- * @param t The angle in radian.
+ * @param angle The angle in degree.
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
@@ -268,9 +276,9 @@ static double *zRotationMatrix(double angle) {
 
 
 /**
- * Return the matrix corresponding to the inverse of a basic rotation on the Z axis by an angle t.
+ * @brief  Return the matrix corresponding to the inverse of a basic rotation on the Z axis by an angle t.
  *
- * @param t The angle in radian.
+ * @param angle The angle in degree.
  *
  * @return The computed 4x4 matrix as an array of 16 points.
  */
@@ -294,12 +302,13 @@ static double *zRotationInvMatrix(double angle) {
 
 
 /**
- * Recursively propagate a transformation matrix to the node's sons.
+ * @brief  Recursively propagate a transformation matrix to the node's sons.
  *
  * @param node Node of the tree.
  * @param vertex Transformation matrix of the vertices.
  * @param normal Transformation matrix of the normals.
  * @param inverse Inverse transformation matrix of the vertices.
+ * @param translation True if the transformation is a translation, false otherwise.
  */
 static void propagate(Tree *node, double *vertex, double *normal, double *inverse, bool translation) {
     if (node == NULL) {
