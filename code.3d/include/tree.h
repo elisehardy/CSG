@@ -28,9 +28,7 @@ typedef struct _node {
     Object *obj;                /**< Object used by this node. */
     bool *visible;              /**< Boolean array telling whether a point I should be drawn. */
     bool neg;                   /**< ? */
-    double *md;                 /**< ? */
-    double *mi;                 /**< ? */
-    double *mn;                 /**< ? */
+    double *mi;                 /**< Inverse matrix to check moved a point into the canonical object */
     struct _node *left, *right; /**< Sons of this node */
 } Tree;
 
@@ -69,5 +67,12 @@ void drawNode(Tree *node, int c);
  * @param root Root of the tree.
  */
 void printTree(Tree *root);
+
+/**
+ * @brief Free the memory allocated for a Tree.
+ *
+ * @param node Tree to be freed.
+ */
+void freeTree(Tree *node);
 
 #endif

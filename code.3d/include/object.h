@@ -43,6 +43,13 @@ typedef struct _obj {
  *
  * @return The new composite Object.
  */
-Object *merge(Object *a, Object *b);
+Object *mergeObject(Object *a, Object *b);
+
+/**
+ * @brief Free the memory allocated for an Object.
+ *
+ * @param obj Object to be freed.
+ */
+void freeObject(Object *obj);
 
 #endif

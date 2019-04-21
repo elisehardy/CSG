@@ -10,17 +10,17 @@
 #include "../include/object.h"
 
 
-Object *merge(Object *a, Object *b) {
+Object *mergeObject(Object *a, Object *b) {
     if (a == NULL || b == NULL) {
         errno = EFAULT;
-        perror("Error - merge ");
+        perror("Error - mergeObject ");
         exit(1);
     }
     
     Object *obj = (Object *) malloc(sizeof(Object));
     if (obj == NULL) {
         errno = ENOMEM;
-        perror("Error - merge ");
+        perror("Error - mergeObject ");
         exit(1);
     }
     
@@ -33,7 +33,7 @@ Object *merge(Object *a, Object *b) {
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
     if (!(obj->vertex && obj->normal && obj->color)) {
         errno = ENOMEM;
-        perror("Error - merge ");
+        perror("Error - mergeObject ");
         exit(1);
     }
     
@@ -50,7 +50,16 @@ Object *merge(Object *a, Object *b) {
 }
 
 
-
+void freeObject(Object *obj) {
+    if (obj == NULL) {
+        return;
+    }
+    
+    free(obj->color);
+    free(obj->vertex);
+    free(obj->normal);
+    free(obj);
+}
 
 
 

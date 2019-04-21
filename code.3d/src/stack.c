@@ -91,8 +91,13 @@ Tree *popStack(Stack **stack) {
         exit(1);
     }
     
+    Stack *toFree = *stack;
+    
     Tree *node = (*stack)->node;
     *stack = (*stack)->next;
+    
+    free(toFree);
+    
     return node;
 }
 

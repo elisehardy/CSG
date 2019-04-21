@@ -45,6 +45,11 @@ void draw(void) {
 }
 
 
+void freeEverything(void) {
+    freeTree(tree);
+}
+
+
 int main(int argc, char **argv) {
     filepath = argv[1];
     
@@ -59,7 +64,7 @@ int main(int argc, char **argv) {
     g3x_SetInitFunction(init);     /* la fonction d'initialisation */
     g3x_SetDrawFunction(draw);     /* la fonction de dessin        */
     g3x_SetAnimFunction(NULL);         /* pas de fonction d'animation  */
-    g3x_SetExitFunction(NULL);     /* pas de fonction de sortie    */
+    g3x_SetExitFunction(freeEverything);     /* pas de fonction de sortie    */
     
     /* boucle d'exécution principale */
     return g3x_MainStart();

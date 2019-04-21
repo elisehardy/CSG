@@ -13,9 +13,18 @@
 #include "../include/matrix.h"
 
 
-static bool insideNode(Tree *tree, G3Xpoint p, int index) {
+/**
+ * Returns whether a point should be visible.
+ *
+ * @param tree Tree the point will be checked against.
+ * @param p Point tested against the tree.
+ * @param index Index of the point if it is known to be part of the Tree, -1 otherwise.
+ *
+ * @return True if the point should be visible, false otherwise.
+ */
+static bool isVisible(Tree *tree, G3Xpoint p, int index) {
     if ((tree->left == NULL) + (tree->right == NULL) == 1) {
-        fprintf(stderr, "Error: insideNode - Invalid node.\n");
+        fprintf(stderr, "Error: isVisible - Invalid node.\n");
         exit(1);
     }
     
@@ -25,7 +34,10 @@ static bool insideNode(Tree *tree, G3Xpoint p, int index) {
             return tree->obj->pt_in(p);
         }
         
-        return tree->obj->pt_in(matrixCoordMult(tree->mi, p));
+        double *reversed = matrixCoordMult(tree->mi, p);
+        bool b = tree->obj->pt_in(reversed);
+        free(reversed);
+        return b;
     }
     
     // p is a point of a primitive from this tree
@@ -34,24 +46,24 @@ static bool insideNode(Tree *tree, G3Xpoint p, int index) {
         switch (tree->op) {
             case OP_SUBTRACTION:
                 if (left) {
-                    return !insideNode(tree->right, p, -1);
+                    return !isVisible(tree->right, p, -1);
                 }
                 else {
-                    return insideNode(tree->left, p, -1);
+                    return isVisible(tree->left, p, -1);
                 }
             case OP_UNION:
                 if (left) {
-                    return !insideNode(tree->right, p, -1);
+                    return !isVisible(tree->right, p, -1);
                 }
                 else {
-                    return !insideNode(tree->left, p, -1);
+                    return !isVisible(tree->left, p, -1);
                 }
             case OP_INTERSECTION:
                 if (left) {
-                    return insideNode(tree->right, p, -1);
+                    return isVisible(tree->right, p, -1);
                 }
                 else {
-                    return insideNode(tree->left, p, -1);
+                    return isVisible(tree->left, p, -1);
                 }
             default:
                 return true;
@@ -61,21 +73,28 @@ static bool insideNode(Tree *tree, G3Xpoint p, int index) {
     // p is a point from another tree
     switch (tree->op) {
         case OP_SUBTRACTION:
-            return insideNode(tree->left, p, -1) && !insideNode(tree->right, p, -1);
+            return isVisible(tree->left, p, -1) && !isVisible(tree->right, p, -1);
         case OP_UNION:
-            return insideNode(tree->left, p, -1) || insideNode(tree->right, p, -1);
+            return isVisible(tree->left, p, -1) || isVisible(tree->right, p, -1);
         case OP_INTERSECTION:
-            return insideNode(tree->left, p, -1) && insideNode(tree->right, p, -1);
+            return isVisible(tree->left, p, -1) && isVisible(tree->right, p, -1);
         default:
-            return insideNode(tree->left, p, -1) || insideNode(tree->right, p, -1);
+            return isVisible(tree->left, p, -1) || isVisible(tree->right, p, -1);
     }
 }
 
 
-static char *getTreeData(Tree *node) {
+/**
+ * @brief Return a string corresponding to a node.
+ *
+ * @param node Node to be interpreted as a string.
+ *
+ * @return A string corresponding to the given node.
+ */
+static char *nodeString(Tree *node) {
     if (node == NULL) {
         errno = EFAULT;
-        perror("Error - getTreeData ");
+        perror("Error - nodeString ");
         exit(1);
     }
     
@@ -104,16 +123,22 @@ static char *getTreeData(Tree *node) {
             case SHP_TORUS:
                 return "TORUS";
             case SHP_COMPOSITE:
-                fprintf(stderr, "Error: printTreeData - composite without operator\n");
+                fprintf(stderr, "Error: nodeString - composite without operator\n");
                 exit(1);
         }
     }
     
-    fprintf(stderr, "Error: printTreeData - Invalid node\n");
+    fprintf(stderr, "Error: nodeString - Invalid node\n");
     exit(1);
 }
 
 
+/**
+ * Print the tree recursively.
+ *
+ * @param node Tree to be printed.
+ * @param space Number of space between son and father.
+ */
 static void printTreeRec(Tree *node, int space) {
     if (node == NULL) {
         return;
@@ -124,7 +149,7 @@ static void printTreeRec(Tree *node, int space) {
     for (int i = 0; i < space; i++) {
         printf(" ");
     }
-    printf("%s\n", getTreeData(node));
+    printf("%s\n", nodeString(node));
     printTreeRec(node->left, space + 8);
 }
 
@@ -156,9 +181,7 @@ Tree *newLeaf(Object *obj) {
     
     new->op = OP_NONE;
     new->obj = obj;
-    new->md = NULL;
     new->mi = NULL;
-    new->mn = NULL;
     new->neg = false;
     new->left = NULL;
     new->right = NULL;
@@ -185,14 +208,12 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     }
     
     new->op = op;
-    new->md = NULL;
     new->mi = NULL;
-    new->mn = NULL;
     new->neg = false;
     new->left = left;
     new->right = right;
     
-    new->obj = merge(left->obj, right->obj);
+    new->obj = mergeObject(left->obj, right->obj);
     if (op == OP_SUBTRACTION) {
         for (int i = left->obj->size; i < new->obj->size; i++) {
             new->obj->normal[i][0] *= -1;
@@ -206,7 +227,7 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     memcpy(new->visible + left->obj->size, right->visible, right->obj->size * sizeof(bool));
     for (int i = 0; i < new->obj->size; i++) {
         if (new->visible[i]) {
-            new->visible[i] = insideNode(new, new->obj->vertex[i], i);
+            new->visible[i] = isVisible(new, new->obj->vertex[i], i);
         }
     }
     
@@ -224,7 +245,7 @@ void drawNode(Tree *node, int c) {
     G3Xvector *n = node->obj->normal;
     G3Xpoint *v = node->obj->vertex;
     int i, size = node->obj->size;
-    G3Xcolor previous;
+    G3Xcolor previous= {0};
     
     memcpy(previous, G3Xr, sizeof(G3Xcolor));
     
@@ -247,4 +268,22 @@ void drawNode(Tree *node, int c) {
     }
     
     glEnd();
+}
+
+
+void freeTree(Tree *node) {
+    if (node == NULL) {
+        return;
+    }
+    
+    freeTree(node->left);
+    freeTree(node->right);
+    
+    freeObject(node->obj);
+    free(node->visible);
+    if (node->mi != NULL) {
+        free(node->mi);
+    }
+    
+    free(node);
 }

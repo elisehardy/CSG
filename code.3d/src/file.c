@@ -278,6 +278,7 @@ Tree *parseFile(FILE *file) {
             for (i = 0; i < current->obj->size; i++) {
                 memcpy(current->obj->color[i], color, sizeof(float) * 4);
             }
+            free(color);
         }
             
             // Translation
@@ -382,6 +383,7 @@ Tree *parseFile(FILE *file) {
             exit(1);
         }
     }
+    free(line);
     
     if (sizeStack(stack) > 1) {
         fprintf(

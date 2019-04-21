@@ -309,8 +309,10 @@ static double *zRotationInvMatrix(double angle) {
  * @param normal Transformation matrix of the normals.
  * @param inverse Inverse transformation matrix of the vertices.
  * @param translation True if the transformation is a translation, false otherwise.
+ *
+ * @return Whether the inverse matrix can be freed ore not. Vertex and normal matrix should always be freed.
  */
-static void propagate(Tree *node, double *vertex, double *normal, double *inverse, bool translation) {
+static bool propagate(Tree *node, double *vertex, double *normal, double *inverse, bool translation) {
     if (node == NULL) {
         errno = EFAULT;
         perror("Error - propagate ");
@@ -318,21 +320,26 @@ static void propagate(Tree *node, double *vertex, double *normal, double *invers
     }
     
     int i;
-    double *p;
+    bool ret;
+    double *p, *old;
     
     if (node->left && node->right) {
-        propagate(node->left, vertex, normal, inverse, translation);
-        propagate(node->right, vertex, normal, inverse, translation);
+        ret = propagate(node->left, vertex, normal, inverse, translation);
+        ret &= propagate(node->right, vertex, normal, inverse, translation);
     }
     else if (!node->left && !node->right) {
-        node->md = !node->md ? vertex : matrixMatrixMult(vertex, node->md);
-        node->mi = !node->mi ? inverse : matrixMatrixMult(inverse, node->mi);
-        if (!translation) {
-            node->mn = !node->mn ? normal : matrixMatrixMult(normal, node->mn);
+        if (node->mi == NULL) {
+            node->mi = inverse;
+            ret = false;
+        } else {
+            old = node->mi;
+            node->mi = matrixMatrixMult(inverse, node->mi);
+            free(old);
+            ret = true;
         }
     }
     else {
-        fprintf(stderr, " propagate : Invalid node\n");
+        fprintf(stderr, " propagate : Invalid node - has only one son\n");
         exit(1);
     }
     
@@ -350,6 +357,8 @@ static void propagate(Tree *node, double *vertex, double *normal, double *invers
             free(p);
         }
     }
+    
+    return ret;
 }
 
 
@@ -425,18 +434,30 @@ void rotate(Tree *node, double x, double y, double z) {
         exit(1);
     }
     
-    double *mat;
+    double *mat, *inv;
     if (x) {
         mat = xRotationMatrix(x);
-        propagate(node, mat, mat, xRotationInvMatrix(x), true);
+        inv = xRotationInvMatrix(x);
+        if (propagate(node, mat, mat, inv, true)) {
+            free(inv);
+        }
+        free(mat);
     }
     if (y) {
         mat = yRotationMatrix(y);
-        propagate(node, mat, mat, yRotationInvMatrix(y), true);
+        inv = yRotationInvMatrix(y);
+        if (propagate(node, mat, mat, inv, true)) {
+            free(inv);
+        }
+        free(mat);
     }
     if (z) {
         mat = zRotationMatrix(z);
-        propagate(node, mat, mat, zRotationInvMatrix(z), true);
+        inv = zRotationInvMatrix(z);
+        if (propagate(node, mat, mat, inv, true)) {
+            free(inv);
+        }
+        free(mat);
     }
 }
 
@@ -449,7 +470,12 @@ void translate(Tree *node, double x, double y, double z) {
     }
     
     double *mat = translationMatrix(x, y, z);
-    propagate(node, mat, NULL, translationInvMatrix(x, y, z), true);
+    double *inv = translationInvMatrix(x, y, z);
+    
+    if (propagate(node, mat, NULL, inv, true)) {
+        free(inv);
+    }
+    free(mat);
 }
 
 
@@ -460,8 +486,14 @@ void homothate(Tree *node, double x, double y, double z) {
         exit(1);
     }
     
-    propagate(
-            node, homothetyVertexMatrix(x, y, z), homothetyNormalMatrix(x, y, z), homothetyVertexInvMatrix(x, y, z),
-            false
-    );
+    double *vertex, *normal, *inverse;
+    vertex = homothetyVertexMatrix(x, y, z);
+    normal = homothetyNormalMatrix(x, y, z);
+    inverse = homothetyVertexInvMatrix(x, y, z);
+    
+    if (propagate(node, vertex, normal, inverse, false)) {
+        free(inverse);
+    }
+    free(vertex);
+    free(normal);
 }

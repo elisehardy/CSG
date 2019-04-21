@@ -1,0 +1,136 @@
+obj: cylinder
+col:0;0;1;0
+H: 1;1;0.2
+
+obj: sphere
+col: 1;0.5;0;0
+T:0;0;0.85
+
+obj: cylinder
+col: 1;0;0;0
+H: 0.2;0.2;2
+T: 0;0.2;0
+Rx: 90
+
+obj: cylinder
+col: 1;0;0;0
+H: 0.2;0.2;2
+T: -0.2;0;0
+Ry: 90
+
+op: union
+
+op: union
+
+op: sous
+
+obj: cylinder
+col:0;0;1;0
+H: 1;1;0.2
+
+obj: sphere
+col: 1;0.5;0;0
+T:0;0;0.85
+
+obj: cylinder
+col: 1;0;0;0
+H: 0.2;0.2;2
+T: 0;0.2;0
+Rx: 90
+
+obj: cylinder
+col: 1;0;0;0
+H: 0.2;0.2;2
+T: -0.2;0;0
+Ry: 90
+
+op: union
+
+op: union
+
+op: sous
+
+
+obj: cylinder
+col:0;0;1;0
+H: 1;1;0.2
+
+obj: sphere
+col: 1;0.5;0;0
+T:0;0;0.85
+
+obj: cylinder
+col: 1;0;0;0
+H: 0.2;0.2;2
+T: 0;0.2;0
+Rx: 90
+
+obj: cylinder
+col: 1;0;0;0
+H: 0.2;0.2;2
+T: -0.2;0;0
+Ry: 90
+
+op: union
+
+op: union
+
+op: sous
+
+
+obj: cylinder
+col:0;0;1;0
+H: 1;1;0.2
+
+obj: sphere
+col: 1;0.5;0;0
+T:0;0;0.85
+
+obj: cylinder
+col: 1;0;0;0
+H: 0.2;0.2;2
+T: 0;0.2;0
+Rx: 90
+
+obj: cylinder
+col: 1;0;0;0
+H: 0.2;0.2;2
+T: -0.2;0;0
+Ry: 90
+
+op: union
+
+op: union
+
+op: sous
+
+obj: cylinder
+col:0;0;1;0
+H: 1;1;0.2
+
+obj: sphere
+col: 1;0.5;0;0
+T:0;0;0.85
+
+obj: cylinder
+col: 1;0;0;0
+H: 0.2;0.2;2
+T: 0;0.2;0
+Rx: 90
+
+obj: cylinder
+col: 1;0;0;0
+H: 0.2;0.2;2
+T: -0.2;0;0
+Ry: 90
+
+op: union
+
+op: union
+
+op: sous
+
+op:equal
+op:equal
+op:equal
+op:equal
