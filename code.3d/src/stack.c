@@ -11,7 +11,7 @@
 
 
 /**
- * @brief  Return a string corresponding to a Stack's cell.
+ * @brief Return a string corresponding to a Stack's cell.
  *
  *
  * @param cell Cell to be interpreted as a string.
@@ -118,6 +118,22 @@ Stack *addStack(Stack *stack, Tree *node) {
     new->node = node;
     new->next = stack;
     return new;
+}
+
+
+int sizeStack(Stack *stack) {
+    if (stack == NULL) {
+        return 0;
+    }
+    
+    Stack *current;
+    int size = 0;
+    
+    for (current = stack; current != NULL; current = current->next) {
+        size++;
+    }
+    
+    return size;
 }
 
 

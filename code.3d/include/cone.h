@@ -16,7 +16,7 @@ typedef Object Cone;
 
 
 /**
- * @brief  Build a cone with an uniform distribution of vertices.
+ * @brief Build a cone with an uniform distribution of vertices.
  *
  * @param n ?
  * @param p ?

@@ -17,7 +17,7 @@ typedef Object Torus;
 
 
 /**
- * @brief  Build a torus with an uniform distribution of vertices.
+ * @brief Build a torus with an uniform distribution of vertices.
  *
  * @param n ?
  * @param p ?

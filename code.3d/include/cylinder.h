@@ -17,7 +17,7 @@ typedef Object Cylinder;
 
 
 /**
- * @brief  Build a cylinder with an uniform distribution of vertices.
+ * @brief Build a cylinder with an uniform distribution of vertices.
  *
  * @param n ?
  * @param p ?

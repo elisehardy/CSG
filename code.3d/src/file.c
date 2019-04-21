@@ -23,7 +23,7 @@
 
 
 /**
- * @brief  Trim whitespace on both side of str, returning the new size of str.
+ * @brief Trim whitespace on both side of str, returning the new size of str.
  *
  * @param str String to be trimmed.
  *
@@ -65,7 +65,7 @@ static int trimAndLower(char *str) {
 
 
 /**
- * @brief  Return an Object corresponding to the one following 'obj:'.
+ * @brief Return an Object corresponding to the one following 'obj:'.
  *
  * @param token String following 'obj:'.
  * @param line Current line number in the script.
@@ -102,7 +102,7 @@ static Object *parseObj(char *token, int line) {
 
 
 /**
- * @brief  Return an Operator corresponding to the one following 'op:'.
+ * @brief Return an Operator corresponding to the one following 'op:'.
  *
  * @param token String following 'op:'.
  * @param line Current line number in the script.
@@ -138,7 +138,7 @@ static Operator parseOp(char *token, int line) {
 
 
 /**
- * @brief  Return a color corresponding to the one following 'col:'.
+ * @brief Return a color corresponding to the one following 'col:'.
  *
  * @param r String following 'red:'.
  * @param g String following 'green:'.
@@ -171,7 +171,7 @@ static float *parseCol(char *r, char *g, char *b, char *a) {
 
 
 /**
- * @brief  Translate a node according to the given x, y, z.
+ * @brief Translate a node according to the given x, y, z.
  *
  * @param tree Node to be translated.
  * @param x Translation distance on X.
@@ -190,7 +190,7 @@ static void parseT(Tree *tree, char *x, char *y, char *z) {
 
 
 /**
- * @brief  Rotate a node according to the given x, y, z.
+ * @brief Rotate a node according to the given x, y, z.
  *
  * @param tree Node to be rotated.
  * @param x Rotation angle on X.
@@ -209,7 +209,7 @@ static void parseR(Tree *tree, char *x, char *y, char *z) {
 
 
 /**
- * @brief  Dilate a node according to the given x, y, z.
+ * @brief Dilate a node according to the given x, y, z.
  *
  * @param tree Node to be dilated.
  * @param x Factor of dilatation on X.
@@ -262,6 +262,13 @@ Tree *parseFile(FILE *file) {
             
             // Color
         else if (!strcmp(token, "col")) {
+            if (current == NULL) {
+                fprintf(
+                        stderr,
+                        "Error: error (line %d) - Transformations can only be declared after an object/operator.\n", l
+                );
+                exit(1);
+            }
             if ((r = strtok(NULL, ";")) == NULL || (g = strtok(NULL, ";")) == NULL || (b = strtok(NULL, ";")) == NULL
                 || (a = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
@@ -275,6 +282,13 @@ Tree *parseFile(FILE *file) {
             
             // Translation
         else if (!strcmp(token, "t")) {
+            if (current == NULL) {
+                fprintf(
+                        stderr,
+                        "Error: error (line %d) - Transformations can only be declared after an object/operator.\n", l
+                );
+                exit(1);
+            }
             if ((x = strtok(NULL, ";")) == NULL || (y = strtok(NULL, ";")) == NULL || (z = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
@@ -284,6 +298,13 @@ Tree *parseFile(FILE *file) {
             
             // Dilatation
         else if (!strcmp(token, "h")) {
+            if (current == NULL) {
+                fprintf(
+                        stderr,
+                        "Error: error (line %d) - Transformations can only be declared after an object/operator.\n", l
+                );
+                exit(1);
+            }
             if ((x = strtok(NULL, ";")) == NULL || (y = strtok(NULL, ";")) == NULL || (z = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
@@ -293,6 +314,13 @@ Tree *parseFile(FILE *file) {
             
             // X Rotation
         else if (!strcmp(token, "rx")) {
+            if (current == NULL) {
+                fprintf(
+                        stderr,
+                        "Error: error (line %d) - Transformations can only be declared after an object/operator.\n", l
+                );
+                exit(1);
+            }
             if ((x = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
@@ -302,6 +330,13 @@ Tree *parseFile(FILE *file) {
             
             // Y Rotation
         else if (!strcmp(token, "ry")) {
+            if (current == NULL) {
+                fprintf(
+                        stderr,
+                        "Error: error (line %d) - Transformations can only be declared after an object/operator.\n", l
+                );
+                exit(1);
+            }
             if ((y = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
@@ -311,6 +346,13 @@ Tree *parseFile(FILE *file) {
             
             // Z Rotation
         else if (!strcmp(token, "rz")) {
+            if (current == NULL) {
+                fprintf(
+                        stderr,
+                        "Error: error (line %d) - Transformations can only be declared after an object/operator.\n", l
+                );
+                exit(1);
+            }
             if ((z = strtok(NULL, ";")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
@@ -320,6 +362,10 @@ Tree *parseFile(FILE *file) {
             
             // Operation
         else if (!strcmp(token, "op")) {
+            if (sizeStack(stack) < 2) {
+                fprintf(stderr, "Error: error (line %d) - Cannot apply operator on less than 2 object.\n", l);
+                exit(1);
+            }
             if ((token = strtok(NULL, ":")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
@@ -337,5 +383,17 @@ Tree *parseFile(FILE *file) {
         }
     }
     
+    if (sizeStack(stack) > 1) {
+        fprintf(
+                stderr,
+                "Error: Last declared object/operator is not linked to other object/operator (maybe an operator is missing).\n"
+        );
+        exit(1);
+        
+    }
+    if (sizeStack(stack) < 1) {
+        fprintf(stderr, "Error: no object declared.\n");
+        exit(1);
+    }
     return popStack(&stack);
 }

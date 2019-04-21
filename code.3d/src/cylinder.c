@@ -11,7 +11,7 @@
 
 
 /**
- * @brief  Check if a point is inside or on a cylinder.
+ * @brief Check if a point is inside or on a cylinder.
  *
  * @param p The point being checked.
  *

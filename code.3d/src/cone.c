@@ -12,7 +12,7 @@
 
 
 /**
- * @brief  Check if a point is inside or on a cone.
+ * @brief Check if a point is inside or on a cone.
  *
  * @param p The point being checked.
  *

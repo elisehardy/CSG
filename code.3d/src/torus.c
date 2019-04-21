@@ -11,7 +11,7 @@
 
 
 /**
- * @brief  Check if a point is inside or on a torus.
+ * @brief Check if a point is inside or on a torus.
  *
  * @param p The point being checked.
  *

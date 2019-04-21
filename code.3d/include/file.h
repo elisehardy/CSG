@@ -14,7 +14,7 @@
 
 
 /**
- * @brief  Parse the given file, construction the corresponding CSG tree.
+ * @brief Parse the given file, construction the corresponding CSG tree.
  *
  * @param file File to be parsed.
  *

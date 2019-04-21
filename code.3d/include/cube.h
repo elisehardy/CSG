@@ -17,7 +17,7 @@ typedef Object Cube;
 
 
 /**
- * @brief  Build a cube with an uniform distribution of vertices.
+ * @brief Build a cube with an uniform distribution of vertices.
  *
  * @param n ?
  * @param p ?

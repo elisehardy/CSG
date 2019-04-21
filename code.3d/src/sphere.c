@@ -12,7 +12,7 @@
 
 
 /**
- * @brief  Check if a point is inside or on a sphere.
+ * @brief Check if a point is inside or on a sphere.
  *
  * @param p The point being checked.
  *

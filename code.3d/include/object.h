@@ -14,7 +14,7 @@
 
 
 /**
- * @brief  Canonical shapes.
+ * @brief Canonical shapes.
  */
 typedef enum {
     SHP_SPHERE, SHP_CUBE, SHP_CYLINDER, SHP_CONE, SHP_TORUS, SHP_COMPOSITE
@@ -22,7 +22,7 @@ typedef enum {
 
 
 /**
- * @brief  Represents a 3D canonic Object.
+ * @brief Represents a 3D canonic Object.
  */
 typedef struct _obj {
     Shape shape;             /**< Shape of the Object. */
@@ -36,7 +36,7 @@ typedef struct _obj {
 
 
 /**
- * @brief  Merge two Object into a composite object.
+ * @brief Merge two Object into a composite object.
  *
  * @param a First Object.
  * @param b Second Object.

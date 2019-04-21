@@ -12,7 +12,7 @@
 
 
 /**
- * @brief  Check if a point is inside or on a cube.
+ * @brief Check if a point is inside or on a cube.
  *
  * @param p The point being checked.
  *

@@ -13,7 +13,7 @@
 
 
 /**
- * @brief  A queue of Object.
+ * @brief A queue of Object.
  */
 typedef struct _cell {
     Tree *node;        /**< An Object. */
@@ -22,7 +22,7 @@ typedef struct _cell {
 
 
 /**
- * @brief  Create a new Stack from the given Object.
+ * @brief Create a new Stack from the given Object.
  *
  * @param node First element of the Stack.
  *
@@ -31,7 +31,7 @@ typedef struct _cell {
 Stack *newStack(Tree *node);
 
 /**
- * @brief  Remove the first Object from the stack and return it.
+ * @brief Remove the first Object from the stack and return it.
  *
  * @param stack A non-NULL stack.
  *
@@ -40,7 +40,7 @@ Stack *newStack(Tree *node);
 Tree *popStack(Stack **stack);
 
 /**
- * @brief  Add a new node to the stack. If stack is NULL, create a new stack.
+ * @brief Add a new node to the stack. If stack is NULL, create a new stack.
  *
  * @param stack A stack, NULL to create a new stack.
  * @param node The node to be added to the stack.
@@ -48,7 +48,16 @@ Tree *popStack(Stack **stack);
 Stack *addStack(Stack *stack, Tree *node);
 
 /**
- * @brief  Print a stack on stdout.
+ * @brief Returns the size of the given stack.
+ *
+ * @param stack Stack to be analyzed.
+ *
+ * @return The size of the given stack.
+ */
+int sizeStack(Stack *stack);
+
+/**
+ * @brief Print a stack on stdout.
  *
  * @param stack Stack to be printed
  */

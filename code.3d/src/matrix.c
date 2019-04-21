@@ -11,7 +11,7 @@
 
 
 /**
- * @brief  Return the matrix corresponding to a basic translation of the given factor.
+ * @brief Return the matrix corresponding to a basic translation of the given factor.
  *
  * @param x Factor on the X axis
  * @param y Factor on the Y axis
@@ -38,7 +38,7 @@ static double *translationMatrix(double x, double y, double z) {
 
 
 /**
- * @brief  Return the matrix corresponding to the inverse of a basic translation of the given factor.
+ * @brief Return the matrix corresponding to the inverse of a basic translation of the given factor.
  *
  * @param x Factor on the X axis
  * @param y Factor on the Y axis
@@ -65,7 +65,7 @@ static double *translationInvMatrix(double x, double y, double z) {
 
 
 /**
- * @brief  Return the matrix corresponding to a basic homothety of the given factor.
+ * @brief Return the matrix corresponding to a basic homothety of the given factor.
  *
  * @param x Factor on the X axis
  * @param y Factor on the Y axis
@@ -92,7 +92,7 @@ static double *homothetyVertexMatrix(double x, double y, double z) {
 
 
 /**
- * @brief  Return the matrix corresponding to the inverse of a basic homothety of the given factor on a vertex.
+ * @brief Return the matrix corresponding to the inverse of a basic homothety of the given factor on a vertex.
  *
  * @param x Factor on the X axis
  * @param y Factor on the Y axis
@@ -119,7 +119,7 @@ static double *homothetyVertexInvMatrix(double x, double y, double z) {
 
 
 /**
- * @brief  Return the matrix corresponding to a basic homothety of the given factor on a normal.
+ * @brief Return the matrix corresponding to a basic homothety of the given factor on a normal.
  *
  * @param x Factor on the X axis
  * @param y Factor on the Y axis
@@ -146,7 +146,7 @@ static double *homothetyNormalMatrix(double x, double y, double z) {
 
 
 /**
- * @brief  Return the matrix corresponding to a basic rotation on the X axis by an angle t.
+ * @brief Return the matrix corresponding to a basic rotation on the X axis by an angle t.
  *
  * @param angle The angle in degree.
  *
@@ -172,7 +172,7 @@ static double *xRotationMatrix(double angle) {
 
 
 /**
- * @brief  Return the matrix corresponding to the inverse of a basic rotation on the X axis by an angle t.
+ * @brief Return the matrix corresponding to the inverse of a basic rotation on the X axis by an angle t.
  *
  * @param angle The angle in degree.
  *
@@ -198,7 +198,7 @@ static double *xRotationInvMatrix(double angle) {
 
 
 /**
- * @brief  Return the matrix corresponding to a basic rotation on the Y axis by an angle t.
+ * @brief Return the matrix corresponding to a basic rotation on the Y axis by an angle t.
  *
  * @param angle The angle in degree.
  *
@@ -224,7 +224,7 @@ static double *yRotationMatrix(double angle) {
 
 
 /**
- * @brief  Return the matrix corresponding to the inverse of a basic rotation on the Y axis by an angle t.
+ * @brief Return the matrix corresponding to the inverse of a basic rotation on the Y axis by an angle t.
  *
  * @param angle The angle in degree.
  *
@@ -250,7 +250,7 @@ static double *yRotationInvMatrix(double angle) {
 
 
 /**
- * @brief  Return the matrix corresponding to a basic rotation on the Z axis by an angle t.
+ * @brief Return the matrix corresponding to a basic rotation on the Z axis by an angle t.
  *
  * @param angle The angle in degree.
  *
@@ -276,7 +276,7 @@ static double *zRotationMatrix(double angle) {
 
 
 /**
- * @brief  Return the matrix corresponding to the inverse of a basic rotation on the Z axis by an angle t.
+ * @brief Return the matrix corresponding to the inverse of a basic rotation on the Z axis by an angle t.
  *
  * @param angle The angle in degree.
  *
@@ -302,7 +302,7 @@ static double *zRotationInvMatrix(double angle) {
 
 
 /**
- * @brief  Recursively propagate a transformation matrix to the node's sons.
+ * @brief Recursively propagate a transformation matrix to the node's sons.
  *
  * @param node Node of the tree.
  * @param vertex Transformation matrix of the vertices.
