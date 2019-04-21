@@ -28,16 +28,16 @@ static char *cellString(Stack *cell) {
     Tree *node = cell->node;
     
     switch (node->op) {
-        case UNION:
+        case OP_UNION:
             return "∪";
-        case INTERSECTION:
+        case OP_INTERSECTION:
             return "∩";
-        case SUBTRACTION:
+        case OP_SUBTRACTION:
             return "-";
-        case EQUAL:
+        case OP_EQUAL:
             return "=";
-        case NONE:
-            fprintf(stderr, "Error: cellString - Invalid stack (Node with NONE operator).\n");
+        case OP_NONE:
+            fprintf(stderr, "Error: cellString - Invalid stack (Node with OP_NONE operator).\n");
             exit(1);;
     }
     if (node->obj != NULL) {

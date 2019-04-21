@@ -12,8 +12,11 @@
 #include "object.h"
 
 
+/**
+ * @brief Enum the different operation of a node.
+ */
 typedef enum {
-    UNION, INTERSECTION, SUBTRACTION, EQUAL, NONE
+    OP_UNION, OP_INTERSECTION, OP_SUBTRACTION, OP_EQUAL, OP_NONE
 } Operator;
 
 

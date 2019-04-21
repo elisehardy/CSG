@@ -117,19 +117,19 @@ static Operator parseOp(char *token, int line) {
     }
     
     if (!strcmp(token, "sous")) {
-        return SUBTRACTION;
+        return OP_SUBTRACTION;
     }
     
     if (!strcmp(token, "inter")) {
-        return INTERSECTION;
+        return OP_INTERSECTION;
     }
     
     if (!strcmp(token, "union")) {
-        return UNION;
+        return OP_UNION;
     }
     
     if (!strcmp(token, "equal")) {
-        return EQUAL;
+        return OP_EQUAL;
     }
     
     fprintf(stderr, "Error: Unknown operator (line %d) - '%s'\n", line, token);

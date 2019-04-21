@@ -32,21 +32,21 @@ static bool insideNode(Tree *tree, G3Xpoint p, int index) {
     if (index >= 0) {
         bool left = index < tree->left->obj->size;
         switch (tree->op) {
-            case SUBTRACTION:
+            case OP_SUBTRACTION:
                 if (left) {
                     return !insideNode(tree->right, p, -1);
                 }
                 else {
                     return insideNode(tree->left, p, -1);
                 }
-            case UNION:
+            case OP_UNION:
                 if (left) {
                     return !insideNode(tree->right, p, -1);
                 }
                 else {
                     return !insideNode(tree->left, p, -1);
                 }
-            case INTERSECTION:
+            case OP_INTERSECTION:
                 if (left) {
                     return insideNode(tree->right, p, -1);
                 }
@@ -60,11 +60,11 @@ static bool insideNode(Tree *tree, G3Xpoint p, int index) {
     
     // p is a point from another tree
     switch (tree->op) {
-        case SUBTRACTION:
+        case OP_SUBTRACTION:
             return insideNode(tree->left, p, -1) && !insideNode(tree->right, p, -1);
-        case UNION:
+        case OP_UNION:
             return insideNode(tree->left, p, -1) || insideNode(tree->right, p, -1);
-        case INTERSECTION:
+        case OP_INTERSECTION:
             return insideNode(tree->left, p, -1) && insideNode(tree->right, p, -1);
         default:
             return insideNode(tree->left, p, -1) || insideNode(tree->right, p, -1);
@@ -80,15 +80,15 @@ static char *getTreeData(Tree *node) {
     }
     
     switch (node->op) {
-        case UNION:
+        case OP_UNION:
             return "∪";
-        case INTERSECTION:
+        case OP_INTERSECTION:
             return "∩";
-        case SUBTRACTION:
+        case OP_SUBTRACTION:
             return "-";
-        case EQUAL:
+        case OP_EQUAL:
             return "=";
-        case NONE:
+        case OP_NONE:
             break;
     }
     if (node->obj != NULL) {
@@ -154,7 +154,7 @@ Tree *newLeaf(Object *obj) {
         exit(1);
     }
     
-    new->op = NONE;
+    new->op = OP_NONE;
     new->obj = obj;
     new->md = NULL;
     new->mi = NULL;
@@ -193,7 +193,7 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     new->right = right;
     
     new->obj = merge(left->obj, right->obj);
-    if (op == SUBTRACTION) {
+    if (op == OP_SUBTRACTION) {
         for (int i = left->obj->size; i < new->obj->size; i++) {
             new->obj->normal[i][0] *= -1;
             new->obj->normal[i][1] *= -1;
