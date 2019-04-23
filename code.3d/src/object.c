@@ -51,10 +51,10 @@ Object *mergeObject(Object *a, Object *b) {
     free(b->normal);
     b->normal = obj->normal + a->size;
     
-    memcpy(obj->color, a->color, a->size * sizeof(G3Xvector));
+    memcpy(obj->color, a->color, a->size * sizeof(G3Xcolor));
     free(a->color);
     a->color = obj->color;
-    memcpy(obj->color + a->size, b->color, b->size * sizeof(G3Xvector));
+    memcpy(obj->color + a->size, b->color, b->size * sizeof(G3Xcolor));
     free(b->color);
     b->color = obj->color + a->size;
     
