@@ -1,0 +1,45 @@
+obj: cube
+col: 0;1;0;0
+T: 0;-1;0
+H:10;10;0.1
+
+
+obj:cube
+col:1;1;0;0
+H:2;1;1
+
+
+obj:cube
+H:2;0.1;0.15
+T:0;-0.2;1.7
+
+obj: cylinder
+H:0.2;0.2;1.1
+T: 1.1;-0.2;1.1
+
+obj: cylinder
+H: 0.2;0.2;1.1
+T: -1.1;-0.2;1.1
+
+obj:torus
+Rx: 90
+H:0.6;0.1;0.1
+T:0;-0.2;2.45
+
+obj: sphere
+H: 1.6;0.5;0.3
+T: 0;-0.2;2.53
+
+
+
+op: sous
+
+op: union
+
+op: union
+
+op: union
+
+op: union
+
+op:union
