@@ -22,7 +22,6 @@ static bool insideTorus(G3Xpoint p) {
 }
 
 
-/* TODO : Normals not done yet */
 Torus *buildRandomTorus(int n, int p, int innerRadius, int outerRadius) {
     Torus *torus = (Object *) malloc(sizeof(Object));
     if (torus == NULL) {
@@ -53,6 +52,7 @@ Torus *buildRandomTorus(int n, int p, int innerRadius, int outerRadius) {
     }
     
     G3Xpoint *vertices = torus->vertex;
+    G3Xvector * normals = torus->normal;
     
     for (i = 0; i < torus->size; i++) {
         theta = g3x_Rand_Delta(0, 0.5) * 2 * PI;
@@ -64,6 +64,10 @@ Torus *buildRandomTorus(int n, int p, int innerRadius, int outerRadius) {
         (*vertices)[2] = innerRadius * sin(phi);
         
         vertices++;
+        (*normals)[0] = cos(phi) * cos(theta);
+        (*normals)[1] = cos(phi) * sin(theta);
+        (*normals)[2] = sin(phi);
+        normals++;
     }
     
     return torus;
