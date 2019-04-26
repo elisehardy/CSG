@@ -89,8 +89,7 @@ static Object *parseObj(char *token, int line) {
         return buildRandomCylinder(1000, 1000);
     }
     else if (!strcmp(token, "torus")) {
-        /* TODO FAUT DÉCIDER D'UNE VALEUR CANONIQUE POUR INNER RADIUS ET OUTER RADIUS */
-        return buildRandomTorus(1000, 1000, 1, 2);
+        return buildRandomTorus(1000, 1000);
     }
     else if (!strcmp(token, "cone")) {
         return buildRandomCone(1000, 1000);
