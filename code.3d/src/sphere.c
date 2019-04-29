@@ -40,7 +40,7 @@ Sphere *buildRandomSphere(int n, int p) {
     sphere->size = p * n;
     sphere->shape = SHP_SPHERE;
     sphere->pt_in = insideSphere;
-    sphere->color = malloc(sizeof(G3Xpoint) * sphere->size);
+    sphere->color = malloc(sizeof(G3Xcolor) * sphere->size);
     sphere->vertex = (G3Xpoint *) calloc(sphere->size, sizeof(G3Xpoint));
     sphere->normal = (G3Xvector *) calloc(sphere->size, sizeof(G3Xvector));
     if (!(sphere->vertex && sphere->normal && sphere->color)) {

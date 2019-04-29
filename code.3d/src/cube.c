@@ -40,7 +40,7 @@ Cube *buildRandomCube(int n, int p) {
     cube->size = n * p * 6;
     cube->shape = SHP_CUBE;
     cube->pt_in = insideCube;
-    cube->color = malloc(sizeof(G3Xpoint) * cube->size);
+    cube->color = malloc(sizeof(G3Xcolor) * cube->size);
     cube->vertex = (G3Xpoint *) calloc(cube->size, sizeof(G3Xpoint));
     cube->normal = (G3Xvector *) calloc(cube->size, sizeof(G3Xvector));
     if (!(cube->vertex && cube->normal && cube->color)) {

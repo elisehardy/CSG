@@ -28,7 +28,7 @@ Object *mergeObject(Object *a, Object *b) {
     obj->p = 0;
     obj->shape = SHP_COMPOSITE;
     obj->size = a->size + b->size;
-    obj->color = malloc(sizeof(G3Xpoint) * obj->size);
+    obj->color = malloc(sizeof(G3Xcolor) * obj->size);
     obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
     obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
     if (!(obj->vertex && obj->normal && obj->color)) {

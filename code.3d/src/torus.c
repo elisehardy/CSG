@@ -38,7 +38,7 @@ Torus *buildRandomTorus(int n, int p) {
     torus->size = n * p;
     torus->shape = SHP_TORUS;
     torus->pt_in = insideTorus;
-    torus->color = malloc(sizeof(G3Xpoint) * torus->size);
+    torus->color = malloc(sizeof(G3Xcolor) * torus->size);
     torus->vertex = (G3Xpoint *) calloc(torus->size, sizeof(G3Xpoint));
     torus->normal = (G3Xvector *) calloc(torus->size, sizeof(G3Xvector));
     if (!(torus->vertex && torus->normal && torus->color)) {
