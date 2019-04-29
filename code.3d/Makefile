@@ -3,7 +3,7 @@
 # compilateur
 CC = gcc
 
-FLAGS = -g -Wpointer-arith -Wall -Wextra -Werror -O2
+FLAGS = -g -Wpointer-arith -Wall -Wextra -Werror
 IGNORED = -Wno-unused-parameter -Wno-unused-function -Wno-unused-but-set-variable
 CFLAGS = $(FLAGS) $(IGNORED)
 

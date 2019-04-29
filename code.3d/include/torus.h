@@ -22,6 +22,6 @@ typedef Object Torus;
  * @param n ?
  * @param p ?
  */
-Torus *buildRandomTorus(int n, int p, int innerRadius, int outerRadius);
+Torus *buildRandomTorus(int n, int p);
 
 #endif

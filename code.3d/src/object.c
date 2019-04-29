@@ -47,8 +47,8 @@ Object *mergeObject(Object *a, Object *b) {
     free(a->normal);
     free(b->normal);
     
-    memcpy(obj->color, a->color, a->size * sizeof(G3Xvector));
-    memcpy(obj->color + a->size, b->color, b->size * sizeof(G3Xvector));
+    memcpy(obj->color, a->color, a->size * sizeof(G3Xcolor));
+    memcpy(obj->color + a->size, b->color, b->size * sizeof(G3Xcolor));
     free(a->color);
     free(b->color);
     

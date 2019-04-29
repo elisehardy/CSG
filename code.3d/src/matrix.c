@@ -412,6 +412,12 @@ double *matrixCoordMult(double *factor, G3Xpoint p) {
     }
     
     double *res = malloc(sizeof(double) * 3);
+    if (!res) {
+        errno = ENOMEM;
+        perror("Error - matrixCoordMult ");
+        exit(1);
+    }
+    
     double sum;
     int i, j;
     

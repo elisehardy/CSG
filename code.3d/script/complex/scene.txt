@@ -1,0 +1,138 @@
+#sol
+obj: cube
+col: 0;1;0;0
+T: 0;-1;0
+H:6;6;0.1
+
+
+#cloche
+obj:cone
+col:0.7;0.5;0;0
+T:0;0;1
+H:0.8;1;1.2
+
+obj:cone
+col:0.7;0.5;0;0
+T:0;0;0.5
+H:1.6;1.9;2.2
+
+op:sous
+
+obj:sphere
+col:0.7;0.5;0;0
+
+H:0.1;0.1;0.5
+
+op:union
+
+
+
+
+obj:cube
+col:0;1;1;0
+H:1.6;0.8;1.8
+
+obj:cube
+col:0;1;1;0
+H:0.25;1;0.4
+T:1.25;0;-1
+
+obj:sphere
+col:0;1;1;0
+H:0.21;1.1;0.25
+T:1.25;0;-0.6
+
+op:union
+
+obj:sphere
+col:0;1;1;0
+H:0.21;1.1;0.25
+T:-1.25;0;-0.6
+
+obj:cube
+col:0;1;1;0
+H:0.25;1;0.4
+T:-1.25;0;-1
+
+op:union
+
+op:equal
+op:sous
+
+
+
+obj:cylinder
+col:0;1;1;0
+T:0;0;2.2
+
+
+obj:cylinder
+col:0;1;1;0
+
+
+obj:sphere
+col:0;1;1;0
+T:2.1;0;0.5
+H:1;10;1.8
+Ry:-20
+
+
+obj:sphere
+col:0;1;1;0
+T:-2.1;0;0.5
+H:1;10;1.8
+Ry:20
+
+
+op:union
+
+op:union
+
+op:union
+op:sous
+op:union
+
+
+
+#batiment
+obj:cube
+col:1;1;0;0
+H:2;1;1
+T:0;-10;1
+
+#portail
+obj:cube
+H:2;0.1;0.15
+T:0;-0.2;1.7
+
+obj: cylinder
+H:0.2;0.2;1.1
+T: 1.1;-0.2;1.1
+
+obj: cylinder
+H: 0.2;0.2;1.1
+T: -1.1;-0.2;1.1
+
+obj:torus
+Rx: 90
+H:0.6;0.1;0.1
+T:0;-0.2;2.45
+
+obj: sphere
+H: 1.6;0.5;0.3
+T: 0;-0.2;2.53
+
+
+
+op: sous
+
+op: union
+
+op: union
+
+op: union
+
+op: union
+
+op:union
+op:union

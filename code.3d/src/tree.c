@@ -85,11 +85,11 @@ static bool isVisible(Tree *tree, G3Xpoint p, int index) {
 
 
 /**
- * Recursively map pointer of son to the right part of their parent's array.
+ * @brief Recursively map pointer of sons to the right part of their parent's vertices, normal and color array.
  *
  * @param node Node containing pointer to be mapped.
  */
-static void mapPointer(Tree* node) {
+static void mapPointer(Tree *node) {
     if ((node->left == NULL) + (node->right == NULL) == 1) {
         fprintf(stderr, "Error: mapPointer - Invalid node, have only one son.\n");
         exit(1);
@@ -160,6 +160,7 @@ static char *nodeString(Tree *node) {
     exit(1);
 }
 
+
 /**
  * @brief Free the memory allocated for a Tree.
  *
@@ -179,7 +180,8 @@ static void _freeTree(Tree *node, bool freeObj) {
     
     if (freeObj) {
         freeObject(node->obj);
-    } else {
+    }
+    else {
         free(node->obj);
     }
     if (node->mi != NULL) {
@@ -188,6 +190,7 @@ static void _freeTree(Tree *node, bool freeObj) {
     
     free(node);
 }
+
 
 /**
  * Print the tree recursively.
@@ -209,6 +212,7 @@ static void _printTree(Tree *node, int space) {
     _printTree(node->left, space + 8);
 }
 
+
 void printTree(Tree *root) {
     if (root == NULL) {
         errno = EFAULT;
@@ -218,6 +222,7 @@ void printTree(Tree *root) {
     
     _printTree(root, 0);
 }
+
 
 Tree *newLeaf(Object *obj) {
     if (obj == NULL) {
@@ -277,6 +282,12 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     }
     
     new->visible = malloc(sizeof(bool) * new->obj->size);
+    if (!new->visible) {
+        errno = ENOMEM;
+        perror("Error - newNode ");
+        exit(1);
+    }
+    
     memcpy(new->visible, left->visible, left->obj->size * sizeof(bool));
     memcpy(new->visible + left->obj->size, right->visible, right->obj->size * sizeof(bool));
     for (int i = 0; i < new->obj->size; i++) {
