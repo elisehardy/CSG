@@ -23,7 +23,7 @@ static bool insideCylinder(G3Xpoint p) {
 
 
 Cylinder *buildRandomCylinder(int n, int p) {
-    Cylinder *cylinder = (Object *) malloc(sizeof(Object));
+    Cylinder *cylinder = malloc(sizeof(Object));
     if (cylinder == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomCylinder ");
@@ -38,8 +38,8 @@ Cylinder *buildRandomCylinder(int n, int p) {
     cylinder->shape = SHP_CYLINDER;
     cylinder->pt_in = insideCylinder;
     cylinder->color = malloc(sizeof(G3Xcolor) * cylinder->size);
-    cylinder->vertex = (G3Xpoint *) calloc(cylinder->size, sizeof(G3Xpoint));
-    cylinder->normal = (G3Xvector *) calloc(cylinder->size, sizeof(G3Xvector));
+    cylinder->vertex = calloc(cylinder->size, sizeof(G3Xpoint));
+    cylinder->normal = calloc(cylinder->size, sizeof(G3Xvector));
     if (!(cylinder->vertex && cylinder->normal && cylinder->color)) {
         errno = ENOMEM;
         perror("Error - buildRandomCylinder ");

@@ -24,7 +24,7 @@ static bool insideSphere(G3Xpoint p) {
 
 
 Sphere *buildRandomSphere(int n, int p) {
-    Sphere *sphere = (Object *) malloc(sizeof(Object));
+    Sphere *sphere = malloc(sizeof(Object));
     if (sphere == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomSphere ");
@@ -41,8 +41,8 @@ Sphere *buildRandomSphere(int n, int p) {
     sphere->shape = SHP_SPHERE;
     sphere->pt_in = insideSphere;
     sphere->color = malloc(sizeof(G3Xcolor) * sphere->size);
-    sphere->vertex = (G3Xpoint *) calloc(sphere->size, sizeof(G3Xpoint));
-    sphere->normal = (G3Xvector *) calloc(sphere->size, sizeof(G3Xvector));
+    sphere->vertex = calloc(sphere->size, sizeof(G3Xpoint));
+    sphere->normal = calloc(sphere->size, sizeof(G3Xvector));
     if (!(sphere->vertex && sphere->normal && sphere->color)) {
         errno = ENOMEM;
         perror("Error - buildRandomSphere ");

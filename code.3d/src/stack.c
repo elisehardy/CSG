@@ -70,7 +70,7 @@ Stack *newStack(Tree *node) {
         exit(1);
     }
     
-    Stack *new = (Stack *) malloc(sizeof(Stack));
+    Stack *new = malloc(sizeof(Stack));
     if (new == NULL) {
         errno = ENOMEM;
         perror("Error - newStack ");
@@ -113,7 +113,7 @@ Stack *addStack(Stack *stack, Tree *node) {
         return newStack(node);
     }
     
-    Stack *new = (Stack *) malloc(sizeof(Stack));
+    Stack *new = malloc(sizeof(Stack));
     if (new == NULL) {
         errno = ENOMEM;
         perror("Error - addStack ");

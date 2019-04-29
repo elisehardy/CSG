@@ -17,7 +17,7 @@ Object *mergeObject(Object *a, Object *b) {
         exit(1);
     }
     
-    Object *obj = (Object *) malloc(sizeof(Object));
+    Object *obj = malloc(sizeof(Object));
     if (obj == NULL) {
         errno = ENOMEM;
         perror("Error - mergeObject ");
@@ -29,8 +29,8 @@ Object *mergeObject(Object *a, Object *b) {
     obj->shape = SHP_COMPOSITE;
     obj->size = a->size + b->size;
     obj->color = malloc(sizeof(G3Xcolor) * obj->size);
-    obj->vertex = (G3Xpoint *) calloc(obj->size, sizeof(G3Xpoint));
-    obj->normal = (G3Xvector *) calloc(obj->size, sizeof(G3Xvector));
+    obj->vertex = calloc(obj->size, sizeof(G3Xpoint));
+    obj->normal = calloc(obj->size, sizeof(G3Xvector));
     if (!(obj->vertex && obj->normal && obj->color)) {
         errno = ENOMEM;
         perror("Error - mergeObject ");

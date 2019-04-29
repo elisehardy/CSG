@@ -23,7 +23,7 @@ static bool insideTorus(G3Xpoint p) {
 
 
 Torus *buildRandomTorus(int n, int p) {
-    Torus *torus = (Object *) malloc(sizeof(Object));
+    Torus *torus = malloc(sizeof(Object));
     if (torus == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomorus ");
@@ -39,8 +39,8 @@ Torus *buildRandomTorus(int n, int p) {
     torus->shape = SHP_TORUS;
     torus->pt_in = insideTorus;
     torus->color = malloc(sizeof(G3Xcolor) * torus->size);
-    torus->vertex = (G3Xpoint *) calloc(torus->size, sizeof(G3Xpoint));
-    torus->normal = (G3Xvector *) calloc(torus->size, sizeof(G3Xvector));
+    torus->vertex = calloc(torus->size, sizeof(G3Xpoint));
+    torus->normal = calloc(torus->size, sizeof(G3Xvector));
     if (!(torus->vertex && torus->normal && torus->color)) {
         errno = ENOMEM;
         perror("Error - buildRandomTorus ");

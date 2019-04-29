@@ -24,7 +24,7 @@ static bool insideCube(G3Xpoint p) {
 
 
 Cube *buildRandomCube(int n, int p) {
-    Cube *cube = (Object *) malloc(sizeof(Object));
+    Cube *cube = malloc(sizeof(Object));
     if (cube == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomCube ");
@@ -41,8 +41,8 @@ Cube *buildRandomCube(int n, int p) {
     cube->shape = SHP_CUBE;
     cube->pt_in = insideCube;
     cube->color = malloc(sizeof(G3Xcolor) * cube->size);
-    cube->vertex = (G3Xpoint *) calloc(cube->size, sizeof(G3Xpoint));
-    cube->normal = (G3Xvector *) calloc(cube->size, sizeof(G3Xvector));
+    cube->vertex = calloc(cube->size, sizeof(G3Xpoint));
+    cube->normal = calloc(cube->size, sizeof(G3Xvector));
     if (!(cube->vertex && cube->normal && cube->color)) {
         errno = ENOMEM;
         perror("Error - buildRandomCube ");

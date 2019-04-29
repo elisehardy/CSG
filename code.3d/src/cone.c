@@ -24,7 +24,7 @@ static bool insideCone(G3Xpoint p) {
 
 
 Cone *buildRandomCone(int n, int p) {
-    Cone *cone = (Object *) malloc(sizeof(Object));
+    Cone *cone = malloc(sizeof(Object));
     if (cone == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomCone ");
@@ -40,8 +40,8 @@ Cone *buildRandomCone(int n, int p) {
     cone->shape = SHP_CONE;
     cone->pt_in = insideCone;
     cone->color = malloc(sizeof(G3Xcolor) * cone->size);
-    cone->vertex = (G3Xpoint *) calloc(cone->size, sizeof(G3Xpoint));
-    cone->normal = (G3Xvector *) calloc(cone->size, sizeof(G3Xvector));
+    cone->vertex = calloc(cone->size, sizeof(G3Xpoint));
+    cone->normal = calloc(cone->size, sizeof(G3Xvector));
     if (!(cone->vertex && cone->normal && cone->color)) {
         errno = ENOMEM;
         perror("Error - buildRandomCone ");

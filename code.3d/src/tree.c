@@ -231,7 +231,7 @@ Tree *newLeaf(Object *obj) {
         exit(1);
     }
     
-    Tree *new = (Tree *) malloc(sizeof(Tree));
+    Tree *new = malloc(sizeof(Tree));
     if (new == NULL) {
         errno = ENOMEM;
         perror("Error - newLeaf ");
@@ -245,6 +245,11 @@ Tree *newLeaf(Object *obj) {
     new->left = NULL;
     new->right = NULL;
     new->visible = malloc(sizeof(bool) * obj->size);
+    if (new == NULL) {
+        errno = ENOMEM;
+        perror("Error - newLeaf ");
+        exit(1);
+    }
     
     memset(new->visible, 1, sizeof(bool) * obj->size);
     
@@ -259,7 +264,7 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
         exit(1);
     }
     
-    Tree *new = (Tree *) malloc(sizeof(Tree));
+    Tree *new = malloc(sizeof(Tree));
     if (new == NULL) {
         errno = ENOMEM;
         perror("Error - newNode ");
