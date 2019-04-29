@@ -38,25 +38,19 @@ Object *mergeObject(Object *a, Object *b) {
     }
     
     memcpy(obj->vertex, a->vertex, a->size * sizeof(G3Xpoint));
-    free(a->vertex);
-    a->vertex = obj->vertex;
     memcpy(obj->vertex + a->size, b->vertex, b->size * sizeof(G3Xpoint));
+    free(a->vertex);
     free(b->vertex);
-    b->vertex = obj->vertex + a->size;
     
     memcpy(obj->normal, a->normal, a->size * sizeof(G3Xvector));
-    free(a->normal);
-    a->normal = obj->normal;
     memcpy(obj->normal + a->size, b->normal, b->size * sizeof(G3Xvector));
+    free(a->normal);
     free(b->normal);
-    b->normal = obj->normal + a->size;
     
     memcpy(obj->color, a->color, a->size * sizeof(G3Xvector));
-    free(a->color);
-    a->color = obj->color;
     memcpy(obj->color + a->size, b->color, b->size * sizeof(G3Xvector));
+    free(a->color);
     free(b->color);
-    b->color = obj->color + a->size;
     
     return obj;
 }

@@ -24,7 +24,7 @@
  */
 static bool isVisible(Tree *tree, G3Xpoint p, int index) {
     if ((tree->left == NULL) + (tree->right == NULL) == 1) {
-        fprintf(stderr, "Error: isVisible - Invalid node.\n");
+        fprintf(stderr, "Error: isVisible - Invalid node, have only one son.\n");
         exit(1);
     }
     
@@ -85,6 +85,34 @@ static bool isVisible(Tree *tree, G3Xpoint p, int index) {
 
 
 /**
+ * Recursively map pointer of son to the right part of their parent's array.
+ *
+ * @param node Node containing pointer to be mapped.
+ */
+static void mapPointer(Tree* node) {
+    if ((node->left == NULL) + (node->right == NULL) == 1) {
+        fprintf(stderr, "Error: mapPointer - Invalid node, have only one son.\n");
+        exit(1);
+    }
+    
+    if (node->left == NULL) {
+        return;
+    }
+    
+    node->left->obj->vertex = node->obj->vertex;
+    node->left->obj->normal = node->obj->normal;
+    node->left->obj->color = node->obj->color;
+    
+    node->right->obj->vertex = node->obj->vertex + node->left->obj->size;
+    node->right->obj->normal = node->obj->normal + node->left->obj->size;
+    node->right->obj->color = node->obj->color + node->left->obj->size;
+    
+    mapPointer(node->left);
+    mapPointer(node->right);
+}
+
+
+/**
  * @brief Return a string corresponding to a node.
  *
  * @param node Node to be interpreted as a string.
@@ -132,27 +160,6 @@ static char *nodeString(Tree *node) {
     exit(1);
 }
 
-
-/**
- * Print the tree recursively.
- *
- * @param node Tree to be printed.
- * @param space Number of space between son and father.
- */
-static void printTreeRec(Tree *node, int space) {
-    if (node == NULL) {
-        return;
-    }
-    
-    printTreeRec(node->right, space + 8);
-    printf("\n");
-    for (int i = 0; i < space; i++) {
-        printf(" ");
-    }
-    printf("%s\n", nodeString(node));
-    printTreeRec(node->left, space + 8);
-}
-
 /**
  * @brief Free the memory allocated for a Tree.
  *
@@ -182,6 +189,26 @@ static void _freeTree(Tree *node, bool freeObj) {
     free(node);
 }
 
+/**
+ * Print the tree recursively.
+ *
+ * @param node Tree to be printed.
+ * @param space Number of space between son and father.
+ */
+static void _printTree(Tree *node, int space) {
+    if (node == NULL) {
+        return;
+    }
+    
+    _printTree(node->right, space + 8);
+    printf("\n");
+    for (int i = 0; i < space; i++) {
+        printf(" ");
+    }
+    printf("%s\n", nodeString(node));
+    _printTree(node->left, space + 8);
+}
+
 void printTree(Tree *root) {
     if (root == NULL) {
         errno = EFAULT;
@@ -189,9 +216,8 @@ void printTree(Tree *root) {
         exit(1);
     }
     
-    printTreeRec(root, 0);
+    _printTree(root, 0);
 }
-
 
 Tree *newLeaf(Object *obj) {
     if (obj == NULL) {
@@ -258,6 +284,8 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
             new->visible[i] = isVisible(new, new->obj->vertex[i], i);
         }
     }
+    
+    mapPointer(new);
     
     return new;
 }
