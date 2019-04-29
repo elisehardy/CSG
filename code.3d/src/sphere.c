@@ -65,7 +65,7 @@ Sphere *buildRandomSphere(int n, int p) {
         (*data).vertex[0] = (*data).vertex[0] / d;
         (*data).vertex[1] = (*data).vertex[1] / d;
         (*data).vertex[2] = (*data).vertex[2] / d;
-        memcpy((*data).vertex, (*data).normal, sizeof(G3Xcoord));
+        memcpy((*data).normal, (*data).vertex, sizeof(G3Xcoord));
         data++;
     }
     

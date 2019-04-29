@@ -16,70 +16,70 @@
 /**
  * Returns whether a point should be visible.
  *
- * @param tree Tree the point will be checked against.
+ * @param node Tree the point will be checked against.
  * @param p Point tested against the tree.
  * @param index Index of the point if it is known to be part of the Tree, -1 otherwise.
  *
  * @return True if the point should be visible, false otherwise.
  */
-static bool isVisible(Tree *tree, G3Xpoint p, int index) {
-    if ((tree->left == NULL) + (tree->right == NULL) == 1) {
+static bool isVisible(Tree *node, G3Xpoint p, int index) {
+    if ((node->left == NULL) + (node->right == NULL) == 1) {
         fprintf(stderr, "Error: isVisible - Invalid node, have only one son.\n");
         exit(1);
     }
     
     // This node is a leaf
-    if (tree->left == NULL && tree->right == NULL) {
-        if (tree->mi == NULL) {
-            return tree->obj->pt_in(p);
+    if (node->left == NULL && node->right == NULL) {
+        if (node->mi == NULL) {
+            return node->obj->pt_in(p);
         }
         
-        double *reversed = matrixCoordMult(tree->mi, p);
-        bool b = tree->obj->pt_in(reversed);
+        double *reversed = matrixCoordMult(node->mi, p);
+        bool b = node->obj->pt_in(reversed);
         free(reversed);
         return b;
     }
     
-    // p is a point of a primitive from this tree
+    // p is a point of a primitive from this node
     if (index >= 0) {
-        bool left = index < tree->left->obj->size;
-        switch (tree->op) {
+        bool left = index < node->left->obj->size;
+        switch (node->op) {
             case OP_SUBTRACTION:
                 if (left) {
-                    return !isVisible(tree->right, p, -1);
+                    return !isVisible(node->right, p, -1);
                 }
                 else {
-                    return isVisible(tree->left, p, -1);
+                    return isVisible(node->left, p, -1);
                 }
             case OP_UNION:
                 if (left) {
-                    return !isVisible(tree->right, p, -1);
+                    return !isVisible(node->right, p, -1);
                 }
                 else {
-                    return !isVisible(tree->left, p, -1);
+                    return !isVisible(node->left, p, -1);
                 }
             case OP_INTERSECTION:
                 if (left) {
-                    return isVisible(tree->right, p, -1);
+                    return isVisible(node->right, p, -1);
                 }
                 else {
-                    return isVisible(tree->left, p, -1);
+                    return isVisible(node->left, p, -1);
                 }
             default:
                 return true;
         }
     }
     
-    // p is a point from another tree
-    switch (tree->op) {
+    // p is a point from another node
+    switch (node->op) {
         case OP_SUBTRACTION:
-            return isVisible(tree->left, p, -1) && !isVisible(tree->right, p, -1);
+            return isVisible(node->left, p, -1) && !isVisible(node->right, p, -1);
         case OP_UNION:
-            return isVisible(tree->left, p, -1) || isVisible(tree->right, p, -1);
+            return isVisible(node->left, p, -1) || isVisible(node->right, p, -1);
         case OP_INTERSECTION:
-            return isVisible(tree->left, p, -1) && isVisible(tree->right, p, -1);
+            return isVisible(node->left, p, -1) && isVisible(node->right, p, -1);
         default:
-            return isVisible(tree->left, p, -1) || isVisible(tree->right, p, -1);
+            return isVisible(node->left, p, -1) || isVisible(node->right, p, -1);
     }
 }
 

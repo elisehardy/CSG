@@ -61,10 +61,10 @@ int main(int argc, char **argv) {
     g3x_SetCameraSpheric(0.25 * PI, +0.25 * PI, 6., (G3Xpoint) {0., 0., 0.});
     
     /* définition des fonctions */
-    g3x_SetInitFunction(init);     /* la fonction d'initialisation */
-    g3x_SetDrawFunction(draw);     /* la fonction de dessin        */
-    g3x_SetAnimFunction(NULL);         /* pas de fonction d'animation  */
-    g3x_SetExitFunction(freeEverything);     /* pas de fonction de sortie    */
+    g3x_SetInitFunction(init);
+    g3x_SetDrawFunction(draw);
+    g3x_SetAnimFunction(NULL);
+    g3x_SetExitFunction(freeEverything);
     
     /* boucle d'exécution principale */
     return g3x_MainStart();
