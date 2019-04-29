@@ -112,11 +112,27 @@ static void mapPointer(Tree *node) {
     mapPointer(node->right);
 }
 
+
+/**
+ * @brief Compate two DrawData according to their color.
+ *
+ * @param a The first DrawData.
+ * @param b The second DrawData.
+ *
+ * @return The return value of memcmp between the two color.
+ */
 static int colorCmp(const void *a, const void *b) {
-    return memcmp(((DrawData*) a)->color, ((DrawData*) b)->color, sizeof(G3Xcolor));
+    return memcmp(((DrawData *) a)->color, ((DrawData *) b)->color, sizeof(G3Xcolor));
 }
 
-static void sortArray(Tree *node) {
+
+/**
+ * @brief Sort DrawData of the given node by first putting the visible point first,
+ * and then sorting the visible on by their color.
+ *
+ * @param node
+ */
+static void sortDrawData(Tree *node) {
     if (node == NULL) {
         errno = EFAULT;
         perror("Error - nodeString ");
@@ -335,7 +351,7 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
         }
     }
     
-    sortArray(new);
+    sortDrawData(new);
     mapPointer(new);
     
     return new;
