@@ -90,6 +90,12 @@ static bool isVisible(Tree *tree, G3Xpoint p, int index) {
  * @param node Node containing pointer to be mapped.
  */
 static void mapPointer(Tree *node) {
+    if (node == NULL) {
+        errno = EFAULT;
+        perror("Error - nodeString ");
+        exit(1);
+    }
+    
     if ((node->left == NULL) + (node->right == NULL) == 1) {
         fprintf(stderr, "Error: mapPointer - Invalid node, have only one son.\n");
         exit(1);
@@ -109,6 +115,44 @@ static void mapPointer(Tree *node) {
     
     mapPointer(node->left);
     mapPointer(node->right);
+}
+
+
+static void sortArray(Tree *node) {
+    if (node == NULL) {
+        errno = EFAULT;
+        perror("Error - nodeString ");
+        exit(1);
+    }
+    
+    int start = 0, end = node->obj->size - 1;
+    G3Xpoint tmpPoint = {0};
+    G3Xvector tmpVector = {0};
+    G3Xcolor tmpColor = {0};
+    
+    while (start < end) {
+        if (!node->visible[start]) {
+            while (!node->visible[end] && start < end) {
+                end--;
+            }
+            
+            memcpy(tmpPoint, node->obj->vertex[start], sizeof(G3Xpoint));
+            memcpy(tmpVector, node->obj->normal[start], sizeof(G3Xvector));
+            memcpy(tmpColor, node->obj->color[start], sizeof(G3Xcolor));
+            
+            memcpy(node->obj->vertex[start], node->obj->vertex[end], sizeof(G3Xpoint));
+            memcpy(node->obj->normal[start], node->obj->normal[end], sizeof(G3Xvector));
+            memcpy(node->obj->color[start], node->obj->color[end], sizeof(G3Xcolor));
+            
+            memcpy(node->obj->vertex[end], tmpPoint, sizeof(G3Xpoint));
+            memcpy(node->obj->normal[end], tmpVector, sizeof(G3Xvector));
+            memcpy(node->obj->color[end], tmpColor, sizeof(G3Xcolor));
+            
+            node->visible[start] = 1;
+            node->visible[end] = 0;
+        }
+        start++;
+    }
 }
 
 
@@ -301,6 +345,7 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
         }
     }
     
+    sortArray(new);
     mapPointer(new);
     
     return new;
@@ -314,9 +359,7 @@ void drawNode(Tree *node, int c) {
         exit(1);
     }
     
-    G3Xvector *n = node->obj->normal;
-    G3Xpoint *v = node->obj->vertex;
-    int i, size = node->obj->size;
+    int i;
     G3Xcolor previous = {0};
     
     memcpy(previous, G3Xr, sizeof(G3Xcolor));
@@ -326,16 +369,14 @@ void drawNode(Tree *node, int c) {
     g3x_Material(previous, 0.25, 0.5, 0.5, 0.5, 1.);
     
     if (!node->neg) {
-        for (i = 0; i < size; i += c) {
+        for (i = 0; i < node->obj->size && node->visible[i]; i += c) {
             if (memcmp(previous, node->obj->color[i], sizeof(G3Xcolor))) {
                 memcpy(previous, node->obj->color[i], sizeof(G3Xcolor));
                 g3x_Material(previous, 0.25, 0.5, 0.5, 0.5, 1.);
             }
             
-            if (node->visible[i]) {
-                glNormal3dv(n[i]);
-                glVertex3dv(v[i]);
-            }
+            glNormal3dv(node->obj->normal[i]);
+            glVertex3dv(node->obj->vertex[i]);
         }
     }
     
