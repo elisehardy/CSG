@@ -30,6 +30,8 @@ Cylinder *buildRandomCylinder(int n, int p) {
         exit(1);
     }
     
+    DrawData *data;
+    double d;
     int i;
     
     cylinder->n = n;
@@ -37,75 +39,66 @@ Cylinder *buildRandomCylinder(int n, int p) {
     cylinder->size = n * p;
     cylinder->shape = SHP_CYLINDER;
     cylinder->pt_in = insideCylinder;
-    cylinder->color = malloc(sizeof(G3Xcolor) * cylinder->size);
-    cylinder->vertex = calloc(cylinder->size, sizeof(G3Xpoint));
-    cylinder->normal = calloc(cylinder->size, sizeof(G3Xvector));
-    if (!(cylinder->vertex && cylinder->normal && cylinder->color)) {
+    cylinder->drawData = malloc(sizeof(DrawData) * cylinder->size);
+    if (cylinder->drawData == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomCylinder ");
         exit(1);
     }
     
     for (i = 0; i < cylinder->size; i++) {
-        memcpy(cylinder->color[i], G3Xr, sizeof(float) * 4);
+        memcpy(cylinder->drawData[i].color, G3Xr, sizeof(G3Xcolor));
     }
     
-    double d;
-    G3Xpoint *vertices = cylinder->vertex;
-    G3Xvector *normals = cylinder->normal;
+    data = cylinder->drawData;
     
     for (i = 0; i < cylinder->size / 3; i++) {
         /*cercle dessus*/
         do {
-            (*vertices)[0] = g3x_Rand_Delta(0, +1);
-            (*vertices)[1] = g3x_Rand_Delta(0, +1);
+            (*data).vertex[0] = g3x_Rand_Delta(0, +1);
+            (*data).vertex[1] = g3x_Rand_Delta(0, +1);
             
-            d = (*vertices)[0] * (*vertices)[0] + (*vertices)[1] * (*vertices)[1];
+            d = (*data).vertex[0] * (*data).vertex[0] + (*data).vertex[1] * (*data).vertex[1];
         } while (d > 1);
-        
-        (*normals)[0] = 0;
-        (*normals)[1] = 0;
-        (*normals)[2] = 1;
-        
-        (*vertices)[2] = 1;
-        vertices++;
-        normals++;
+        (*data).vertex[2] = 1;
+    
+        (*data).normal[0] = 0;
+        (*data).normal[1] = 0;
+        (*data).normal[2] = 1;
+        data++;
         
         
         /*cercle dessous*/
         do {
-            (*vertices)[0] = g3x_Rand_Delta(0, +1);
-            (*vertices)[1] = g3x_Rand_Delta(0, +1);
+            (*data).vertex[0] = g3x_Rand_Delta(0, +1);
+            (*data).vertex[1] = g3x_Rand_Delta(0, +1);
             
-            d = (*vertices)[0] * (*vertices)[0] + (*vertices)[1] * (*vertices)[1];
+            d = (*data).vertex[0] * (*data).vertex[0] + (*data).vertex[1] * (*data).vertex[1];
         } while (d > 1);
-        
-        (*normals)[0] = 0;
-        (*normals)[1] = 0;
-        (*normals)[2] = -1;
-        
-        (*vertices)[2] = -1;
-        vertices++;
-        normals++;
+        (*data).vertex[2] = -1;
+    
+        (*data).normal[0] = 0;
+        (*data).normal[1] = 0;
+        (*data).normal[2] = -1;
+        data++;
         
         /*bandeau*/
         do {
-            (*vertices)[0] = g3x_Rand_Delta(0, +1);
-            (*vertices)[1] = g3x_Rand_Delta(0, +1);
+            (*data).vertex[0] = g3x_Rand_Delta(0, +1);
+            (*data).vertex[1] = g3x_Rand_Delta(0, +1);
             
-            d = (*vertices)[0] * (*vertices)[0] + (*vertices)[1] * (*vertices)[1];
+            d = (*data).vertex[0] * (*data).vertex[0] + (*data).vertex[1] * (*data).vertex[1];
         } while (d > 1);
         d = sqrt(d);
-        (*vertices)[0] = (*vertices)[0] / d;
-        (*vertices)[1] = (*vertices)[1] / d;
+        (*data).vertex[0] = (*data).vertex[0] / d;
+        (*data).vertex[1] = (*data).vertex[1] / d;
         
-        (*normals)[0] = (*vertices)[0] / d;
-        (*normals)[1] = (*vertices)[1] / d;
-        (*normals)[2] = 0;
+        (*data).normal[0] = (*data).vertex[0] / d;
+        (*data).normal[1] = (*data).vertex[1] / d;
+        (*data).normal[2] = 0;
         
-        (*vertices)[2] = g3x_Rand_Delta(0, +1);
-        vertices++;
-        normals++;
+        (*data).vertex[2] = g3x_Rand_Delta(0, +1);
+        data++;
     }
     
     return cylinder;

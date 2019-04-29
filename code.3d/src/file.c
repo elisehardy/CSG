@@ -153,7 +153,7 @@ static float *parseCol(char *r, char *g, char *b, char *a) {
         exit(1);
     }
     
-    float *color = malloc(sizeof(float) * 4);
+    float *color = malloc(sizeof(G3Xcolor));
     if (color == NULL) {
         errno = ENOMEM;
         perror("Error - parseCol ");
@@ -275,7 +275,7 @@ Tree *parseFile(FILE *file) {
             }
             color = parseCol(r, g, b, a);
             for (i = 0; i < current->obj->size; i++) {
-                memcpy(current->obj->color[i], color, sizeof(float) * 4);
+                memcpy(current->obj->drawData[i].color, color, sizeof(G3Xcolor));
             }
             free(color);
         }

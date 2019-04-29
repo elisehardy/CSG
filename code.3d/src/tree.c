@@ -105,18 +105,16 @@ static void mapPointer(Tree *node) {
         return;
     }
     
-    node->left->obj->vertex = node->obj->vertex;
-    node->left->obj->normal = node->obj->normal;
-    node->left->obj->color = node->obj->color;
-    
-    node->right->obj->vertex = node->obj->vertex + node->left->obj->size;
-    node->right->obj->normal = node->obj->normal + node->left->obj->size;
-    node->right->obj->color = node->obj->color + node->left->obj->size;
+    node->left->obj->drawData = node->obj->drawData;
+    node->right->obj->drawData = node->obj->drawData + node->left->obj->size;
     
     mapPointer(node->left);
     mapPointer(node->right);
 }
 
+static int colorCmp(const void *a, const void *b) {
+    return memcmp(((DrawData*) a)->color, ((DrawData*) b)->color, sizeof(G3Xcolor));
+}
 
 static void sortArray(Tree *node) {
     if (node == NULL) {
@@ -126,9 +124,7 @@ static void sortArray(Tree *node) {
     }
     
     int start = 0, end = node->obj->size - 1;
-    G3Xpoint tmpPoint = {0};
-    G3Xvector tmpVector = {0};
-    G3Xcolor tmpColor = {0};
+    DrawData tmp;
     
     while (start < end) {
         if (!node->visible[start]) {
@@ -136,23 +132,17 @@ static void sortArray(Tree *node) {
                 end--;
             }
             
-            memcpy(tmpPoint, node->obj->vertex[start], sizeof(G3Xpoint));
-            memcpy(tmpVector, node->obj->normal[start], sizeof(G3Xvector));
-            memcpy(tmpColor, node->obj->color[start], sizeof(G3Xcolor));
-            
-            memcpy(node->obj->vertex[start], node->obj->vertex[end], sizeof(G3Xpoint));
-            memcpy(node->obj->normal[start], node->obj->normal[end], sizeof(G3Xvector));
-            memcpy(node->obj->color[start], node->obj->color[end], sizeof(G3Xcolor));
-            
-            memcpy(node->obj->vertex[end], tmpPoint, sizeof(G3Xpoint));
-            memcpy(node->obj->normal[end], tmpVector, sizeof(G3Xvector));
-            memcpy(node->obj->color[end], tmpColor, sizeof(G3Xcolor));
+            tmp = node->obj->drawData[start];
+            node->obj->drawData[start] = node->obj->drawData[end];
+            node->obj->drawData[end] = tmp;
             
             node->visible[start] = 1;
             node->visible[end] = 0;
         }
         start++;
     }
+    
+    qsort(node->obj->drawData, --start, sizeof(DrawData), colorCmp);
 }
 
 
@@ -324,9 +314,9 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     new->obj = mergeObject(left->obj, right->obj);
     if (op == OP_SUBTRACTION) {
         for (int i = left->obj->size; i < new->obj->size; i++) {
-            new->obj->normal[i][0] *= -1;
-            new->obj->normal[i][1] *= -1;
-            new->obj->normal[i][2] *= -1;
+            new->obj->drawData[i].normal[0] *= -1;
+            new->obj->drawData[i].normal[1] *= -1;
+            new->obj->drawData[i].normal[2] *= -1;
         }
     }
     
@@ -341,7 +331,7 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     memcpy(new->visible + left->obj->size, right->visible, right->obj->size * sizeof(bool));
     for (int i = 0; i < new->obj->size; i++) {
         if (new->visible[i]) {
-            new->visible[i] = isVisible(new, new->obj->vertex[i], i);
+            new->visible[i] = isVisible(new, new->obj->drawData[i].vertex, i);
         }
     }
     
@@ -359,8 +349,8 @@ void drawNode(Tree *node, int c) {
         exit(1);
     }
     
-    int i;
     G3Xcolor previous = {0};
+    int i;
     
     memcpy(previous, G3Xr, sizeof(G3Xcolor));
     
@@ -370,13 +360,13 @@ void drawNode(Tree *node, int c) {
     
     if (!node->neg) {
         for (i = 0; i < node->obj->size && node->visible[i]; i += c) {
-            if (memcmp(previous, node->obj->color[i], sizeof(G3Xcolor))) {
-                memcpy(previous, node->obj->color[i], sizeof(G3Xcolor));
+            if (memcmp(previous, node->obj->drawData[i].color, sizeof(G3Xcolor))) {
+                memcpy(previous, node->obj->drawData[i].color, sizeof(G3Xcolor));
                 g3x_Material(previous, 0.25, 0.5, 0.5, 0.5, 1.);
             }
             
-            glNormal3dv(node->obj->normal[i]);
-            glVertex3dv(node->obj->vertex[i]);
+            glNormal3dv(node->obj->drawData[i].normal);
+            glVertex3dv(node->obj->drawData[i].vertex);
         }
     }
     

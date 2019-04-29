@@ -31,7 +31,7 @@ Sphere *buildRandomSphere(int n, int p) {
         exit(1);
     }
     
-    G3Xpoint *vertices;
+    DrawData *data;
     double d;
     int i;
     
@@ -40,38 +40,34 @@ Sphere *buildRandomSphere(int n, int p) {
     sphere->size = p * n;
     sphere->shape = SHP_SPHERE;
     sphere->pt_in = insideSphere;
-    sphere->color = malloc(sizeof(G3Xcolor) * sphere->size);
-    sphere->vertex = calloc(sphere->size, sizeof(G3Xpoint));
-    sphere->normal = calloc(sphere->size, sizeof(G3Xvector));
-    if (!(sphere->vertex && sphere->normal && sphere->color)) {
+    sphere->drawData = malloc(sizeof(DrawData) * sphere->size);
+    if (sphere->drawData == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomSphere ");
         exit(1);
     }
     
     for (i = 0; i < sphere->size; i++) {
-        memcpy(sphere->color[i], G3Xr, sizeof(float) * 4);
+        memcpy(sphere->drawData[i].color, G3Xr, sizeof(G3Xcolor));
     }
     
-    vertices = sphere->vertex;
+    data = sphere->drawData;
     
     for (i = 0; i < sphere->size; i++) {
         do {
-            (*vertices)[0] = g3x_Rand_Delta(0, +1);
-            (*vertices)[1] = g3x_Rand_Delta(0, +1);
-            (*vertices)[2] = g3x_Rand_Delta(0, +1);
-            
-            d = (*vertices)[0] * (*vertices)[0] + (*vertices)[1] * (*vertices)[1] + (*vertices)[2] * (*vertices)[2];
+            (*data).vertex[0] = g3x_Rand_Delta(0, +1);
+            (*data).vertex[1] = g3x_Rand_Delta(0, +1);
+            (*data).vertex[2] = g3x_Rand_Delta(0, +1);
+            d = (*data).vertex[0] * (*data).vertex[0] + (*data).vertex[1] * (*data).vertex[1] + (*data).vertex[2] * (*data).vertex[2];
         } while (d > 1);
         
         d = sqrt(d);
-        (*vertices)[0] = (*vertices)[0] / d;
-        (*vertices)[1] = (*vertices)[1] / d;
-        (*vertices)[2] = (*vertices)[2] / d;
-        vertices++;
+        (*data).vertex[0] = (*data).vertex[0] / d;
+        (*data).vertex[1] = (*data).vertex[1] / d;
+        (*data).vertex[2] = (*data).vertex[2] / d;
+        memcpy((*data).vertex, (*data).normal, sizeof(G3Xcoord));
+        data++;
     }
-    
-    memcpy(sphere->normal, sphere->vertex, sphere->size * sizeof(G3Xvector));
     
     return sphere;
 }

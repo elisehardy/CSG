@@ -320,8 +320,8 @@ static bool propagate(Tree *node, double *vertex, double *normal, double *invers
     }
     
     int i;
-    bool ret;
     double *p, *old;
+    bool ret = false;
     
     if (node->left && node->right) {
         ret = propagate(node->left, vertex, normal, inverse, translation);
@@ -344,16 +344,16 @@ static bool propagate(Tree *node, double *vertex, double *normal, double *invers
     }
     
     for (i = 0; i < node->obj->size; i++) {
-        p = matrixCoordMult(vertex, node->obj->vertex[i]);
-        node->obj->vertex[i][0] = p[0];
-        node->obj->vertex[i][1] = p[1];
-        node->obj->vertex[i][2] = p[2];
+        p = matrixCoordMult(vertex, node->obj->drawData[i].vertex);
+        node->obj->drawData[i].vertex[0] = p[0];
+        node->obj->drawData[i].vertex[1] = p[1];
+        node->obj->drawData[i].vertex[2] = p[2];
         free(p);
         if (!translation) {
-            p = matrixCoordMult(normal, node->obj->normal[i]);
-            node->obj->normal[i][0] = p[0];
-            node->obj->normal[i][1] = p[1];
-            node->obj->normal[i][2] = p[2];
+            p = matrixCoordMult(normal, node->obj->drawData[i].normal);
+            node->obj->drawData[i].normal[0] = p[0];
+            node->obj->drawData[i].normal[1] = p[1];
+            node->obj->drawData[i].normal[2] = p[2];
             free(p);
         }
     }
