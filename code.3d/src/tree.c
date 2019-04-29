@@ -251,6 +251,12 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     }
     
     new->visible = malloc(sizeof(bool) * new->obj->size);
+    if (!new->visible) {
+        errno = ENOMEM;
+        perror("Error - newNode ");
+        exit(1);
+    }
+    
     memcpy(new->visible, left->visible, left->obj->size * sizeof(bool));
     memcpy(new->visible + left->obj->size, right->visible, right->obj->size * sizeof(bool));
     for (int i = 0; i < new->obj->size; i++) {
