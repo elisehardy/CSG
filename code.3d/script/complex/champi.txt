@@ -1,0 +1,10 @@
+obj:sphere
+
+
+
+obj:sphere
+col:1;1;0;0
+H:1;1;0.7
+T:0;0;-0.7
+
+op:sous
