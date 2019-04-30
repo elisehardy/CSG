@@ -22,13 +22,21 @@ typedef enum {
 
 
 /**
+ * @brief Group vertex, normal and color together, allowing less array iteration and more efficient use of qsort().
+ */
+typedef struct _drawData {
+    G3Xpoint vertex;        /**< Vertexes of the Object. */
+    G3Xvector normal;       /**< Normals of the Object. */
+    G3Xcolor color;         /**< Color of the Object. */
+} DrawData;
+
+
+/**
  * @brief Represents a 3D canonic Object.
  */
 typedef struct _obj {
     Shape shape;             /**< Shape of the Object. */
-    G3Xpoint *vertex;        /**< Vertexes of the Object. */
-    G3Xvector *normal;       /**< Normals of the Object. */
-    G3Xcolor *color;         /**< Color of the Object. */
+    DrawData *drawData;      /**< Information used to draw the object. */
     bool (*pt_in)(G3Xpoint); /**< Function checking if a vertex is inside. */
     int size;                /**< Number of vertices/normals in this object. */
     int n, p;                /**< Custom parameters. */

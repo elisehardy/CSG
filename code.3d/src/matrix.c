@@ -20,7 +20,7 @@
  * @return The computed 4x4 matrix as an array of 16 points.
  */
 static double *translationMatrix(double x, double y, double z) {
-    double *matrix = (double *) calloc(16, sizeof(double));
+    double *matrix = calloc(16, sizeof(double));
     
     if (matrix == NULL) {
         errno = ENOMEM;
@@ -47,7 +47,7 @@ static double *translationMatrix(double x, double y, double z) {
  * @return The computed 4x4 matrix as an array of 16 points.
  */
 static double *translationInvMatrix(double x, double y, double z) {
-    double *matrix = (double *) calloc(16, sizeof(double));
+    double *matrix = calloc(16, sizeof(double));
     
     if (matrix == NULL) {
         errno = ENOMEM;
@@ -74,7 +74,7 @@ static double *translationInvMatrix(double x, double y, double z) {
  * @return The computed 4x4 matrix as an array of 16 points.
  */
 static double *homothetyVertexMatrix(double x, double y, double z) {
-    double *matrix = (double *) calloc(16, sizeof(double));
+    double *matrix = calloc(16, sizeof(double));
     
     if (matrix == NULL) {
         errno = ENOMEM;
@@ -101,7 +101,7 @@ static double *homothetyVertexMatrix(double x, double y, double z) {
  * @return The computed 4x4 matrix as an array of 16 points.
  */
 static double *homothetyVertexInvMatrix(double x, double y, double z) {
-    double *matrix = (double *) calloc(16, sizeof(double));
+    double *matrix = calloc(16, sizeof(double));
     
     if (matrix == NULL) {
         errno = ENOMEM;
@@ -128,7 +128,7 @@ static double *homothetyVertexInvMatrix(double x, double y, double z) {
  * @return The computed 4x4 matrix as an array of 16 points.
  */
 static double *homothetyNormalMatrix(double x, double y, double z) {
-    double *matrix = (double *) calloc(16, sizeof(double));
+    double *matrix = calloc(16, sizeof(double));
     
     if (matrix == NULL) {
         errno = ENOMEM;
@@ -153,7 +153,7 @@ static double *homothetyNormalMatrix(double x, double y, double z) {
  * @return The computed 4x4 matrix as an array of 16 points.
  */
 static double *xRotationMatrix(double angle) {
-    double *matrix = (double *) calloc(16, sizeof(double));
+    double *matrix = calloc(16, sizeof(double));
     
     if (matrix == NULL) {
         errno = ENOMEM;
@@ -179,7 +179,7 @@ static double *xRotationMatrix(double angle) {
  * @return The computed 4x4 matrix as an array of 16 points.
  */
 static double *xRotationInvMatrix(double angle) {
-    double *matrix = (double *) calloc(16, sizeof(double));
+    double *matrix = calloc(16, sizeof(double));
     
     if (matrix == NULL) {
         errno = ENOMEM;
@@ -205,7 +205,7 @@ static double *xRotationInvMatrix(double angle) {
  * @return The computed 4x4 matrix as an array of 16 points.
  */
 static double *yRotationMatrix(double angle) {
-    double *matrix = (double *) calloc(16, sizeof(double));
+    double *matrix = calloc(16, sizeof(double));
     
     if (matrix == NULL) {
         errno = ENOMEM;
@@ -231,7 +231,7 @@ static double *yRotationMatrix(double angle) {
  * @return The computed 4x4 matrix as an array of 16 points.
  */
 static double *yRotationInvMatrix(double angle) {
-    double *matrix = (double *) calloc(16, sizeof(double));
+    double *matrix = calloc(16, sizeof(double));
     
     if (matrix == NULL) {
         errno = ENOMEM;
@@ -257,7 +257,7 @@ static double *yRotationInvMatrix(double angle) {
  * @return The computed 4x4 matrix as an array of 16 points.
  */
 static double *zRotationMatrix(double angle) {
-    double *matrix = (double *) calloc(16, sizeof(double));
+    double *matrix = calloc(16, sizeof(double));
     
     if (matrix == NULL) {
         errno = ENOMEM;
@@ -283,7 +283,7 @@ static double *zRotationMatrix(double angle) {
  * @return The computed 4x4 matrix as an array of 16 points.
  */
 static double *zRotationInvMatrix(double angle) {
-    double *matrix = (double *) calloc(16, sizeof(double));
+    double *matrix = calloc(16, sizeof(double));
     
     if (matrix == NULL) {
         errno = ENOMEM;
@@ -320,8 +320,8 @@ static bool propagate(Tree *node, double *vertex, double *normal, double *invers
     }
     
     int i;
-    bool ret;
     double *p, *old;
+    bool ret = false;
     
     if (node->left && node->right) {
         ret = propagate(node->left, vertex, normal, inverse, translation);
@@ -344,16 +344,16 @@ static bool propagate(Tree *node, double *vertex, double *normal, double *invers
     }
     
     for (i = 0; i < node->obj->size; i++) {
-        p = matrixCoordMult(vertex, node->obj->vertex[i]);
-        node->obj->vertex[i][0] = p[0];
-        node->obj->vertex[i][1] = p[1];
-        node->obj->vertex[i][2] = p[2];
+        p = matrixCoordMult(vertex, node->obj->drawData[i].vertex);
+        node->obj->drawData[i].vertex[0] = p[0];
+        node->obj->drawData[i].vertex[1] = p[1];
+        node->obj->drawData[i].vertex[2] = p[2];
         free(p);
         if (!translation) {
-            p = matrixCoordMult(normal, node->obj->normal[i]);
-            node->obj->normal[i][0] = p[0];
-            node->obj->normal[i][1] = p[1];
-            node->obj->normal[i][2] = p[2];
+            p = matrixCoordMult(normal, node->obj->drawData[i].normal);
+            node->obj->drawData[i].normal[0] = p[0];
+            node->obj->drawData[i].normal[1] = p[1];
+            node->obj->drawData[i].normal[2] = p[2];
             free(p);
         }
     }
@@ -380,7 +380,7 @@ void printCoord(G3Xcoord coord) {
 
 
 double *matrixMatrixMult(double *m, double *factor) {
-    double *res = (double *) calloc(16, sizeof(double));
+    double *res = calloc(16, sizeof(double));
     int i, j, k;
     double sum;
     

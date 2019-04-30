@@ -24,14 +24,15 @@ static bool insideCone(G3Xpoint p) {
 
 
 Cone *buildRandomCone(int n, int p) {
-    Cone *cone = (Object *) malloc(sizeof(Object));
+    Cone *cone = malloc(sizeof(Object));
     if (cone == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomCone ");
         exit(1);
     }
     
-    double theta, z;
+    double theta, z, d;
+    DrawData *data;
     int i;
     
     cone->n = n;
@@ -39,50 +40,45 @@ Cone *buildRandomCone(int n, int p) {
     cone->size = n * p;
     cone->shape = SHP_CONE;
     cone->pt_in = insideCone;
-    cone->color = malloc(sizeof(G3Xcolor) * cone->size);
-    cone->vertex = (G3Xpoint *) calloc(cone->size, sizeof(G3Xpoint));
-    cone->normal = (G3Xvector *) calloc(cone->size, sizeof(G3Xvector));
-    if (!(cone->vertex && cone->normal && cone->color)) {
+    cone->drawData = malloc(sizeof(DrawData) * cone->size);
+    if (cone->drawData == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomCone ");
         exit(1);
     }
     
     for (i = 0; i < cone->size; i++) {
-        memcpy(cone->color[i], G3Xr, sizeof(float) * 4);
+        memcpy(cone->drawData[i].color, G3Xr, sizeof(G3Xcolor));
     }
     
-    G3Xpoint *vertices = cone->vertex;
-    G3Xvector *normals = cone->normal;
-    double d;
+    data = cone->drawData;
+
     for (i = 0; i < cone->size / 2; i++) {
         
         z = -sqrt(g3x_Rand_Delta(0, 1));
         theta = g3x_Rand_Delta(0, 2 * PI);
-        (*vertices)[0] = z * cos(theta);
-        (*vertices)[1] = z * sin(theta);
-        (*vertices)[2] = z;
+        (*data).vertex[0] = z * cos(theta);
+        (*data).vertex[1] = z * sin(theta);
+        (*data).vertex[2] = z;
         
-        (*normals)[0] = cos(theta);
-        (*normals)[1] = sin(theta);
-        (*normals)[2] = 1;
-        vertices++;
-        normals++;
+        (*data).normal[0] = cos(theta);
+        (*data).normal[1] = sin(theta);
+        (*data).normal[2] = 1;
+        data++;
         
         do {
-            (*vertices)[0] = g3x_Rand_Delta(0, +1);
-            (*vertices)[1] = g3x_Rand_Delta(0, +1);
+            (*data).vertex[0] = g3x_Rand_Delta(0, +1);
+            (*data).vertex[1] = g3x_Rand_Delta(0, +1);
             
-            d = (*vertices)[0] * (*vertices)[0] + (*vertices)[1] * (*vertices)[1];
+            d = (*data).vertex[0] * (*data).vertex[0] + (*data).vertex[1] * (*data).vertex[1];
         } while (d > 1);
+        (*data).vertex[2] = -1;
+    
+        (*data).normal[0] = 0;
+        (*data).normal[1] = 0;
+        (*data).normal[2] = -1;
         
-        (*normals)[0] = 0;
-        (*normals)[1] = 0;
-        (*normals)[2] = -1;
-        
-        (*vertices)[2] = -1;
-        vertices++;
-        normals++;
+        data++;
     }
     
     return cone;

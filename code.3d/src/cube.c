@@ -24,15 +24,14 @@ static bool insideCube(G3Xpoint p) {
 
 
 Cube *buildRandomCube(int n, int p) {
-    Cube *cube = (Object *) malloc(sizeof(Object));
+    Cube *cube = malloc(sizeof(Object));
     if (cube == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomCube ");
         exit(1);
     }
     
-    G3Xvector *normals;
-    G3Xpoint *vertices;
+    DrawData *data;
     int i;
     
     cube->n = n;
@@ -40,82 +39,67 @@ Cube *buildRandomCube(int n, int p) {
     cube->size = n * p * 6;
     cube->shape = SHP_CUBE;
     cube->pt_in = insideCube;
-    cube->color = malloc(sizeof(G3Xpoint) * cube->size);
-    cube->vertex = (G3Xpoint *) calloc(cube->size, sizeof(G3Xpoint));
-    cube->normal = (G3Xvector *) calloc(cube->size, sizeof(G3Xvector));
-    if (!(cube->vertex && cube->normal && cube->color)) {
+    cube->drawData = malloc(sizeof(DrawData) * cube->size);
+    if (cube->drawData == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomCube ");
         exit(1);
     }
     
     for (i = 0; i < cube->size; i++) {
-        memcpy(cube->color[i], G3Xr, sizeof(float) * 4);
+        memcpy(cube->drawData[i].color, G3Xr, sizeof(G3Xcolor));
     }
     
-    vertices = cube->vertex;
-    normals = cube->normal;
+    data = cube->drawData;
     
-    for (i = 0; i < ((cube->size) / 6); i++) {
-        (*vertices)[0] = g3x_Rand_Delta(0, 1);
-        (*vertices)[1] = g3x_Rand_Delta(0, 1);
-        (*vertices)[2] = +1.;
-        vertices++;
+    for (i = 0; i < (cube->size / 6); i++) {
+        (*data).vertex[0] = g3x_Rand_Delta(0, 1);
+        (*data).vertex[1] = g3x_Rand_Delta(0, 1);
+        (*data).vertex[2] = +1.;
+        (*data).normal[0] = 0;
+        (*data).normal[1] = 0;
+        (*data).normal[2] = +1.;
+        data++;
         
-        (*vertices)[0] = g3x_Rand_Delta(0, 1);
-        (*vertices)[1] = g3x_Rand_Delta(0, 1);
-        (*vertices)[2] = -1.;
-        vertices++;
+        (*data).vertex[0] = g3x_Rand_Delta(0, 1);
+        (*data).vertex[1] = g3x_Rand_Delta(0, 1);
+        (*data).vertex[2] = -1.;
+        (*data).normal[0] = 0;
+        (*data).normal[1] = 0;
+        (*data).normal[2] = -1.;
+        data++;
         
-        (*vertices)[0] = g3x_Rand_Delta(0, 1);
-        (*vertices)[1] = +1.;
-        (*vertices)[2] = g3x_Rand_Delta(0, 1);
-        vertices++;
+        (*data).vertex[0] = g3x_Rand_Delta(0, 1);
+        (*data).vertex[1] = +1.;
+        (*data).vertex[2] = g3x_Rand_Delta(0, 1);
+        (*data).normal[0] = 0;
+        (*data).normal[1] = +1.;
+        (*data).normal[2] = 0;
+        data++;
         
-        (*vertices)[0] = g3x_Rand_Delta(0, 1);
-        (*vertices)[1] = -1.;
-        (*vertices)[2] = g3x_Rand_Delta(0, 1);
-        vertices++;
+        (*data).vertex[0] = g3x_Rand_Delta(0, 1);
+        (*data).vertex[1] = -1.;
+        (*data).vertex[2] = g3x_Rand_Delta(0, 1);
+        (*data).normal[0] = 0;
+        (*data).normal[1] = -1.;
+        (*data).normal[2] = 0;
+        data++;
         
-        (*vertices)[0] = +1.;
-        (*vertices)[1] = g3x_Rand_Delta(0, 1);
-        (*vertices)[2] = g3x_Rand_Delta(0, 1);
-        vertices++;
+        (*data).vertex[0] = +1.;
+        (*data).vertex[1] = g3x_Rand_Delta(0, 1);
+        (*data).vertex[2] = g3x_Rand_Delta(0, 1);
+        (*data).normal[0] = +1.;
+        (*data).normal[1] = 0;
+        (*data).normal[2] = 0;
+        data++;
         
-        (*vertices)[0] = -1.;
-        (*vertices)[1] = g3x_Rand_Delta(0, 1);
-        (*vertices)[2] = g3x_Rand_Delta(0, 1);
-        vertices++;
-        
-        (*normals)[0] = 0;
-        (*normals)[1] = 0;
-        (*normals)[2] = +1.;
-        normals++;
-        
-        (*normals)[0] = 0;
-        (*normals)[1] = 0;
-        (*normals)[2] = -1.;
-        normals++;
-        
-        (*normals)[0] = 0;
-        (*normals)[1] = +1.;
-        (*normals)[2] = 0;
-        normals++;
-        
-        (*normals)[0] = 0;
-        (*normals)[1] = -1.;
-        (*normals)[2] = 0;
-        normals++;
-        
-        (*normals)[0] = +1.;
-        (*normals)[1] = 0;
-        (*normals)[2] = 0;
-        normals++;
-        
-        (*normals)[0] = -1.;
-        (*normals)[1] = 0;
-        (*normals)[2] = 0;
-        normals++;
+        (*data).vertex[0] = -1.;
+        (*data).vertex[1] = g3x_Rand_Delta(0, 1);
+        (*data).vertex[2] = g3x_Rand_Delta(0, 1);
+        (*data).normal[0] = -1.;
+        (*data).normal[1] = 0;
+        (*data).normal[2] = 0;
+        data++;
     }
     
     return cube;
