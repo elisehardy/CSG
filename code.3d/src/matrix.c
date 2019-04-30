@@ -443,21 +443,21 @@ void rotate(Tree *node, double x, double y, double z) {
     if (x) {
         mat = xRotationMatrix(x);
         inv = xRotationInvMatrix(x);
-        propagate(node, mat, mat, inv, true);
+        propagate(node, mat, mat, inv, false);
         free(inv);
         free(mat);
     }
     if (y) {
         mat = yRotationMatrix(y);
         inv = yRotationInvMatrix(y);
-        propagate(node, mat, mat, inv, true);
+        propagate(node, mat, mat, inv, false);
         free(inv);
         free(mat);
     }
     if (z) {
         mat = zRotationMatrix(z);
         inv = zRotationInvMatrix(z);
-        propagate(node, mat, mat, inv, true);
+        propagate(node, mat, mat, inv, false);
         free(inv);
         free(mat);
     }
