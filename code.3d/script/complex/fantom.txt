@@ -27,7 +27,24 @@ op:equal
 
 op:sous
 
+obj:cylinder
+col:1;0;1;0
+H:0.18;0.35;2
+T:0;-0.65;-0.5
+Rx:90
+Rz:45
 
+obj:cylinder
+col:1;0;1;0
+H:0.18;0.35;2
+T:0;-0.65;-0.5
+Rx:90
+Rz:-45
+
+op:union
+
+
+op:sous
 
 obj:sphere
 col:1;1;1;0
@@ -53,9 +70,9 @@ T:3.5;15.5;2.5
 H:0.08;0.05;0.15
 
 op:union
-T:0;0.12;0.35
+T:0;0.12;0.40
 
 op:equal
-
+T:0;0.1;0
 
 op:union
