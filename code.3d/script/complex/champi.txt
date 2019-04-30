@@ -4,7 +4,14 @@ obj:sphere
 
 obj:sphere
 col:1;1;0;0
-H:1;1;0.7
-T:0;0;-0.7
+H:1.1;1.1;0.9
+T:0;0.25;-0.7
 
 op:sous
+
+obj:torus
+H:0.325;0.325;0.2
+T:0;-0.0;-0.2
+Rx:15
+
+op:union
