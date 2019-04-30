@@ -28,7 +28,7 @@ Object *mergeObject(Object *a, Object *b) {
     obj->p = 0;
     obj->shape = SHP_COMPOSITE;
     obj->size = a->size + b->size;
-    obj->drawData = malloc(sizeof(DrawData) * obj->size);
+    obj->drawData = calloc(obj->size, sizeof(DrawData));
     if (obj->drawData == NULL) {
         errno = ENOMEM;
         perror("Error - mergeObject ");

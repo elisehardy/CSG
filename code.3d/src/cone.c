@@ -40,7 +40,7 @@ Cone *buildRandomCone(int n, int p) {
     cone->size = n * p;
     cone->shape = SHP_CONE;
     cone->pt_in = insideCone;
-    cone->drawData = malloc(sizeof(DrawData) * cone->size);
+    cone->drawData = calloc(cone->size, sizeof(DrawData));
     if (cone->drawData == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomCone ");

@@ -39,7 +39,7 @@ Cube *buildRandomCube(int n, int p) {
     cube->size = n * p * 6;
     cube->shape = SHP_CUBE;
     cube->pt_in = insideCube;
-    cube->drawData = malloc(sizeof(DrawData) * cube->size);
+    cube->drawData = calloc(cube->size, sizeof(DrawData));
     if (cube->drawData == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomCube ");

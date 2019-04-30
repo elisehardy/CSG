@@ -39,7 +39,7 @@ Torus *buildRandomTorus(int n, int p) {
     torus->size = n * p;
     torus->shape = SHP_TORUS;
     torus->pt_in = insideTorus;
-    torus->drawData = malloc(sizeof(DrawData) * torus->size);
+    torus->drawData = calloc(torus->size, sizeof(DrawData));
     if (torus->drawData == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomTorus ");

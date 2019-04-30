@@ -40,7 +40,7 @@ Sphere *buildRandomSphere(int n, int p) {
     sphere->size = p * n;
     sphere->shape = SHP_SPHERE;
     sphere->pt_in = insideSphere;
-    sphere->drawData = malloc(sizeof(DrawData) * sphere->size);
+    sphere->drawData = calloc(sphere->size, sizeof(DrawData));
     if (sphere->drawData == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomSphere ");

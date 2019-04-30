@@ -39,7 +39,7 @@ Cylinder *buildRandomCylinder(int n, int p) {
     cylinder->size = n * p;
     cylinder->shape = SHP_CYLINDER;
     cylinder->pt_in = insideCylinder;
-    cylinder->drawData = malloc(sizeof(DrawData) * cylinder->size);
+    cylinder->drawData = calloc(cylinder->size, sizeof(DrawData));
     if (cylinder->drawData == NULL) {
         errno = ENOMEM;
         perror("Error - buildRandomCylinder ");
