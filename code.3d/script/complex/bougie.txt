@@ -1,14 +1,14 @@
 #base
-obj: cylinder
+obj: cylinder 750
 col: 1;1;1;0
 H: 0.5;0.5;0.4
 
-obj: sphere
+obj: sphere 300
 col: 1;1;1;0
 H: 0.48;0.42;0.15
 T:0;0;0.4
 
-obj: sphere
+obj: sphere 300
 col: 1;1;1;0
 H: 0.4;0.2;0.4
 T:0;0.34;0.5
@@ -17,11 +17,11 @@ op: union
 op:sous
 
 #coupelle
-obj:torus
+obj:torus 500
 H:0.3;0.3;0.2
 T:0;0;-0.8
 
-obj:sphere
+obj:sphere 500
 H:0.5;0.5;0.3
 T:0;0;-0.5
 
@@ -32,13 +32,13 @@ T:0;0;0.4
 
 
 #flamme
-obj:sphere
+obj:sphere 100
 
 H:0.11;0.1;0.17
 T:-0.04;0;0
 
 
-obj:sphere
+obj:sphere 100
 H:0.2;0.1;0.1
 T:0.08;0;0.04
 Ry:55

@@ -1,35 +1,42 @@
-#sol
-obj: cube
+#####################
+######## sol ########
+#####################
+obj: cube 1750
 col: 0;1;0;0
 T:0;0.5;-18
 H:4;4;0.1
 
 
-#lapin
-obj:sphere
+#######################
+######## lapin ########
+#######################
+# Corps
+obj:sphere 300
 H:0.6;0.6;0.8
 Ry:80
 T:0.5;0;-1.4
 
-obj:sphere
+obj:sphere 300
 H:0.2;0.2;0.2
 T:-0.35;0;-1.25
-op:union
 
-obj:sphere
+obj:sphere 300
 H:0.55;0.5;0.4
 T:1.2;0;-0.7
 
 op:union
 
-obj:cone
+op:union
+
+# Oreilles
+obj:cone 300
 T:0;0;0.6
 H:1.2;1.5;1.6
 
-obj:sphere
+obj:sphere 300
 T:0.5;0;0
 
-obj:torus
+obj:torus 300
 
 op:inter
 
@@ -39,34 +46,37 @@ op:union
 T:-10;9;-3.7
 H:0.3;0.3;0.3
 
-
 op:union
 
-#bougie
+
+########################
+######## bougie ########
+########################
 #base
-obj: cylinder
+obj: cylinder 500
 col: 1;1;1;0
 H: 0.5;0.5;0.4
 
-obj: sphere
+obj: sphere 200
 col: 1;1;1;0
 H: 0.48;0.42;0.15
 T:0;0;0.4
 
-obj: sphere
+obj: sphere 200
 col: 1;1;1;0
 H: 0.4;0.2;0.4
 T:0;0.34;0.5
 
 op: union
+
 op:sous
 
 #coupelle
-obj:torus
+obj:torus 500
 H:0.3;0.3;0.2
 T:0;0;-0.8
 
-obj:sphere
+obj:sphere 500
 H:0.5;0.5;0.3
 T:0;0;-0.5
 
@@ -74,20 +84,16 @@ op:inter
 H:1.25;1.25;1.2
 T:0;0;0.4
 
-
-
 #flamme
-obj:sphere
+obj:sphere 75
 
 H:0.11;0.1;0.17
 T:-0.04;0;0
 
-
-obj:sphere
+obj:sphere 75
 H:0.2;0.1;0.1
 T:0.08;0;0.04
 Ry:55
-
 
 op:inter
 col:1;1;0;0
@@ -101,7 +107,10 @@ H:0.5;0.5;0.5
 
 op:equal
 
-#cloche
+
+########################
+######## cloche ########
+########################
 obj:cone
 col:0.7;0.5;0;0
 T:0;0;1
@@ -114,14 +123,11 @@ H:1.6;1.9;2.2
 
 op:sous
 
-obj:sphere
+obj:sphere 100
 col:0.7;0.5;0;0
 H:0.1;0.1;0.5
 
 op:union
-
-
-
 
 obj:cube
 col:0;1;1;0
@@ -194,7 +200,9 @@ op:union
 
 
 
-#portail
+#########################
+######## portail ########
+#########################
 obj:cube
 H:2;0.1;0.15
 T:0;5.2;0.7

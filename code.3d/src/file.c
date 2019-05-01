@@ -72,27 +72,35 @@ static int trimAndLower(char *str) {
  *
  * @return Pointer to the corresponding Object.
  */
-static Object *parseObj(char *token, int line) {
+static Object *parseObj(char *token, char *points, int line) {
     if (token == NULL) {
         errno = EFAULT;
         perror("Error - parseObj ");
         exit(1);
     }
     
+    int p = 500;
+    if (points != NULL) {
+        trimAndLower(points);
+        if ((p = strtol(points, NULL, 10)) == 0) {
+            p = 500;
+        }
+    }
+    
     if (strcmp(token, "cube") == 0) {
-        return buildRandomCube(400, 400);
+        return buildRandomCube(p, p);
     }
     else if (!strcmp(token, "sphere")) {
-        return buildRandomSphere(1000, 1000);
+        return buildRandomSphere(p, p);
     }
     else if (!strcmp(token, "cylinder")) {
-        return buildRandomCylinder(1000, 1000);
+        return buildRandomCylinder(p, p);
     }
     else if (!strcmp(token, "torus")) {
-        return buildRandomTorus(1000, 1000);
+        return buildRandomTorus(p, p);
     }
     else if (!strcmp(token, "cone")) {
-        return buildRandomCone(1000, 1000);
+        return buildRandomCone(p, p);
     }
     
     fprintf(stderr, "Error: Unknown shape (line %d) - '%s'\n", line, token);
@@ -228,13 +236,13 @@ static void parseH(Tree *tree, char *x, char *y, char *z) {
 
 Tree *parseFile(FILE *file) {
     
-    char *line = NULL, *token = NULL, *r, *g, *b, *a, *x, *y, *z;
+    char *line = NULL, *token = NULL, *points, *r, *g, *b, *a, *x, *y, *z;
     Tree *current = NULL;
-    float *color;
     Stack *stack = NULL;
     size_t len = 0;
-    int l, i;
+    float *color;
     Operator op;
+    int l, i;
     
     for (l = 1; getline(&line, &len, file) != -1; l++) {
         trimAndLower(line);
@@ -250,12 +258,13 @@ Tree *parseFile(FILE *file) {
         
         // Object
         if (!strcmp(token, "obj")) {
-            if ((token = strtok(NULL, ":")) == NULL) {
+            if ((token = strtok(NULL, " ")) == NULL) {
                 fprintf(stderr, "Error: Syntax error (line %d).\n", l);
                 exit(1);
             }
+            points = strtok(NULL, " ");
             trimAndLower(token);
-            current = newLeaf(parseObj(token, l));
+            current = newLeaf(parseObj(token, points, l));
             stack = addStack(stack, current);
         }
             
