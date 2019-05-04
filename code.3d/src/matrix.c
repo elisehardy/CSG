@@ -319,6 +319,7 @@ static void propagate(Tree *node, double *vertex, double *normal, double *invers
     
     int i;
     double *p, *old;
+    
     if (node->left && node->right) {
         propagate(node->left, vertex, normal, inverse, translation);
         propagate(node->right, vertex, normal, inverse, translation);

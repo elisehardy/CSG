@@ -291,7 +291,6 @@ Tree *newLeaf(Object *obj) {
     new->op = OP_NONE;
     new->obj = obj;
     new->mi = NULL;
-    new->neg = false;
     new->left = NULL;
     new->right = NULL;
     new->visible = malloc(sizeof(bool) * obj->size);
@@ -323,7 +322,6 @@ Tree *newNode(Tree *left, Tree *right, Operator op) {
     
     new->op = op;
     new->mi = NULL;
-    new->neg = false;
     new->left = left;
     new->right = right;
     
@@ -374,16 +372,14 @@ void drawNode(Tree *node, int c) {
     glBegin(GL_POINTS);
     g3x_Material(previous, 0.25, 0.5, 0.5, 0.5, 1.);
     
-    if (!node->neg) {
-        for (i = 0; i < node->obj->size && node->visible[i]; i += c) {
-            if (memcmp(previous, node->obj->drawData[i].color, sizeof(G3Xcolor))) {
-                memcpy(previous, node->obj->drawData[i].color, sizeof(G3Xcolor));
-                g3x_Material(previous, 0.25, 0.5, 0.5, 0.5, 1.);
-            }
-            
-            glNormal3dv(node->obj->drawData[i].normal);
-            glVertex3dv(node->obj->drawData[i].vertex);
+    for (i = 0; i < node->obj->size && node->visible[i]; i += c) {
+        if (memcmp(previous, node->obj->drawData[i].color, sizeof(G3Xcolor))) {
+            memcpy(previous, node->obj->drawData[i].color, sizeof(G3Xcolor));
+            g3x_Material(previous, 0.25, 0.5, 0.5, 0.5, 1.);
         }
+        
+        glNormal3dv(node->obj->drawData[i].normal);
+        glVertex3dv(node->obj->drawData[i].vertex);
     }
     
     glEnd();

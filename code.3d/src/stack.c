@@ -37,8 +37,7 @@ static char *cellString(Stack *cell) {
         case OP_EQUAL:
             return "=";
         case OP_NONE:
-            fprintf(stderr, "Error: cellString - Invalid stack (Node with OP_NONE operator).\n");
-            exit(1);;
+            break;
     }
     if (node->obj != NULL) {
         switch (node->obj->shape) {
@@ -146,7 +145,7 @@ void printStack(Stack *stack) {
     Stack *current;
     
     for (current = stack; current != NULL; current = current->next) {
-        printf("%s -> ", cellString(current));
+        printf("%s <- ", cellString(current));
     }
     
     printf("[]\n");

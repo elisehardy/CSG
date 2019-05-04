@@ -51,6 +51,11 @@ void freeEverything(void) {
 
 
 int main(int argc, char **argv) {
+    if (argc < 2) {
+        printf("Usage: ./csg [script]\n");
+        return 0;
+    }
+    
     filepath = argv[1];
     
     /* initialisation de la fenêtre graphique et paramétrage Gl */

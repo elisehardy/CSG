@@ -1,40 +1,38 @@
-obj:cylinder
+obj:cylinder 1300
 col:1;0;1;0
 H:1;1;0.8
 T:0;0;0.2
 
-obj:sphere
+obj:sphere 1000
 T:0;0;1
 col:1;0;1;0
 
 op:union
 
-obj:torus
+obj:torus 100
 col:1;0;1;0
 Rx:90
 H:0.5;0.2;0.3
 T:0;0;-1
 
-obj:torus
+obj:torus 100
 col:1;0;1;0
 Ry:90
 H:0.2;0.5;0.3
 T:0;0;-1
 
-
-
 op:equal
 
 op:sous
 
-obj:cylinder
+obj:cylinder 250
 col:1;0;1;0
 H:0.18;0.35;2
 T:0;-0.65;-0.5
 Rx:90
 Rz:45
 
-obj:cylinder
+obj:cylinder 250
 col:1;0;1;0
 H:0.18;0.35;2
 T:0;-0.65;-0.5
@@ -43,15 +41,14 @@ Rz:-45
 
 op:union
 
-
 op:sous
 
-obj:sphere
+obj:sphere 250
 col:1;1;1;0
 T:-3;15.5;2.5
 H:0.11;0.05;0.3
 
-obj:sphere
+obj:sphere 250
 col:1;1;1;0
 T:3;15.5;2.5
 H:0.11;0.05;0.3
@@ -59,12 +56,12 @@ H:0.11;0.05;0.3
 op:equal
 T:0;0.1;0.2
 
-obj:sphere
+obj:sphere 250
 col:0;0;0;0
 T:-3.5;15.5;2.5
 H:0.08;0.05;0.15
 
-obj:sphere
+obj:sphere 250
 col:0;0;0;0
 T:3.5;15.5;2.5
 H:0.08;0.05;0.15
@@ -76,3 +73,9 @@ op:equal
 T:0;0.1;0
 
 op:union
+
+obj: sphere 250
+T: 0;0;-1
+col:1;0;1;0
+
+op:sous

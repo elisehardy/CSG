@@ -396,10 +396,10 @@ Tree *parseFile(FILE *file) {
     if (sizeStack(stack) > 1) {
         fprintf(
                 stderr,
-                "Error: Last declared object/operator is not linked to other object/operator (maybe an operator is missing).\n"
+                "Error: Last declared object/operator is not linked to other object/operator (maybe an operator is missing), content of stack is:\n"
         );
+        printStack(stack);
         exit(1);
-        
     }
     if (sizeStack(stack) < 1) {
         fprintf(stderr, "Error: no object declared.\n");

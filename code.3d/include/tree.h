@@ -27,8 +27,7 @@ typedef struct _node {
     Operator op;                /**< Operator used by this node.*/
     Object *obj;                /**< Object used by this node. */
     bool *visible;              /**< Boolean array telling whether a point I should be drawn. */
-    bool neg;                   /**< ? */
-    double *mi;                 /**< Inverse matrix to check moved a point into the canonical object */
+    double *mi;                 /**< Inverse matrix to move a point into the canonical object */
     struct _node *left, *right; /**< Sons of this node */
 } Tree;
 

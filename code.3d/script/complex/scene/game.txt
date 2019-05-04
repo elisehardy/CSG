@@ -1,0 +1,437 @@
+##################
+##### PACMAN #####
+##################
+obj:sphere 1000
+col:1;1;0;0
+
+obj:sphere 150
+col:0;0;0;0
+T:-3;15.5;2.5
+H:0.1;0.05;0.3
+
+obj:sphere 150
+col:0;0;0;0
+T:3;15.5;2.5
+H:0.1;0.05;0.3
+
+op:equal
+Rx:10
+T:0;0.16;-0.2
+
+op:union
+
+obj:cone
+col:1;1;0;0
+T:0;1;0.5
+H:1;1;0.5
+
+op:sous
+
+
+
+###################
+##### PHANTOM #####
+###################
+obj:cylinder 1300
+col:1;0;1;0
+H:1;1;0.8
+T:0;0;0.2
+
+obj:sphere 1000
+T:0;0;1
+col:1;0;1;0
+
+op:union
+
+obj:torus 100
+col:1;0;1;0
+Rx:90
+H:0.5;0.2;0.3
+T:0;0;-1
+
+obj:torus 100
+col:1;0;1;0
+Ry:90
+H:0.2;0.5;0.3
+T:0;0;-1
+
+op:equal
+
+op:sous
+
+obj:cylinder 250
+col:1;0;1;0
+H:0.18;0.35;2
+T:0;-0.65;-0.5
+Rx:90
+Rz:45
+
+obj:cylinder 250
+col:1;0;1;0
+H:0.18;0.35;2
+T:0;-0.65;-0.5
+Rx:90
+Rz:-45
+
+op:union
+
+op:sous
+
+obj:sphere 250
+col:1;1;1;0
+T:-3;15.5;2.5
+H:0.11;0.05;0.3
+
+obj:sphere 250
+col:1;1;1;0
+T:3;15.5;2.5
+H:0.11;0.05;0.3
+
+op:equal
+T:0;0.1;0.2
+
+obj:sphere 250
+col:0;0;0;0
+T:-3.5;15.5;2.5
+H:0.08;0.05;0.15
+
+obj:sphere 250
+col:0;0;0;0
+T:3.5;15.5;2.5
+H:0.08;0.05;0.15
+
+op:union
+T:0;0.12;0.40
+
+op:equal
+T:0;0.1;0
+
+op:union
+
+obj: sphere 250
+T: 0;0;-1
+col:1;0;1;0
+
+op:sous
+T: 0;-3;-0.3
+
+
+
+##################
+##### CHERRY #####
+##################
+obj:sphere
+T:1.05;0;0.5
+Ry:60
+
+obj:sphere
+T:-1.05;0;-0.2
+
+op:equal
+
+obj:torus 300
+col:0.5;0.3;0.2;0
+Rx: 90
+H:0.6;0.1;0.1
+T:0;-0.2;2.45
+
+obj: sphere 300
+col:0.5;0.3;0.2;0
+H: 1.6;0.5;0.3
+T: 0;-0.2;2.53
+
+op: sous
+Ry:105
+T:-2.8;0.2;1.3
+
+obj:torus 300
+col:0.5;0.3;0.2;0
+Rx: 90
+H:0.6;0.1;0.1
+T:0;-0.2;2.45
+
+obj: sphere 300
+col:0.5;0.3;0.2;0
+H: 1.6;0.5;0.3
+T: 0;-0.2;2.53
+
+op: sous
+Ry:-105
+T:2.8;0.2;1.2
+
+op:union
+
+op:union
+H:0.4;0.4;0.4
+T:0;2.2;0
+
+
+
+####################
+##### MUSHROOM #####
+####################
+obj:sphere
+
+obj:sphere
+col:1;1;1;0
+T:0;0;0.01
+
+obj:torus
+col:1;1;1;0
+H:0.5;0.5;1
+T:0;0;0.4
+
+op:sous
+Rx:5
+
+op:union
+
+obj:sphere
+col:1;1;1;0
+T:0;0;0.01
+
+obj:torus
+col:1;1;1;0
+H:0.4;0.4;1
+T:0;0;0.5
+
+op:sous
+Rx:90
+op:union
+
+obj:sphere
+col:1;1;1;0
+T:0;0;0.01
+
+obj:torus
+col:1;1;1;0
+H:0.4;0.4;1
+T:0;0;0.5
+
+op:sous
+Ry:70
+op:union
+
+obj:sphere
+col:1;1;1;0
+T:0;0;0.01
+
+obj:torus
+col:1;1;1;0
+H:0.4;0.4;1
+T:0;0;0.5
+
+op:sous
+Ry:-70
+op:union
+
+obj:sphere
+col:1;1;1;0
+T:0;0;0.01
+
+obj:torus
+col:1;1;1;0
+H:0.4;0.35;1.1
+T:0;0;0.5
+
+op:sous
+Rx:-60
+op:union
+
+obj:sphere
+H:1.1;1.1;0.9
+T:0;0.25;-0.7
+
+op:sous
+
+obj:torus
+H:0.325;0.326;0.3
+T:-0.002;-0.005;-0.25
+Rx:15
+
+op:union
+
+obj:sphere
+col:0.99;0.9;0.72;0
+H:0.6;0.6;0.5
+T:0;0;-0.6
+
+op:union
+
+obj:sphere 150
+col:0;0;0;0
+H:0.05;0.05;0.15
+T:0.2;0.5;2
+
+obj:sphere 150
+col:0;0;0;0
+H:0.05;0.05;0.15
+T:-0.2;0.5;2
+
+op:equal
+T:0;0.1;-2.6
+
+op:union
+T:0;0;4
+
+
+
+#################
+##### SHELL #####
+#################
+obj:sphere
+col:0;0;1;0
+
+obj:torus
+col:1;1;1;0
+H:0.4;0.4;0.25
+T:0;0;-0.1
+
+op:union
+
+obj:cube
+col:1;1;1;0
+H:0.68;0.7;0.2
+T:0;0;0.3
+
+obj:cube
+col:;1;1;1;0
+H:0.4;0.5;0.2
+T:0;0;0.65
+Rz:45
+
+op:union
+
+op:union
+
+obj:cube
+col:0;0;1;0
+T:0;0;-1.35
+
+op:sous
+
+obj:sphere
+col:0.99;0.94;0.72;0
+H:0.9;0.9;0.5
+T:0;0;-0.4
+
+obj:sphere
+col:0;0;0;0
+H:0.2;0.2;0.2
+T:-0.7;0.5;-0.35
+
+obj:sphere
+col:0;0;0;0
+H:0.2;0.2;0.2
+T:-0.7;-0.5;-0.35
+
+op:equal
+
+op:sous
+
+op:union
+
+obj:torus
+col:1;1;1;0
+H:0.1;0.1;0.1
+T:0;0;-1
+Ry:90
+
+op:union
+
+obj:sphere
+col:0;0;0;0
+H:0.3;0.22;0.2
+T:-1.2;0;-0.1
+
+op:sous
+Rz:-90
+T:0;3;4
+
+
+
+####################
+##### TRIFORCE #####
+####################
+#triforce
+obj: cube
+col:1;1;0;0
+H: 1;0.2;1
+
+obj: cube
+col:1;1;0;0
+H:1;1.5;1.2
+T:1.4;0;-0.2
+Ry:-25
+
+obj: cube
+col:1;1;0;0
+H:1;1.5;1.2
+T:-1.4;0;-0.2
+Ry:25
+
+op:union
+
+op:sous
+
+obj: cube
+col:1;1;0;0
+H: 1;0.2;1
+
+obj: cube
+col:1;1;0;0
+H:1;1.5;1.2
+T:1.4;0;-0.2
+Ry:-25
+
+obj: cube
+col:1;1;0;0
+H:1;1.5;1.2
+T:-1.4;0;-0.2
+Ry:25
+
+op:union
+
+op:sous
+T:0.9;0;-1.95
+
+obj: cube
+col:1;1;0;0
+H: 1;0.2;1
+
+obj: cube
+col:1;1;0;0
+H:1;1.5;1.2
+T:1.4;0;-0.2
+Ry:-25
+
+obj: cube
+col:1;1;0;0
+H:1;1.5;1.2
+T:-1.4;0;-0.2
+Ry:25
+
+op:union
+
+op:sous
+T:-0.9;0;-1.95
+
+op:union
+
+op:union
+T:0;-3;6
+
+
+
+
+#####################################################
+
+op:equal
+
+op:equal
+
+op:equal
+
+op:equal
+
+op:equal

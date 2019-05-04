@@ -7,18 +7,17 @@ col: 1;0.5;0;0
 T:0;0;0.85
 
 obj: cylinder 1500
-col: 1;0;0;0
 H: 0.2;0.2;2
 T: 0;0.2;0
 Rx: 90
 
 obj: cylinder 1500
-col: 1;0;0;0
 H: 0.2;0.2;2
 T: -0.2;0;0
 Ry: 90
 
 op: union
+col: 1;0;0;0
 
 op: union
 

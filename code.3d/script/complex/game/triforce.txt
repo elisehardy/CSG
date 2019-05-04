@@ -1,0 +1,72 @@
+#triforce
+obj: cube 200
+col:1;1;0;0
+H: 1;0.2;1
+
+obj: cube 200
+col:1;1;0;0
+H:1;1.5;1.2
+T:1.4;0;-0.2
+Ry:-25
+
+obj: cube 200
+col:1;1;0;0
+H:1;1.5;1.2
+T:-1.4;0;-0.2
+Ry:25
+
+op:union
+
+
+op:sous
+
+obj: cube 200
+col:1;1;0;0
+H: 1;0.2;1
+
+obj: cube 200
+col:1;1;0;0
+H:1;1.5;1.2
+T:1.4;0;-0.2
+Ry:-25
+
+obj: cube 200
+col:1;1;0;0
+H:1;1.5;1.2
+T:-1.4;0;-0.2
+Ry:25
+
+op:union
+
+
+op:sous
+T:0.9;0;-1.95
+
+
+obj: cube 200
+col:1;1;0;0
+H: 1;0.2;1
+
+obj: cube 200
+col:1;1;0;0
+H:1;1.5;1.2
+T:1.4;0;-0.2
+Ry:-25
+
+obj: cube 200
+col:1;1;0;0
+H:1;1.5;1.2
+T:-1.4;0;-0.2
+Ry:25
+
+op:union
+
+
+op:sous
+T:-0.9;0;-1.95
+
+op:union
+
+
+op:union
+

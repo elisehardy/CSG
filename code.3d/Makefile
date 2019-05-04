@@ -1,10 +1,8 @@
-# Ce makefile n'utilise pas de variable d'environnement.
-
 # compilateur
 CC = gcc
 
-FLAGS = -g -Wpointer-arith -Wall -Wextra -Werror
-IGNORED = -Wno-unused-parameter -Wno-unused-function -Wno-unused-but-set-variable
+FLAGS = -g -Wpointer-arith -Wall -Wextra -Werror -O2
+IGNORED =
 CFLAGS = $(FLAGS) $(IGNORED)
 
 # assemblage des infos de lib. et inc.
@@ -24,8 +22,8 @@ src = src/
 bin = bin/
 
 
-objet = sphere cube cone cylinder torus matrix stack file object tree
-exec = main
+objet = sphere cube cone cylinder torus matrix stack file object tree main
+exec = csg
 ####################################################################################################
 
 
@@ -38,22 +36,21 @@ object = $(addprefix $(bin),$(addsuffix .o,$(objet)))
 all : $(object) $(exec)
 
 
-# règle générique de création de xxx.o à partir de src/xxx.c
-$(bin)%.o : $(src)%.c
+.PHONY: clean cleanall doc all info
+
+
+$(bin)%.o: $(src)%.c
 	@echo "$< -> $@"
 	@$(CC) $(CFLAGS) $(inc) -c $< -o $@
 
-# règle générique de création de l'executable xxx à partir de src/xxx.c (1 seul module)
-% : $(object) $(bin)%.o
+
+$(exec): $(object) $(bin)main.o
 	@echo "[$^] -> $@"
 	@$(CC) $^ $(lib) $(inc) -o $@
 	@echo "------------------------"
 
 
-
-.PHONY : clean cleanall ?
-
-? :
+info:
 	@echo "---------compilation informations----------"
 	@echo "  processor      : $(PROCBIT)"
 	@echo "  compiler       : $(CC)"
@@ -61,8 +58,16 @@ $(bin)%.o : $(src)%.c
 	@echo "  lib g3x/OpenGl : $(lib)"
 	@echo "  headers        : $(inc)"
 
-clean :
+
+doc:
+	rm docs/html docs/index.html -rf
+	doxygen
+	ln -s html/files.html docs/index.html
+
+
+clean:
 	@rm -f $(bin)*.o
 
-cleanall :
-	@rm -f $(bin)*.o $(exec) *~ */*~
+
+cleanall:
+	@rm -rf $(bin)*.o $(exec) *~ */*~ docs/html docs/index.html

@@ -2,7 +2,9 @@
 bin/
 code.3d/docs/html/
 code.3d/docs/latex/
+code.3d/docs/index.html
 code.3d/sphere
+code.3d/csg
 code.3d/main
 
 # Clion
